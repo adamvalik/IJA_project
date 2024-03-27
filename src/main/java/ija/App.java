@@ -1,4 +1,4 @@
-package ija;
+package main.java.ija;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
