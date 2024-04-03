@@ -6,8 +6,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import ija.controller.GameController;
 
 public class App extends Application {
+
+    private GameController gameController; // Reference to GameController
 
     @Override
     public void start(Stage primaryStage) {
@@ -21,6 +24,15 @@ public class App extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(canvas);
         primaryStage.setScene(new Scene(root));
+
+        // Instantiate GameController
+        gameController = new GameController();
+
+        // Add key press event handler
+        primaryStage.getScene().setOnKeyPressed(event -> {
+            gameController.moveControlledRobot(event);
+        });
+
         primaryStage.show();
     }
 
