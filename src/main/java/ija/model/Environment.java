@@ -4,6 +4,11 @@ import java.util.List;
 
 public interface Environment {
 
+    int getRows();
+    int getCols();
+    List<Obstacle> getObstacleList();
+    List<Robot> getRobotList();
+
     boolean addRobot(Robot robot);
     boolean containsPosition(Position pos);
     boolean createObstacleAt(int row, int col);
@@ -11,11 +16,6 @@ public interface Environment {
     boolean obstacleAt(Position pos);
     boolean robotAt(Position pos);
     boolean isPositionEmpty(Position pos);
-
-    int rows();
-
-    int cols();
-
     List<Robot> robots();
 
 }

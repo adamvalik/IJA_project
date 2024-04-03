@@ -23,13 +23,30 @@ public class Room implements Environment {
         return new Room(rows, cols);
     }
 
+    @Override
     public List<Obstacle> getObstacleList() {
         return obstacleList;
     }
+    @Override
+    public List<Robot> getRobotList() {
+        return robotList;
+    }
 
     @Override
-    public boolean isPositionEmpty(Position pos) {
-        return !this.obstacleAt(pos) && !this.robotAt(pos);
+    public int getRows() {
+        return this.rows;
+    }
+
+    @Override
+    public int getCols() {
+        return this.cols;
+    }
+
+
+    @Override
+    public List<Robot> robots() {
+        // returns the copy of the list of robots
+        return new ArrayList<>(robotList);
     }
 
     @Override
@@ -47,12 +64,18 @@ public class Room implements Environment {
     }
 
     @Override
+    public boolean isPositionEmpty(Position pos) {
+        return !this.obstacleAt(pos) && !this.robotAt(pos);
+    }
+
+
+    @Override
     public boolean createObstacleAt(int row, int col) {
         // if position is not out of bounds and is empty (there's no obstacle or robot)
         Position pos = new Position(row, col);
         if (this.containsPosition(pos) && this.isPositionEmpty(pos)) {
             // create an obstacle
-            obstacleList.add(new Obstacle(this, pos));
+            obstacleList.add(new Obstacle(pos));
             return true;
         }
         return false;
@@ -89,28 +112,12 @@ public class Room implements Environment {
     public boolean robotAt(Position pos) {
         // if pos is not out of bounds and contains a robot
         if (this.containsPosition(pos)) {
-            for (ToolRobot robot : this.robots()) {
+            for (Robot robot : this.getRobotList()) {
                 if (robot.getPosition().equals(pos)) {
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    @Override
-    public int rows() {
-        return this.rows;
-    }
-
-    @Override
-    public int cols() {
-        return this.cols;
-    }
-
-    @Override
-    public List<ToolRobot> robots() {
-        // returns the copy of the list of robots
-        return new ArrayList<>(robotList);
     }
 }
