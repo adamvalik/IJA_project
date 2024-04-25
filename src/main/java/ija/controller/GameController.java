@@ -30,6 +30,10 @@ public class GameController {
     private boolean movingForward = false;
     private boolean rotatingRight = false;
     private boolean rotatingLeft = false;
+    private boolean movingForward2 = false;
+    private boolean rotatingRight2 = false;
+    private boolean rotatingLeft2 = false;
+
 
     private double robotSpeed;
 
@@ -98,9 +102,16 @@ public class GameController {
             case LEFT:
                 rotatingLeft = true;
                 break;
-            case SPACE:
-                // Toggle start/stop might require a separate mechanism
+            case W:
+                movingForward2 = true;
                 break;
+            case D:
+                rotatingRight2 = true;
+                break;
+            case A:
+                rotatingLeft2 = true;
+                break;
+
             default:
                 break;
         }
@@ -119,6 +130,15 @@ public class GameController {
             case LEFT:
                 rotatingLeft = false;
                 break;
+            case W:
+                movingForward2 = false;
+                break;
+            case D:
+                rotatingRight2 = false;
+                break;
+            case A:
+                rotatingLeft2 = false;
+                break;
             default:
                 break;
         }
@@ -127,18 +147,30 @@ public class GameController {
 
     private void updateMovement() {
         ControlledRobot controlledRobot = env.getControlledRobots().get(0); // Assume a single controlled robot for simplicity
+        ControlledRobot controlledRobot2 = env.getControlledRobots().get(1); // Assume a single controlled robot for simplicity
 
         // Determine new position without actually moving the robot
         double potentialX = controlledRobot.X().get();
         double potentialY = controlledRobot.Y().get();
 
+        double potentialX2 = controlledRobot2.X().get();
+        double potentialY2 = controlledRobot2.Y().get();
+
         if (movingForward) {
             potentialX += robotSpeed * Math.cos(Math.toRadians(controlledRobot.angle().get()));
             potentialY += robotSpeed * Math.sin(Math.toRadians(controlledRobot.angle().get()));
         }
+
+        if (movingForward2) {
+            potentialX2 += robotSpeed * Math.cos(Math.toRadians(controlledRobot2.angle().get()));
+            potentialY2 += robotSpeed * Math.sin(Math.toRadians(controlledRobot2.angle().get()));
+        }
         // Simulate the movement
         controlledRobot.X().set(potentialX);
         controlledRobot.Y().set(potentialY);
+
+        controlledRobot2.X().set(potentialX2);
+        controlledRobot2.Y().set(potentialY2);
 
         // Check for collisions
         if (env.checkCollision(controlledRobot)) {
@@ -156,11 +188,32 @@ public class GameController {
             }
         }
 
+        if (env.checkCollision(controlledRobot2)) {
+            // Handle collision - e.g., stop the robot, reverse slightly, etc.
+            if (movingForward2 ) {
+                controlledRobot2.moveForward(-robotSpeed); // Simple reversal of last move
+                if (movingForward2) {
+                    movingForward2 = false;
+                }
+            }
+        } else {
+            // If no collision, apply potential movement
+            if (movingForward2) {
+                controlledRobot2.moveForward(robotSpeed);
+            }
+        }
+
         // Handle rotation with collision checking
         if (rotatingRight) {
             controlledRobot.rotate(3); // Rotate right
         } else if (rotatingLeft) {
             controlledRobot.rotate(-3); // Rotate left
+        }
+
+        if (rotatingRight2) {
+            controlledRobot2.rotate(3); // Rotate right
+        } else if (rotatingLeft2) {
+            controlledRobot2.rotate(-3); // Rotate left
         }
 
     }
