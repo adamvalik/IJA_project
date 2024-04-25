@@ -1,11 +1,12 @@
 package ija;
 
+import ija.controller.EditorController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ija.controller.GameController;
+
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class App extends Application {
         Parent root = loader.load();
 
         // Get the controller instance
-        GameController gameController = loader.getController();
+        EditorController editorController = loader.getController();
 
         // Set up the scene
         Scene scene = new Scene(root);
