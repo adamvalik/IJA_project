@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.GameController">
+    <center>
+        <Pane fx:id="simulationPane" maxHeight="650" maxWidth="1180" BorderPane.alignment="CENTER" style="-fx-border-color: black; -fx-border-width: 2px;">
+            <!-- This Pane is where the simulation will be displayed -->
+        </Pane>
+    </center>
+    <bottom>
+        <VBox>
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <HBox>
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                <Button text="Start" fx:id="startButton"/>
+                <Button text="Pause" fx:id="pauseButton"/>
+                <Button text="Stop" fx:id="stopButton"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>

@@ -1,6 +1,9 @@
 package ija.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,7 +14,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.Pane;
 
 import javafx.scene.Node;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +53,7 @@ public class EditorController {
 
     private Object selectedEntity;
 
-    private List<String> CSV = new ArrayList<>();
+    public List<String> CSV = new ArrayList<>();
 
     private boolean wasSet = false;
 
@@ -71,20 +76,40 @@ public class EditorController {
         clear.setOnMouseClicked(this::clearMap);
         setButton.setOnMouseClicked(this::setValues);
         CSV = new ArrayList<>();
-        start.setOnMouseClicked(event -> {
-            if(speedInput.getText().isEmpty()){
-                System.out.println("MUSIS ZADAT SPEED RETARDE");
-                return;
-            }
-
-            CSV.add("settings," + speedInput.getText());
-            List<String> csvData = getCSV();
-
-            for (String line : csvData) {
-                System.out.println(line);
-            }
-        });
+        start.setOnMouseClicked(this::handleStart);
     }
+
+    private void handleStart(MouseEvent event) {
+        if (speedInput.getText().isEmpty() || !isNum(speedInput.getText())) {
+            return;
+        }
+        CSV.add("settings," + speedInput.getText());
+
+        try {
+            // Load the game view FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("game-view.fxml"));
+            Parent gameRoot = loader.load();
+
+            // Get the game controller and initiate the game setup
+            GameController gameController = loader.getController();
+
+            // Setup the new stage and scene
+            Scene gameScene = new Scene(gameRoot);
+            Stage gameStage = new Stage();
+            gameStage.setTitle("Game Window");
+            gameStage.setScene(gameScene);
+
+            gameController.initialize(gameScene);
+            gameController.loadEnvironment(CSV);
+
+            // Show the new window
+            gameStage.show();
+        } catch (IOException e) {
+            System.out.println("magore");  // Handle exceptions properly in real applications
+        }
+    }
+
+
 
     private void handleElementClick(MouseEvent event) {
         selectedEntity = event.getSource();
@@ -288,9 +313,6 @@ public class EditorController {
         return Math.max(min, Math.min(max, value));
     }
 
-    private List<String> getCSV(){
-        return CSV;
-    }
 
     private void clearMap(MouseEvent event){
         map.getChildren().clear();

@@ -1,58 +1,49 @@
 package ija.model;
 
-public class AutonomousRobot implements Robot {
-    @Override
-    public void addObserver(Observer observer) {
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.shape.Circle;
 
+public class AutonomousRobot {
+    private final double radius = 37.5;
+    private DoubleProperty angle = new SimpleDoubleProperty();
+    private DoubleProperty x = new SimpleDoubleProperty();
+    private DoubleProperty y = new SimpleDoubleProperty();
+
+    public AutonomousRobot(double x, double y, double angle) {
+        this.x.set(x);
+        this.y.set(y);
+        this.angle.set(angle);
     }
 
-    @Override
-    public void removeObserver(Observer observer) {
-
+    public DoubleProperty X() {
+        return x;
     }
 
-    @Override
-    public void notifyObservers() {
-
+    public DoubleProperty Y() {
+        return y;
     }
 
-    @Override
-    public int getCurrAngle() {
-        return 0;
+    public DoubleProperty angle() {
+        return angle;
     }
 
-    @Override
-    public Position getPosition() {
-        return null;
+    public double getRadius() {
+        return radius;
     }
 
-    @Override
-    public Position nextPosition() {
-        return null;
+    public void moveForward(double speed) {
+        double angleInRadians = Math.toRadians(angle.get());
+
+        x.set(x.get() + speed * Math.cos(angleInRadians));
+        y.set(y.get() + speed * Math.sin(angleInRadians));
     }
 
-    @Override
-    public boolean canMove() {
-        return false;
+    public void rotate(double turn) {
+        angle.set(angle.get() + turn % 360);
     }
 
-    @Override
-    public boolean move() {
-        return false;
-    }
-
-    @Override
-    public void turn() {
-
-    }
-
-    @Override
-    public void turn(int n) {
-
-    }
-
-    @Override
-    public void turnToAngle(int angle) {
-
+    public Circle getBounds() {
+        return new Circle(x.get(), y.get(), radius);
     }
 }

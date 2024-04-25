@@ -1,138 +1,50 @@
 package ija.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.shape.Circle;
 
-public class ControlledRobot implements Robot {
-    private final Environment env;
-    private Position pos;
-    private int currAngle;
-    private final Set<Observer> observers = new HashSet<>();
+public class ControlledRobot {
+    private final double radius = 37.5;
+    private DoubleProperty angle = new SimpleDoubleProperty();
+    private DoubleProperty x = new SimpleDoubleProperty();
+    private DoubleProperty y = new SimpleDoubleProperty();
 
-
-    private ControlledRobot(Environment env, Position pos) {
-        this.env = env;
-        this.pos = pos;
-        this.currAngle = 0;
-    }
-    private ControlledRobot(Environment env, Position pos, int angle) {
-        this.env = env;
-        this.pos = pos;
-        this.currAngle = angle;
+    public ControlledRobot(double x, double y, double angle) {
+        this.x.set(x);
+        this.y.set(y);
+        this.angle.set(angle);
     }
 
-    public static ControlledRobot create(Environment env, Position pos) {
-        ControlledRobot robot = new ControlledRobot(env, pos);
-        if (env.addRobot(robot)) {
-            return robot;
-        } else {
-            return null;
-        }
+    public DoubleProperty X() {
+        return x;
     }
 
-    @Override
-    public int getCurrAngle() {
-        return currAngle;
+    public DoubleProperty Y() {
+        return y;
     }
 
-    @Override
-    public Position getPosition() {
-        return pos;
+    public DoubleProperty angle() {
+        return angle;
     }
 
-
-    @Override
-    public Position nextPosition() {
-        /* 3x3 room:        (angle 0 is upwards)
-                [0,0][0,1][0,2]
-                [1,0][1,1][1,2]
-                [2,0][2,1][2,2]
-        */
-        int rowDelta = 0; // Default value
-        int colDelta = 0; // Default value
-
-        switch (currAngle) {
-            case 0 -> rowDelta = -1;
-            case 45 -> {
-                rowDelta = -1;
-                colDelta = 1;
-            }
-            case 90 -> colDelta = 1;
-            case 135 -> {
-                rowDelta = 1;
-                colDelta = 1;
-            }
-            case 180 -> rowDelta = 1;
-            case 225 -> {
-                rowDelta = 1;
-                colDelta = -1;
-            }
-            case 270 -> colDelta = -1;
-            case 315 -> {
-                rowDelta = -1;
-                colDelta = -1;
-            }
-            default -> {
-            }
-        }
-        return new Position(this.getPosition().getRow() + rowDelta, this.getPosition().getCol() + colDelta);
+    public double getRadius() {
+        return radius;
     }
 
-    @Override
-    public boolean canMove() {
-        // if the next position exists (is part of the environment) and is empty
-        Position nextPos = nextPosition();
-        return env.containsPosition(nextPos) && env.isPositionEmpty(nextPos);
+    public void moveForward(double speed) {
+        double angleInRadians = Math.toRadians(angle.get());
+
+        x.set(x.get() + speed * Math.cos(angleInRadians));
+        y.set(y.get() + speed * Math.sin(angleInRadians));
     }
 
-
-    @Override
-    public boolean move() {
-        if (this.canMove()) {
-            pos = nextPosition();
-            notifyObservers();
-            return true;
-        } else {
-            return false;
-        }
+    public void rotate(double turn) {
+        angle.set(angle.get() + turn % 360);
     }
 
-    @Override
-    public void turn() {
-        // clockwise rotation of 45 degrees
-        currAngle = (currAngle + 45) % 360;
-        notifyObservers();
-    }
-
-    @Override
-    public void turn(int n) {
-        // n times clockwise rotation of 45 degrees
-        currAngle = (currAngle + 45 * n) % 360;
-        notifyObservers();
-    }
-
-    @Override
-    public void turnToAngle(int angle) {
-        // set the angle to the given value
-        if (angle % 45 != 0) {
-            throw new IllegalArgumentException("Angle must be a multiple of 45 degrees.");
-        }
-        currAngle = angle;
-        notifyObservers();
-    }
-
-
-    public void addObserver(Observable.Observer observer) {
-        this.observers.add(observer);
-    }
-
-    public void removeObserver(Observable.Observer observer) {
-        this.observers.remove(observer);
-    }
-
-    public void notifyObservers() {
-        this.observers.forEach((observer) -> {
-            observer.update(this);
-        });
+    public Circle getBounds() {
+        return new Circle(x.get(), y.get(), radius);
     }
 }
+
