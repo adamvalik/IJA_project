@@ -1,45 +1,32 @@
 package ija;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import ija.controller.GameController;
 
+import java.io.IOException;
+
 public class App extends Application {
 
-    private GameController gameController; // Reference to GameController
-
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Robot Room Adventure");
+    public void start(Stage primaryStage) throws IOException {
+        // Load the FXML file using the class loader
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("app-view.fxml"));
+        Parent root = loader.load();
 
-        Canvas canvas = new Canvas(400, 400);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        // Get the controller instance
+        GameController gameController = loader.getController();
 
-        drawRoom(gc); // Method to draw the initial state of the room
+        // Set up the scene
+        Scene scene = new Scene(root);
 
-        StackPane root = new StackPane();
-        root.getChildren().add(canvas);
-        primaryStage.setScene(new Scene(root));
-
-        // Instantiate GameController
-        gameController = new GameController();
-
-        // Add key press event handler
-        primaryStage.getScene().setOnKeyPressed(event -> {
-            gameController.moveControlledRobot(event);
-        });
-
+        // Set the scene for the stage
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Your Application Title");
         primaryStage.show();
-    }
-
-    private void drawRoom(GraphicsContext gc) {
-        // Implement drawing logic here
-        gc.fillText("Welcome to Robot Room!", 150, 200);
-        // Draw robots and obstacles
     }
 
     public static void main(String[] args) {
