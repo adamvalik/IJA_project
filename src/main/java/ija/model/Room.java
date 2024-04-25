@@ -52,7 +52,7 @@ public class Room implements Environment {
         Position pos = new Position(row, col);
         if (this.containsPosition(pos) && this.isPositionEmpty(pos)) {
             // create an obstacle
-            obstacleList.add(new Obstacle(this, pos));
+            obstacleList.add(new Obstacle(pos));
             return true;
         }
         return false;
@@ -89,7 +89,7 @@ public class Room implements Environment {
     public boolean robotAt(Position pos) {
         // if pos is not out of bounds and contains a robot
         if (this.containsPosition(pos)) {
-            for (ToolRobot robot : this.robots()) {
+            for (Robot robot : this.robots()) {
                 if (robot.getPosition().equals(pos)) {
                     return true;
                 }
@@ -109,7 +109,7 @@ public class Room implements Environment {
     }
 
     @Override
-    public List<ToolRobot> robots() {
+    public List<Robot> robots() {
         // returns the copy of the list of robots
         return new ArrayList<>(robotList);
     }
