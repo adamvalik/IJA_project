@@ -1,4 +1,4 @@
 package ija.view;
 
-public class c {
+public class satek {
 }
