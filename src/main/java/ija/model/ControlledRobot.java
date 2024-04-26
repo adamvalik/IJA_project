@@ -17,7 +17,7 @@ public class ControlledRobot {
         this.x.set(x);
         this.y.set(y);
         this.angle.set(angle);
-        this.radius = 37.5;
+        this.radius = 35;
     }
 
     public ControlledRobot(double x, double y, double angle, double radius) {

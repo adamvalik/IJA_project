@@ -29,6 +29,10 @@ public class Environment {
         return controlledRobots;
     }
 
+    public int countControlledRobots() {
+        return controlledRobots.size();
+    }
+
     public void addControlledRobot(ControlledRobot robot) {
         controlledRobots.add(robot);
     }
@@ -39,6 +43,10 @@ public class Environment {
 
     public ObservableList<AutonomousRobot> getAutonomousRobots() {
         return autonomousRobots;
+    }
+
+    public int countAutonomousRobots() {
+        return autonomousRobots.size();
     }
 
     public void addAutonomousRobot(AutonomousRobot robot) {

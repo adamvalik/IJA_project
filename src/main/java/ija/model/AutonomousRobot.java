@@ -16,18 +16,18 @@ public class AutonomousRobot {
         this.x.set(x);
         this.y.set(y);
         this.angle.set(angle);
-        this.detectionRadius = 37.5 + detectionRadius;
-        this.turningAngle = turningAngle;
         this.radius = 37.5;
+        this.detectionRadius = this.radius + detectionRadius;
+        this.turningAngle = turningAngle;
     }
 
     public AutonomousRobot(double x, double y, double angle, double turningAngle, double detectionRadius, double radius) {
         this.x.set(x);
         this.y.set(y);
         this.angle.set(angle);
+        this.radius = radius;
         this.detectionRadius = radius + detectionRadius;
         this.turningAngle = turningAngle;
-        this.radius = radius;
     }
 
     public DoubleProperty X() {

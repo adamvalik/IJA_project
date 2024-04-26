@@ -22,11 +22,18 @@ public class GameController {
     @FXML
     private Button pauseButton;
     @FXML
-    private Button stopButton;
-    @FXML
     private Pane simulationPane;
+    @FXML
+    private Button movingForward;
+    @FXML
+    private Button rotatingLeft;
+    @FXML
+    private Button rotatingRight;
+    @FXML
+    private Button toggleRobots;
 
     private boolean simulationRunning = false;
+    private int currentRobot = 0;
 
     private Environment env;
     private double robotSpeed;
@@ -39,10 +46,18 @@ public class GameController {
     public void initialize() {
         startButton.setOnAction(event -> startSimulation());
         pauseButton.setOnAction(event -> pauseSimulation());
-        stopButton.setOnAction(event -> stopSimulation());
+
+        movingForward.setOnAction(event -> movingForwardPressed());
+        rotatingLeft.setOnAction(event -> rotatingLeftPressed());
+        rotatingRight.setOnAction(event -> rotatingRightPressed());
+        toggleRobots.setOnAction(event -> toggleRobotsPressed());
+
         startButton.setFocusTraversable(false);
         pauseButton.setFocusTraversable(false);
-        stopButton.setFocusTraversable(false);
+        movingForward.setFocusTraversable(false);
+        rotatingLeft.setFocusTraversable(false);
+        rotatingRight.setFocusTraversable(false);
+        toggleRobots.setFocusTraversable(false);
     }
 
     public void initialize(Scene scene) {
@@ -53,14 +68,15 @@ public class GameController {
             @Override
             public void handle(long now) {
                 // Update controlled robots
+                if (simulationRunning) {
+                    for (int i = 0; i < env.countControlledRobots(); i++) {
+                        updateMovement(i);
+                    }
 
-                for (int i = 0; i < env.getControlledRobots().size(); i++) {
-                    updateMovement(i);
-                }
-
-                // Update autonomous robots
-                for (int i = 0; i < env.getAutonomousRobots().size(); i++) {
-                    updateAutonomousMovement(i); // A method specifically for autonomous logic
+                    // Update autonomous robots
+                    for (int i = 0; i < env.countAutonomousRobots(); i++) {
+                        updateAutonomousMovement(i); // A method specifically for autonomous logic
+                    }
                 }
             }
         }.start();
@@ -227,7 +243,25 @@ public class GameController {
         simulationRunning = false;
     }
 
-    public void stopSimulation() {
-        System.out.println("Simulation stopped");
+    public void movingForwardPressed() {
+        ControlledRobot robot = env.getControlledRobot(currentRobot);
+        robot.setMovingForward(!robot.isMovingForward());
+        updateMovement(currentRobot);
+    }
+
+    public void rotatingLeftPressed() {
+        ControlledRobot robot = env.getControlledRobot(currentRobot);
+        robot.setRotatingLeft(!robot.isRotatingLeft());
+        updateMovement(currentRobot);
+    }
+
+    public void rotatingRightPressed() {
+        ControlledRobot robot = env.getControlledRobot(currentRobot);
+        robot.setRotatingRight(!robot.isRotatingRight());
+        updateMovement(currentRobot);
+    }
+
+    public void toggleRobotsPressed() {
+        currentRobot = (currentRobot + 1) % env.countControlledRobots();
     }
 }

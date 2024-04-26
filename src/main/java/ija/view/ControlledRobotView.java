@@ -3,6 +3,7 @@ package ija.view;
 import ija.model.ControlledRobot;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
@@ -20,6 +21,7 @@ public class ControlledRobotView {
         visual = new Circle(robot.getRadius());
 
         visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/satek.jpg"))));
+
 
         visual.centerXProperty().bind(robot.X());
         visual.centerYProperty().bind(robot.Y());
