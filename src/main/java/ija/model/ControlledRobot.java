@@ -5,15 +5,26 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.shape.Circle;
 
 public class ControlledRobot {
-    private final double radius = 37.5;
+    private final double radius;
     private DoubleProperty angle = new SimpleDoubleProperty();
     private DoubleProperty x = new SimpleDoubleProperty();
     private DoubleProperty y = new SimpleDoubleProperty();
+    private boolean movingForward = false;
+    private boolean rotatingRight = false;
+    private boolean rotatingLeft = false;
 
     public ControlledRobot(double x, double y, double angle) {
         this.x.set(x);
         this.y.set(y);
         this.angle.set(angle);
+        this.radius = 37.5;
+    }
+
+    public ControlledRobot(double x, double y, double angle, double radius) {
+        this.x.set(x);
+        this.y.set(y);
+        this.angle.set(angle);
+        this.radius = radius;
     }
 
     public DoubleProperty X() {
@@ -32,6 +43,30 @@ public class ControlledRobot {
         return radius;
     }
 
+    public boolean isMovingForward() {
+        return movingForward;
+    }
+
+    public void setMovingForward(boolean movingForward) {
+        this.movingForward = movingForward;
+    }
+
+    public boolean isRotatingRight() {
+        return rotatingRight;
+    }
+
+    public void setRotatingRight(boolean rotatingRight) {
+        this.rotatingRight = rotatingRight;
+    }
+
+    public boolean isRotatingLeft() {
+        return rotatingLeft;
+    }
+
+    public void setRotatingLeft(boolean rotatingLeft) {
+        this.rotatingLeft = rotatingLeft;
+    }
+
     public void moveForward(double speed) {
         double angleInRadians = Math.toRadians(angle.get());
 
@@ -39,8 +74,13 @@ public class ControlledRobot {
         y.set(y.get() + speed * Math.sin(angleInRadians));
     }
 
-    public void rotate(double turn) {
-        angle.set(angle.get() + turn % 360);
+    //TODO: 3 degrees is a small enough angle to simulate a smooth rotation, test this value and adjust accordingly
+    public void rotateRight() {
+        angle.set(angle.get() + 3 % 360);
+    }
+
+    public void rotateLeft() {
+        angle.set(angle.get() - 3 % 360);
     }
 
     public Circle getBounds() {

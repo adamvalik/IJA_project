@@ -9,9 +9,7 @@
 
 <BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.GameController">
     <center>
-        <Pane fx:id="simulationPane" maxHeight="650" maxWidth="1180" BorderPane.alignment="CENTER" style="-fx-border-color: black; -fx-border-width: 2px;">
-            <!-- This Pane is where the simulation will be displayed -->
-        </Pane>
+        <Pane fx:id="simulationPane" maxHeight="650" maxWidth="1180" BorderPane.alignment="CENTER" style="-fx-border-color: black; -fx-border-width: 2px;" />
     </center>
     <bottom>
         <VBox>

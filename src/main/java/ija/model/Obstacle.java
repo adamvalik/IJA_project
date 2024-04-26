@@ -1,16 +1,22 @@
 package ija.model;
 
-import java.awt.*;
+import javafx.scene.shape.Rectangle;
 
 public class Obstacle {
-    private double x;
-    private double y;
-    private final double width = 75;
-    private final double height = 75;
+    private final double x;
+    private final double y;
+    private final double side;
 
     public Obstacle(double x, double y) {
         this.x = x;
         this.y = y;
+        this.side = 75;
+    }
+
+    public Obstacle(double x, double y, double side) {
+        this.x = x;
+        this.y = y;
+        this.side = side;
     }
 
     public double getX() {
@@ -21,15 +27,11 @@ public class Obstacle {
         return y;
     }
 
-    public double getWidth() {
-        return width;
-    }
-
-    public double getHeight() {
-        return height;
+    public double getSideLen() {
+        return side;
     }
 
     public Rectangle getBounds() {
-        return new Rectangle((int) x, (int) y, (int) width, (int) height);
+        return new Rectangle((int) x, (int) y, (int) side, (int) side);
     }
 }

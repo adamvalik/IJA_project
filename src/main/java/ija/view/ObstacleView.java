@@ -18,7 +18,7 @@ public class ObstacleView {
 
     private void initializeView(Pane parentPane) {
         // Create a rectangle to visually represent the obstacle
-        rectangle = new Rectangle(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight());
+        rectangle = obstacle.getBounds();
         rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/jaj.jpg"))));
 
         // Add the rectangle to the parent pane

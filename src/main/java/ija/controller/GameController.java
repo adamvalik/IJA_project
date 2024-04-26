@@ -1,8 +1,10 @@
 package ija.controller;
 
+import ija.model.AutonomousRobot;
 import ija.model.ControlledRobot;
 import ija.model.Environment;
 import ija.model.Obstacle;
+import ija.view.AutonomousRobotView;
 import ija.view.ControlledRobotView;
 import ija.view.ObstacleView;
 import javafx.animation.AnimationTimer;
@@ -10,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
@@ -25,21 +26,13 @@ public class GameController {
     @FXML
     private Pane simulationPane;
 
+    private boolean simulationRunning = false;
+
     private Environment env;
-
-    private boolean movingForward = false;
-    private boolean rotatingRight = false;
-    private boolean rotatingLeft = false;
-    private boolean movingForward2 = false;
-    private boolean rotatingRight2 = false;
-    private boolean rotatingLeft2 = false;
-
-
     private double robotSpeed;
 
-
     public GameController() {
-        this.env = new Environment();
+        this.env = new Environment(1180, 650);
     }
 
     @FXML
@@ -59,11 +52,18 @@ public class GameController {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                updateMovement(); // Call updateMovement at each frame
+                // Update controlled robots
+
+                for (int i = 0; i < env.getControlledRobots().size(); i++) {
+                    updateMovement(i);
+                }
+
+                // Update autonomous robots
+                for (int i = 0; i < env.getAutonomousRobots().size(); i++) {
+                    updateAutonomousMovement(i); // A method specifically for autonomous logic
+                }
             }
         }.start();
-
-
     }
 
     public void loadEnvironment(List<String> CSVFile) {
@@ -84,156 +84,150 @@ public class GameController {
                     new ObstacleView(obstacle, simulationPane);
                     break;
                 case "autonomous_robot":
-                    // Add autonomous robot
+                    AutonomousRobot autonomousRobot = new AutonomousRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
+                    env.addAutonomousRobot(autonomousRobot);
+                    new AutonomousRobotView(autonomousRobot, simulationPane);
                     break;
             }
         }
     }
 
-    // Handle key press to start movement or rotation
     public void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
-                movingForward = true;
+                env.getControlledRobot(0).setMovingForward(true);
+                updateMovement(0);
                 break;
             case RIGHT:
-                rotatingRight = true;
+                env.getControlledRobot(0).setRotatingRight(true);
+                updateMovement(0);
                 break;
             case LEFT:
-                rotatingLeft = true;
+                env.getControlledRobot(0).setRotatingLeft(true);
+                updateMovement(0);
                 break;
             case W:
-                movingForward2 = true;
+                env.getControlledRobot(1).setMovingForward(true);
+                updateMovement(1);
                 break;
             case D:
-                rotatingRight2 = true;
+                env.getControlledRobot(1).setRotatingRight(true);
+                updateMovement(1);
                 break;
             case A:
-                rotatingLeft2 = true;
+                env.getControlledRobot(1).setRotatingLeft(true);
+                updateMovement(1);
                 break;
 
             default:
                 break;
         }
-        updateMovement();
     }
 
     // Handle key release to stop movement or rotation
     public void handleKeyRelease(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
-                movingForward = false;
+                env.getControlledRobot(0).setMovingForward(false);
+                updateMovement(0);
                 break;
             case RIGHT:
-                rotatingRight = false;
+                env.getControlledRobot(0).setRotatingRight(false);
+                updateMovement(0);
                 break;
             case LEFT:
-                rotatingLeft = false;
+                env.getControlledRobot(0).setRotatingLeft(false);
+                updateMovement(0);
                 break;
             case W:
-                movingForward2 = false;
+                env.getControlledRobot(1).setMovingForward(false);
+                updateMovement(1);
                 break;
             case D:
-                rotatingRight2 = false;
+                env.getControlledRobot(1).setRotatingRight(false);
+                updateMovement(1);
                 break;
             case A:
-                rotatingLeft2 = false;
+                env.getControlledRobot(1).setRotatingLeft(false);
+                updateMovement(1);
                 break;
             default:
                 break;
         }
-        updateMovement();
     }
 
-    private void updateMovement() {
-        ControlledRobot controlledRobot = env.getControlledRobots().get(0); // Assume a single controlled robot for simplicity
-        ControlledRobot controlledRobot2 = env.getControlledRobots().get(1); // Assume a single controlled robot for simplicity
+    private void updateMovement(int index) {
+        ControlledRobot controlledRobot = env.getControlledRobot(index);
 
-        // Determine new position without actually moving the robot
         double potentialX = controlledRobot.X().get();
         double potentialY = controlledRobot.Y().get();
 
-        double potentialX2 = controlledRobot2.X().get();
-        double potentialY2 = controlledRobot2.Y().get();
-
-        if (movingForward) {
+        if (controlledRobot.isMovingForward()) {
             potentialX += robotSpeed * Math.cos(Math.toRadians(controlledRobot.angle().get()));
             potentialY += robotSpeed * Math.sin(Math.toRadians(controlledRobot.angle().get()));
-        }
-
-        if (movingForward2) {
-            potentialX2 += robotSpeed * Math.cos(Math.toRadians(controlledRobot2.angle().get()));
-            potentialY2 += robotSpeed * Math.sin(Math.toRadians(controlledRobot2.angle().get()));
         }
         // Simulate the movement
         controlledRobot.X().set(potentialX);
         controlledRobot.Y().set(potentialY);
 
-        controlledRobot2.X().set(potentialX2);
-        controlledRobot2.Y().set(potentialY2);
-
         // Check for collisions
         if (env.checkCollision(controlledRobot)) {
-            // Handle collision - e.g., stop the robot, reverse slightly, etc.
-            if (movingForward ) {
+            if (controlledRobot.isMovingForward()) {
                 controlledRobot.moveForward(-robotSpeed); // Simple reversal of last move
-                if (movingForward) {
-                    movingForward = false;
+                if (controlledRobot.isMovingForward()) {
+                    controlledRobot.setMovingForward(false);
                 }
             }
         } else {
             // If no collision, apply potential movement
-            if (movingForward) {
+            if (controlledRobot.isMovingForward()) {
                 controlledRobot.moveForward(robotSpeed);
             }
         }
 
-        if (env.checkCollision(controlledRobot2)) {
-            // Handle collision - e.g., stop the robot, reverse slightly, etc.
-            if (movingForward2 ) {
-                controlledRobot2.moveForward(-robotSpeed); // Simple reversal of last move
-                if (movingForward2) {
-                    movingForward2 = false;
-                }
-            }
-        } else {
-            // If no collision, apply potential movement
-            if (movingForward2) {
-                controlledRobot2.moveForward(robotSpeed);
-            }
-        }
-
         // Handle rotation with collision checking
-        if (rotatingRight) {
-            controlledRobot.rotate(3); // Rotate right
-        } else if (rotatingLeft) {
-            controlledRobot.rotate(-3); // Rotate left
+        if (controlledRobot.isRotatingRight()) {
+            controlledRobot.rotateRight(); // Rotate right
+        } else if (controlledRobot.isRotatingLeft()) {
+            controlledRobot.rotateLeft(); // Rotate left
         }
-
-        if (rotatingRight2) {
-            controlledRobot2.rotate(3); // Rotate right
-        } else if (rotatingLeft2) {
-            controlledRobot2.rotate(-3); // Rotate left
-        }
-
     }
 
+    public void updateAutonomousMovement(int index) {
+        AutonomousRobot autonomousRobot = env.getAutonomousRobot(index);
 
+        double potentialX = autonomousRobot.X().get();
+        double potentialY = autonomousRobot.Y().get();
+
+        // Simulate the movement
+        autonomousRobot.X().set(potentialX);
+        autonomousRobot.Y().set(potentialY);
+
+        // Check for collisions
+        if (env.checkCollision(autonomousRobot)) {
+            autonomousRobot.moveForward(-robotSpeed); // Simple reversal of last move
+            autonomousRobot.rotate(); // Rotate to avoid collision
+        } else {
+            // If no collision, apply potential movement
+            autonomousRobot.moveForward(robotSpeed);
+        }
+    }
 
 
     // Implementation of simulation control methods
     public void startSimulation() {
         System.out.println("Simulation started");
         // Additional start logic here
+        simulationRunning = true;
     }
 
     public void pauseSimulation() {
         System.out.println("Simulation paused");
         // Additional pause logic here
+        simulationRunning = false;
     }
 
     public void stopSimulation() {
         System.out.println("Simulation stopped");
-        // Additional stop/reset logic here
     }
 }
