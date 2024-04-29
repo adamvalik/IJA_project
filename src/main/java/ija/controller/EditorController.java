@@ -102,10 +102,13 @@ public class EditorController {
             gameController.initialize(gameScene);
             gameController.loadEnvironment(CSV);
 
+            gameStage.setResizable(false);
+
+
             // Show the new window
             gameStage.show();
         } catch (IOException e) {
-            System.out.println("magore");  // Handle exceptions properly in real applications
+            e.printStackTrace();
         }
     }
 

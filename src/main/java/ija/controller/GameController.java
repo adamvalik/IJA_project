@@ -37,6 +37,7 @@ public class GameController {
     private double robotSpeed;
     private double robotRadius;
     private double obstacleSize;
+    private boolean raceMode;
 
     public GameController() {
         this.env = new Environment(1180, 650);
@@ -84,6 +85,7 @@ public class GameController {
                     robotSpeed = Double.parseDouble(parts[1]);
                     robotRadius = Double.parseDouble(parts[2]);
                     obstacleSize = Double.parseDouble(parts[3]);
+                    raceMode = Boolean.parseBoolean(parts[4]);
                     break;
                 case "controlled_robot":
                     ControlledRobot robot = new ControlledRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), robotRadius);
@@ -242,8 +244,7 @@ public class GameController {
             // Perform a lookahead collision check before actually moving.
             if (!env.checkCollisionAt(controlledRobot, potentialX, potentialY)) {
                 // No collision predicted, so it's safe to move forward.
-                controlledRobot.X().set(potentialX);
-                controlledRobot.Y().set(potentialY);
+                controlledRobot.moveForward(robotSpeed);
             } else {
                 System.out.println("Collision of controlled robot " + index);
                 // Collision predicted: stop movement and handle collision.

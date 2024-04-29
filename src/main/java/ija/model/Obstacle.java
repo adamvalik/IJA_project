@@ -31,7 +31,7 @@ public class Obstacle {
         return side;
     }
 
-    public Rectangle getBounds() {
+    public Rectangle getRectangle() {
         return new Rectangle(x, y, side, side);
     }
 }

@@ -20,7 +20,7 @@ public class ControlledRobotView {
     private void initializeVisualRepresentation(Pane parentPane) {
         visual = new Circle(robot.getRadius());
 
-        visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/satek.jpg"))));
+        visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
 
 
         visual.centerXProperty().bind(robot.X());

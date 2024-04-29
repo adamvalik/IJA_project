@@ -65,14 +65,13 @@ public class AutonomousRobot {
         angle.set(angle.get() + turningAngle % 360);
     }
 
-    public Circle getBounds() {
+    public Circle getCircle() {
         return new Circle(x.get(), y.get(), radius);
     }
 
-    public Circle getBoundsAt(double x, double y) {
+    public Circle getCircle(double x, double y) {
         return new Circle(x, y, radius);
     }
-
 
     /**
      * @param x X coordinates of the center of the robot
