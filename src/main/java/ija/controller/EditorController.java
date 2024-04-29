@@ -1,5 +1,6 @@
 package ija.controller;
 
+import ija.model.Collision;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,8 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.Pane;
@@ -65,12 +68,15 @@ public class EditorController {
 
     String type = null;
 
-    private final double offset = 37.5;
+    public double robotSize;
+    public double obstacleSize;
     private final double screenWidth = 1180;
     private final double screenHeight = 650;
 
     @FXML
     public void initialize() {
+        player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+        obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
         player.setOnMouseClicked(this::handleElementClick);
         bot.setOnMouseClicked(this::handleElementClick);
         obstacle.setOnMouseClicked(this::handleElementClick);
@@ -225,87 +231,110 @@ public class EditorController {
 
     public void addToMap(double x, double y) {
 
-        boolean checkSquares;
-        if(x+offset > screenWidth || x-offset < 0 || y+offset > screenHeight || y-offset < 0){
-            return;
-        }
+
+
 
         Node newEntity = null;
+
+        System.out.println("X clicked: " + x);
+        System.out.println("Y clicked: " + y);
+
         if (selectedEntity instanceof Circle) {
 
-            checkSquares = true;
-            if(isColliding(x, y, offset, checkSquares)){
+
+
+            if(x+robotSize > screenWidth || x-robotSize < 0 || y+robotSize > screenHeight || y-robotSize < 0){
                 return;
             }
-
             String type = ((Circle) selectedEntity).getId();
             // Player
             if (type.equals("player")) {
-                newEntity = new Circle(offset);
-                ((Circle) newEntity).setFill(Color.BLUE);
+
+                Circle newCircle = new Circle(x, y, robotSize);
+                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+                newCircle.setLayoutX(0);
+                newCircle.setLayoutY(0);
+
+                if(isCircleColliding(newCircle)){
+                    return;
+                }
 
                 if(!wasSet) return;
-
+                map.getChildren().add(newCircle);
                 CSV.add("controlled_robot,"+ x + "," + y + "," + angleValue);
                 // Bot
             } else{
-                newEntity = new Circle(offset);
-                ((Circle) newEntity).setFill(Color.RED);
+
+                Circle newCircle = new Circle(x, y, robotSize);
+                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+                newCircle.setLayoutX(0);
+                newCircle.setLayoutY(0);
+
+                if(isCircleColliding(newCircle)){
+                    return;
+                }
 
                 if(!wasSet) return;
-
+                map.getChildren().add(newCircle);
                 CSV.add("autonomous_robot,"+ x + "," + y + "," + angleValue + "," + rotateValue + "," + detectionValue);
             }
 
         } else if (selectedEntity instanceof Rectangle) {
 
-            checkSquares = false;
-            if(isColliding(x, y, offset, checkSquares)){
+            x -= obstacleSize/2;
+            y -= obstacleSize/2;
+            if(x+obstacleSize > screenWidth || x-obstacleSize < 0 || y+obstacleSize > screenHeight || y-obstacleSize < 0){
+                return;
+            }
+            System.out.println("UpLeft X: " + x);
+            System.out.println("Upleft Y: " + y);
+
+            Rectangle newRectangle = new Rectangle(x, y, obstacleSize, obstacleSize);
+            newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+            newRectangle.setLayoutX(0);
+            newRectangle.setLayoutY(0);
+
+            if(isRectangleColliding(newRectangle)){
+
                 return;
             }
 
-            newEntity = new Rectangle(offset*2, offset*2);
-            ((Rectangle) newEntity).setFill(Color.YELLOW);
-            x -= offset;
-            y -= offset;
+
+            map.getChildren().add(newRectangle);
 
             CSV.add("obstacle," + x + "," + y);
 
         }
 
-        newEntity.setLayoutX(x);
-        newEntity.setLayoutY(y);
+
         // Add the new entity to the Pane
-        map.getChildren().add(newEntity);
+
     }
 
-    public boolean isColliding(double centerX, double centerY, double radius, boolean checkSquares) {
+    public boolean isCircleColliding(Circle newCircle) {
         for (Node entity : map.getChildren()) {
             if (entity instanceof Circle) {
-                Circle circle = (Circle) entity;
-
-                double dx = Math.abs(centerX - circle.getLayoutX());
-                double dy = Math.abs(centerY - circle.getLayoutY());
-                double distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < radius * 2) {
+                if (Collision.checkCollision(newCircle, (Circle) entity)) {
                     return true;
                 }
-            } else if (entity instanceof Rectangle && checkSquares) {
-                Rectangle rectangle = (Rectangle) entity;
-
-                // Calculate closest point on the rectangle to the circle
-                double closestX = clamp(centerX, rectangle.getLayoutX(), rectangle.getLayoutX() + rectangle.getWidth());
-                double closestY = clamp(centerY, rectangle.getLayoutY(), rectangle.getLayoutY() + rectangle.getHeight());
-
-                // Calculate distance between circle center and closest point
-                double dx = centerX - closestX;
-                double dy = centerY - closestY;
-                double distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < radius) {
+            } else if (entity instanceof Rectangle) {
+                if (Collision.checkCollision(newCircle, (Rectangle) entity)) {
                     return true;
                 }
+            }
+
+        }
+        return false;
+    }
+
+    public boolean isRectangleColliding(Rectangle newRectangle) {
+        for (Node entity : map.getChildren()) {
+            if (entity instanceof Circle) {
+                if (Collision.checkCollision((Circle) entity, newRectangle)) {
+                    return true;
+                }
+            } else if (entity instanceof Rectangle) {
+                return false;
             }
 
         }

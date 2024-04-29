@@ -70,6 +70,8 @@ public class SettingsController {
             // Get the game controller and initiate the game setup
             EditorController editorController = loader.getController();
             editorController.settings = csvHeader;
+            editorController.robotSize = Double.parseDouble(robotSize.getText());
+            editorController.obstacleSize = Double.parseDouble(obstacleSize.getText());
             // Setup the new stage and scene
             Scene editorScene = new Scene(editorRoot);
             Stage editorStage = new Stage();
