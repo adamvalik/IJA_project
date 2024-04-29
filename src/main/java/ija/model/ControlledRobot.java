@@ -10,6 +10,7 @@ public class ControlledRobot {
     private DoubleProperty x = new SimpleDoubleProperty();
     private DoubleProperty y = new SimpleDoubleProperty();
     private boolean movingForward = false;
+    private boolean movingBackward = false;
     private boolean rotatingRight = false;
     private boolean rotatingLeft = false;
 
@@ -17,7 +18,7 @@ public class ControlledRobot {
         this.x.set(x);
         this.y.set(y);
         this.angle.set(angle);
-        this.radius = 35;
+        this.radius = 37.5;
     }
 
     public ControlledRobot(double x, double y, double angle, double radius) {
@@ -49,6 +50,14 @@ public class ControlledRobot {
 
     public void setMovingForward(boolean movingForward) {
         this.movingForward = movingForward;
+    }
+
+    public boolean isMovingBackward() {
+        return movingBackward;
+    }
+
+    public void setMovingBackward(boolean movingBackward) {
+        this.movingBackward = movingBackward;
     }
 
     public boolean isRotatingRight() {
@@ -86,5 +95,10 @@ public class ControlledRobot {
     public Circle getBounds() {
         return new Circle(x.get(), y.get(), radius);
     }
+
+    public Circle getBounds(double x, double y) {
+        return new Circle(x, y, radius);
+    }
+
 }
 

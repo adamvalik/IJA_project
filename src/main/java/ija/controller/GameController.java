@@ -18,9 +18,7 @@ import java.util.List;
 
 public class GameController {
     @FXML
-    private Button startButton;
-    @FXML
-    private Button pauseButton;
+    private Button playPauseButton;
     @FXML
     private Pane simulationPane;
     @FXML
@@ -35,7 +33,7 @@ public class GameController {
     private boolean simulationRunning = false;
     private int currentRobot = 0;
 
-    private Environment env;
+    private final Environment env;
     private double robotSpeed;
 
     public GameController() {
@@ -44,16 +42,13 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        startButton.setOnAction(event -> startSimulation());
-        pauseButton.setOnAction(event -> pauseSimulation());
-
+        playPauseButton.setOnAction(event -> playPauseSimulation());
         movingForward.setOnAction(event -> movingForwardPressed());
         rotatingLeft.setOnAction(event -> rotatingLeftPressed());
         rotatingRight.setOnAction(event -> rotatingRightPressed());
         toggleRobots.setOnAction(event -> toggleRobotsPressed());
 
-        startButton.setFocusTraversable(false);
-        pauseButton.setFocusTraversable(false);
+        playPauseButton.setFocusTraversable(false);
         movingForward.setFocusTraversable(false);
         rotatingLeft.setFocusTraversable(false);
         rotatingRight.setFocusTraversable(false);
@@ -67,15 +62,12 @@ public class GameController {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                // Update controlled robots
                 if (simulationRunning) {
                     for (int i = 0; i < env.countControlledRobots(); i++) {
                         updateMovement(i);
                     }
-
-                    // Update autonomous robots
                     for (int i = 0; i < env.countAutonomousRobots(); i++) {
-                        updateAutonomousMovement(i); // A method specifically for autonomous logic
+                        updateAutonomousMovement(i);
                     }
                 }
             }
@@ -111,28 +103,71 @@ public class GameController {
     public void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
-                env.getControlledRobot(0).setMovingForward(true);
-                updateMovement(0);
+                if (env.countControlledRobots() > 0) {
+                    if (!env.getControlledRobot(0).isMovingForward()) {
+                        System.out.println("Player 1 moving forward");
+                    }
+                    env.getControlledRobot(0).setMovingForward(true);
+                }
+                break;
+            case DOWN:
+                if (env.countControlledRobots() > 0) {
+                    if (!env.getControlledRobot(0).isMovingBackward()) {
+                        System.out.println("Player 1 moving backward");
+                    }
+                    env.getControlledRobot(0).setMovingBackward(true);
+                }
                 break;
             case RIGHT:
-                env.getControlledRobot(0).setRotatingRight(true);
-                updateMovement(0);
+                if (env.countControlledRobots() > 0) {
+                    if (!env.getControlledRobot(0).isRotatingRight()) {
+                        System.out.println("Player 1 rotating right");
+                    }
+                    env.getControlledRobot(0).setRotatingRight(true);
+                }
                 break;
             case LEFT:
-                env.getControlledRobot(0).setRotatingLeft(true);
-                updateMovement(0);
+                if (env.countControlledRobots() > 0) {
+                    if (!env.getControlledRobot(0).isRotatingLeft()) {
+                        System.out.println("Player 1 rotating left");
+                    }
+                    env.getControlledRobot(0).setRotatingLeft(true);
+                }
                 break;
             case W:
-                env.getControlledRobot(1).setMovingForward(true);
-                updateMovement(1);
+                if (env.countControlledRobots() > 1) {
+                    if (!env.getControlledRobot(1).isMovingForward()) {
+                        System.out.println("Player 2 moving forward");
+                    }
+                    env.getControlledRobot(1).setMovingForward(true);
+                }
+                break;
+            case S:
+                if (env.countControlledRobots() > 1) {
+                    if (!env.getControlledRobot(1).isMovingBackward()) {
+                        System.out.println("Player 2 moving backward");
+                    }
+                    env.getControlledRobot(1).setMovingBackward(true);
+                }
                 break;
             case D:
-                env.getControlledRobot(1).setRotatingRight(true);
-                updateMovement(1);
+                if (env.countControlledRobots() > 1) {
+                    if (!env.getControlledRobot(1).isRotatingRight()) {
+                        System.out.println("Player 2 rotating right");
+                    }
+                    env.getControlledRobot(1).setRotatingRight(true);
+                }
                 break;
             case A:
-                env.getControlledRobot(1).setRotatingLeft(true);
-                updateMovement(1);
+                if (env.countControlledRobots() > 1) {
+                    if (!env.getControlledRobot(1).isRotatingLeft()) {
+                        System.out.println("Player 2 rotating left");
+                    }
+                    env.getControlledRobot(1).setRotatingLeft(true);
+                }
+                break;
+            case SPACE:
+                playPauseSimulation();
                 break;
 
             default:
@@ -140,32 +175,47 @@ public class GameController {
         }
     }
 
-    // Handle key release to stop movement or rotation
     public void handleKeyRelease(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
-                env.getControlledRobot(0).setMovingForward(false);
-                updateMovement(0);
+                if (env.countControlledRobots() > 0) {
+                    env.getControlledRobot(0).setMovingForward(false);
+                }
+                break;
+            case DOWN:
+                if (env.countControlledRobots() > 0) {
+                    env.getControlledRobot(0).setMovingBackward(false);
+                }
                 break;
             case RIGHT:
-                env.getControlledRobot(0).setRotatingRight(false);
-                updateMovement(0);
+                if (env.countControlledRobots() > 0) {
+                    env.getControlledRobot(0).setRotatingRight(false);
+                }
                 break;
             case LEFT:
-                env.getControlledRobot(0).setRotatingLeft(false);
-                updateMovement(0);
+                if (env.countControlledRobots() > 0) {
+                    env.getControlledRobot(0).setRotatingLeft(false);
+                }
                 break;
             case W:
-                env.getControlledRobot(1).setMovingForward(false);
-                updateMovement(1);
+                if (env.countControlledRobots() > 1) {
+                    env.getControlledRobot(1).setMovingForward(false);
+                }
+                break;
+            case S:
+                if (env.countControlledRobots() > 1) {
+                    env.getControlledRobot(1).setMovingBackward(false);
+                }
                 break;
             case D:
-                env.getControlledRobot(1).setRotatingRight(false);
-                updateMovement(1);
+                if (env.countControlledRobots() > 1) {
+                    env.getControlledRobot(1).setRotatingRight(false);
+                }
                 break;
             case A:
-                env.getControlledRobot(1).setRotatingLeft(false);
-                updateMovement(1);
+                if (env.countControlledRobots() > 1) {
+                    env.getControlledRobot(1).setRotatingLeft(false);
+                }
                 break;
             default:
                 break;
@@ -175,93 +225,102 @@ public class GameController {
     private void updateMovement(int index) {
         ControlledRobot controlledRobot = env.getControlledRobot(index);
 
-        double potentialX = controlledRobot.X().get();
-        double potentialY = controlledRobot.Y().get();
-
-        if (controlledRobot.isMovingForward()) {
-            potentialX += robotSpeed * Math.cos(Math.toRadians(controlledRobot.angle().get()));
-            potentialY += robotSpeed * Math.sin(Math.toRadians(controlledRobot.angle().get()));
-        }
-        // Simulate the movement
-        controlledRobot.X().set(potentialX);
-        controlledRobot.Y().set(potentialY);
-
-        // Check for collisions
-        if (env.checkCollision(controlledRobot)) {
+        if (controlledRobot.isMovingForward() || controlledRobot.isMovingBackward()) {
+            double potentialX, potentialY;
             if (controlledRobot.isMovingForward()) {
-                controlledRobot.moveForward(-robotSpeed); // Simple reversal of last move
+                potentialX = controlledRobot.X().get() + robotSpeed * Math.cos(Math.toRadians(controlledRobot.angle().get()));
+                potentialY = controlledRobot.Y().get() + robotSpeed * Math.sin(Math.toRadians(controlledRobot.angle().get()));
+            } else {
+                potentialX = controlledRobot.X().get() - robotSpeed * Math.cos(Math.toRadians(controlledRobot.angle().get()));
+                potentialY = controlledRobot.Y().get() - robotSpeed * Math.sin(Math.toRadians(controlledRobot.angle().get()));
+            }
+
+            // Perform a lookahead collision check before actually moving.
+            if (!env.checkCollisionAt(controlledRobot, potentialX, potentialY)) {
+                // No collision predicted, so it's safe to move forward.
+                controlledRobot.X().set(potentialX);
+                controlledRobot.Y().set(potentialY);
+            } else {
+                System.out.println("Collision of controlled robot " + index);
+                // Collision predicted: stop movement and handle collision.
                 if (controlledRobot.isMovingForward()) {
                     controlledRobot.setMovingForward(false);
                 }
-            }
-        } else {
-            // If no collision, apply potential movement
-            if (controlledRobot.isMovingForward()) {
-                controlledRobot.moveForward(robotSpeed);
+
+                if (controlledRobot.isMovingBackward()) {
+                    controlledRobot.setMovingBackward(false);
+                }
             }
         }
 
-        // Handle rotation with collision checking
+        // Handle rotation only if not moving forward to avoid complex movement scenarios.
         if (controlledRobot.isRotatingRight()) {
-            controlledRobot.rotateRight(); // Rotate right
+            controlledRobot.rotateRight();
         } else if (controlledRobot.isRotatingLeft()) {
-            controlledRobot.rotateLeft(); // Rotate left
+            controlledRobot.rotateLeft();
         }
     }
 
     public void updateAutonomousMovement(int index) {
         AutonomousRobot autonomousRobot = env.getAutonomousRobot(index);
 
-        double potentialX = autonomousRobot.X().get();
-        double potentialY = autonomousRobot.Y().get();
+        double potentialX = autonomousRobot.X().get() + robotSpeed * Math.cos(Math.toRadians(autonomousRobot.angle().get()));
+        double potentialY = autonomousRobot.Y().get() + robotSpeed * Math.sin(Math.toRadians(autonomousRobot.angle().get()));
 
-        // Simulate the movement
-        autonomousRobot.X().set(potentialX);
-        autonomousRobot.Y().set(potentialY);
-
-        // Check for collisions
-        if (env.checkCollision(autonomousRobot)) {
-            autonomousRobot.moveForward(-robotSpeed); // Simple reversal of last move
-            autonomousRobot.rotate(); // Rotate to avoid collision
+        if (!env.checkCollisionAt(autonomousRobot, potentialX, potentialY)) {
+            autonomousRobot.X().set(potentialX);
+            autonomousRobot.Y().set(potentialY);
         } else {
-            // If no collision, apply potential movement
-            autonomousRobot.moveForward(robotSpeed);
+            System.out.println("Collision of autonomous robot " + index);
+            autonomousRobot.rotate();
         }
     }
 
-
-    // Implementation of simulation control methods
-    public void startSimulation() {
-        System.out.println("Simulation started");
-        // Additional start logic here
-        simulationRunning = true;
-    }
-
-    public void pauseSimulation() {
-        System.out.println("Simulation paused");
-        // Additional pause logic here
-        simulationRunning = false;
+    public void playPauseSimulation() {
+        if (simulationRunning) {
+            System.out.println("Simulation paused");
+        } else {
+            System.out.println("Simulation resumed");
+        }
+        simulationRunning = !simulationRunning;
+        playPauseButton.setText(simulationRunning ? "Pause" : "Play");
     }
 
     public void movingForwardPressed() {
         ControlledRobot robot = env.getControlledRobot(currentRobot);
         robot.setMovingForward(!robot.isMovingForward());
-        updateMovement(currentRobot);
+        if (robot.isMovingForward()) {
+            System.out.println("Controlled robot " + currentRobot + " moving forward");
+        }
+        else {
+            System.out.println("Controlled robot " + currentRobot + " stopped moving forward");
+        }
     }
 
     public void rotatingLeftPressed() {
         ControlledRobot robot = env.getControlledRobot(currentRobot);
         robot.setRotatingLeft(!robot.isRotatingLeft());
-        updateMovement(currentRobot);
+        if (robot.isRotatingLeft()) {
+            System.out.println("Controlled robot " + currentRobot + " rotating left");
+        }
+        else {
+            System.out.println("Controlled robot " + currentRobot + " stopped rotating left");
+        }
     }
 
     public void rotatingRightPressed() {
         ControlledRobot robot = env.getControlledRobot(currentRobot);
         robot.setRotatingRight(!robot.isRotatingRight());
-        updateMovement(currentRobot);
+        if (robot.isRotatingRight()) {
+            System.out.println("Controlled robot " + currentRobot + " rotating right");
+        }
+        else {
+            System.out.println("Controlled robot " + currentRobot + " stopped rotating right");
+        }
     }
 
     public void toggleRobotsPressed() {
         currentRobot = (currentRobot + 1) % env.countControlledRobots();
+        System.out.println("Current controlled robot: " + currentRobot);
     }
 }

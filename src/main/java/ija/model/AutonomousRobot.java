@@ -2,7 +2,11 @@ package ija.model;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
+
 
 public class AutonomousRobot {
     private final double radius;
@@ -12,21 +16,21 @@ public class AutonomousRobot {
     private DoubleProperty x = new SimpleDoubleProperty();
     private DoubleProperty y = new SimpleDoubleProperty();
 
-    public AutonomousRobot(double x, double y, double angle, double turningAngle, double detectionRadius) {
+    public AutonomousRobot(double x, double y, double angle, double turningAngle, double detection) {
         this.x.set(x);
         this.y.set(y);
         this.angle.set(angle);
         this.radius = 37.5;
-        this.detectionRadius = this.radius + detectionRadius;
+        this.detectionRadius = 37.5 + detection;
         this.turningAngle = turningAngle;
     }
 
-    public AutonomousRobot(double x, double y, double angle, double turningAngle, double detectionRadius, double radius) {
+    public AutonomousRobot(double x, double y, double angle, double turningAngle, double detection, double radius) {
         this.x.set(x);
         this.y.set(y);
         this.angle.set(angle);
         this.radius = radius;
-        this.detectionRadius = radius + detectionRadius;
+        this.detectionRadius = radius + detection;
         this.turningAngle = turningAngle;
     }
 
@@ -61,13 +65,53 @@ public class AutonomousRobot {
         angle.set(angle.get() + turningAngle % 360);
     }
 
-    //TODO: detectionRadius cannot be less then radius
     public Circle getBounds() {
         return new Circle(x.get(), y.get(), radius);
     }
 
-    public Circle getDetectionBounds() {
-        return new Circle(x.get(), y.get(), detectionRadius);
+    public Circle getBoundsAt(double x, double y) {
+        return new Circle(x, y, radius);
     }
+
+
+    /**
+     * @param x X coordinates of the center of the robot
+     * @param y Y coordinates of the center of the robot
+     * @return
+     */
+    public Rectangle getDetectionBoundsAt(double x, double y) {
+        double width = detectionRadius;
+        double height = 2 * radius;
+        Rectangle detectionArea = new Rectangle(x, y - radius, width, height);
+
+        Rotate rotate = new Rotate();
+        rotate.setAngle(angle.get());
+        rotate.setPivotX(x);
+        rotate.setPivotY(y);
+
+        detectionArea.setFill(Color.RED);
+
+        detectionArea.getTransforms().add(rotate);
+
+        return detectionArea;
+    }
+
+    public Rectangle getDetectionBounds() {
+        double width = detectionRadius;
+        double height = 2 * radius;
+        Rectangle detectionArea = new Rectangle(x.get(), y.get() - radius, width, height);
+
+        Rotate rotate = new Rotate();
+        rotate.setAngle(angle.get());
+        rotate.setPivotX(x.get());
+        rotate.setPivotY(y.get());
+
+        detectionArea.setFill(Color.RED);
+
+        detectionArea.getTransforms().add(rotate);
+
+        return detectionArea;
+    }
+
 }
 

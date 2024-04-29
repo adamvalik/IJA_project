@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
 public class AutonomousRobotView {
@@ -30,6 +31,9 @@ public class AutonomousRobotView {
         rotate.angleProperty().bind(robot.angle());
 
         visual.getTransforms().add(rotate);
+
+
+
 
         parentPane.getChildren().add(visual);
     }

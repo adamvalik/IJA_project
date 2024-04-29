@@ -2,6 +2,8 @@ package ija.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +63,40 @@ public class Environment {
         obstacles.add(obstacle);
     }
 
+    public boolean checkCollisionAt(ControlledRobot robot, double x, double y) {
+        Circle bounds = robot.getBounds(x, y);
+        // check for obstacles
+        for (Obstacle obstacle : obstacles) {
+            if (bounds.intersects(obstacle.getBounds().getBoundsInLocal())) {
+                return true;
+            }
+        }
+
+        // check for other controlled robots
+        for (ControlledRobot otherRobot : controlledRobots) {
+            if (robot != otherRobot && bounds.intersects(otherRobot.getBounds().getBoundsInLocal())) {
+                return true;
+            }
+        }
+
+        // check for autonomous robots
+        for (AutonomousRobot autonomousRobot : autonomousRobots) {
+            if (bounds.intersects(autonomousRobot.getBounds().getBoundsInLocal())) {
+                return true;
+            }
+        }
+
+        if (checkEnvironmentBounds(x, y, robot.getRadius())) {
+            return true;
+        }
+
+        return false; // no collision
+    }
+
     public boolean checkCollision(ControlledRobot robot) {
         // check for obstacles
         for (Obstacle obstacle : obstacles) {
-            if (robot.getBounds().intersects(obstacle.getX(), obstacle.getY(), obstacle.getSideLen(), obstacle.getSideLen())) {
+            if (robot.getBounds().intersects(obstacle.getBounds().getBoundsInLocal())) {
                 return true;
             }
         }
@@ -90,37 +122,67 @@ public class Environment {
         return false; // no collision
     }
 
-    public boolean checkCollision(AutonomousRobot robot) {
+
+    public boolean checkCollisionAt(AutonomousRobot robot, double x, double y) {
+        Circle detectionArea = robot.getBoundsAt(x, y);
         // check for obstacles
         for (Obstacle obstacle : obstacles) {
-            if (robot.getDetectionBounds().intersects(obstacle.getX(), obstacle.getY(), obstacle.getSideLen(), obstacle.getSideLen())) {
+            if (detectionArea.intersects(obstacle.getBounds().getBoundsInLocal())) {
                 return true;
             }
         }
 
         // check for other controlled robots
         for (ControlledRobot controlledRobot : controlledRobots) {
-            if (robot.getDetectionBounds().intersects(controlledRobot.getBounds().getBoundsInLocal())) {
+            if (detectionArea.intersects(controlledRobot.getBounds().getBoundsInLocal())) {
                 return true;
             }
         }
 
         // check for autonomous robots
         for (AutonomousRobot otherRobot : autonomousRobots) {
-            if (robot != otherRobot && robot.getDetectionBounds().intersects(otherRobot.getBounds().getBoundsInLocal())) {
+            if (robot != otherRobot && detectionArea.intersects(otherRobot.getBounds().getBoundsInLocal())) {
                 return true;
             }
         }
 
-        if (checkEnvironmentBounds(robot.X().get(), robot.Y().get(), robot.getDetectionRadius())) {
+        if (checkEnvironmentBounds(x, y, robot.getRadius())) {
             return true;
         }
-
         return false; // no collision
     }
+
+    public boolean checkCollision(AutonomousRobot robot, double x, double y) {
+        Rectangle detectionArea = robot.getDetectionBounds();
+        // check for obstacles
+        for (Obstacle obstacle : obstacles) {
+            if (detectionArea.intersects(obstacle.getBounds().getBoundsInLocal())) {
+                return true;
+            }
+        }
+
+        // check for other controlled robots
+        for (ControlledRobot controlledRobot : controlledRobots) {
+            if (detectionArea.intersects(controlledRobot.getBounds().getBoundsInLocal())) {
+                return true;
+            }
+        }
+
+        // check for autonomous robots
+        for (AutonomousRobot otherRobot : autonomousRobots) {
+            if (robot != otherRobot && detectionArea.intersects(otherRobot.getBounds().getBoundsInLocal())) {
+                return true;
+            }
+        }
+
+        if (checkEnvironmentBounds(robot.X().get(), robot.Y().get(), robot.getRadius())) {
+            return true;
+        }
+        return false; // no collision
+    }
+
 
     private boolean checkEnvironmentBounds(double x, double y, double radius) {
         return x - radius < 0 || x + radius > width || y - radius < 0 || y + radius > height;
     }
 }
-

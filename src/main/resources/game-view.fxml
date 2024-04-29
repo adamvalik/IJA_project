@@ -20,8 +20,7 @@
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
-                <Button text="Start" fx:id="startButton"/>
-                <Button text="Pause" fx:id="pauseButton"/>
+                <Button text="Play" fx:id="playPauseButton"/>
                 <Button text="Left" fx:id="rotatingLeft"/>
                 <Button text="Forward" fx:id="movingForward"/>
                 <Button text="Right" fx:id="rotatingRight"/>

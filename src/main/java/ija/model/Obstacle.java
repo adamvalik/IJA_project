@@ -3,7 +3,7 @@ package ija.model;
 import javafx.scene.shape.Rectangle;
 
 public class Obstacle {
-    private final double x;
+    private final double x; // [x,y] represents the top left corner of the square
     private final double y;
     private final double side;
 
@@ -32,6 +32,6 @@ public class Obstacle {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle((int) x, (int) y, (int) side, (int) side);
+        return new Rectangle(x, y, side, side);
     }
 }
