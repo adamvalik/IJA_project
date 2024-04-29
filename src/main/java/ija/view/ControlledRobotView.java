@@ -11,17 +11,22 @@ import javafx.scene.transform.Rotate;
 public class ControlledRobotView {
     private Circle visual;
     private final ControlledRobot robot;
+    private final boolean raceModeOn;
 
-    public ControlledRobotView(ControlledRobot robot, Pane parentPane) {
+    public ControlledRobotView(ControlledRobot robot, Pane parentPane, boolean raceModeOn) {
         this.robot = robot;
+        this.raceModeOn = raceModeOn;
         initializeVisualRepresentation(parentPane);
     }
 
     private void initializeVisualRepresentation(Pane parentPane) {
-        visual = new Circle(robot.getRadius());
+        visual = robot.getCircle();
 
-        visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
-
+        if (raceModeOn) {
+            visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
+        } else {
+            visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+        }
 
         visual.centerXProperty().bind(robot.X());
         visual.centerYProperty().bind(robot.Y());

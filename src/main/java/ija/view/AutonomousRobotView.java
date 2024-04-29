@@ -12,13 +12,13 @@ public class AutonomousRobotView {
     private Circle visual;
     private final AutonomousRobot robot;
 
-    public AutonomousRobotView(AutonomousRobot robot, Pane parentPane) {
+    public AutonomousRobotView(AutonomousRobot robot, Pane parentPane, boolean raceModeOn) {
         this.robot = robot;
         initializeVisualRepresentation(parentPane);
     }
 
     private void initializeVisualRepresentation(Pane parentPane) {
-        visual = new Circle(robot.getRadius());
+        visual = robot.getCircle();
 
         visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
 

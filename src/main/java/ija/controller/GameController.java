@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GameController {
     @FXML
@@ -85,22 +86,27 @@ public class GameController {
                     robotSpeed = Double.parseDouble(parts[1]);
                     robotRadius = Double.parseDouble(parts[2]);
                     obstacleSize = Double.parseDouble(parts[3]);
-                    raceMode = Boolean.parseBoolean(parts[4]);
+                    if (Objects.equals(parts[4], "on")) {
+                        raceMode = true;
+                    }
+                    else if (Objects.equals(parts[4], "off")) {
+                        raceMode = false;
+                    }
                     break;
                 case "controlled_robot":
                     ControlledRobot robot = new ControlledRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), robotRadius);
                     env.addControlledRobot(robot);
-                    new ControlledRobotView(robot, simulationPane);
+                    new ControlledRobotView(robot, simulationPane, raceMode);
                     break;
                 case "obstacle":
                     Obstacle obstacle = new Obstacle(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), obstacleSize);
                     env.addObstacle(obstacle);
-                    new ObstacleView(obstacle, simulationPane);
+                    new ObstacleView(obstacle, simulationPane, raceMode);
                     break;
                 case "autonomous_robot":
                     AutonomousRobot autonomousRobot = new AutonomousRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), robotRadius);
                     env.addAutonomousRobot(autonomousRobot);
-                    new AutonomousRobotView(autonomousRobot, simulationPane);
+                    new AutonomousRobotView(autonomousRobot, simulationPane, raceMode);
                     break;
             }
         }
