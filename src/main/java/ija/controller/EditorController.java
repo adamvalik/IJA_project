@@ -61,6 +61,8 @@ public class EditorController {
     private String rotateValue;
     private String detectionValue;
 
+    public String settings;
+
     String type = null;
 
     private final double offset = 37.5;
@@ -80,10 +82,8 @@ public class EditorController {
     }
 
     private void handleStart(MouseEvent event) {
-        if (speedInput.getText().isEmpty() || !isNum(speedInput.getText())) {
-            return;
-        }
-        CSV.add("settings," + speedInput.getText());
+
+        CSV.add(0, settings);
 
         try {
             // Load the game view FXML

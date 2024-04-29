@@ -35,6 +35,8 @@ public class GameController {
 
     private final Environment env;
     private double robotSpeed;
+    private double robotRadius;
+    private double obstacleSize;
 
     public GameController() {
         this.env = new Environment(1180, 650);
@@ -80,19 +82,21 @@ public class GameController {
             switch (parts[0]) {
                 case "settings":
                     robotSpeed = Double.parseDouble(parts[1]);
+                    robotRadius = Double.parseDouble(parts[2]);
+                    obstacleSize = Double.parseDouble(parts[3]);
                     break;
                 case "controlled_robot":
-                    ControlledRobot robot = new ControlledRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]));
+                    ControlledRobot robot = new ControlledRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), robotRadius);
                     env.addControlledRobot(robot);
                     new ControlledRobotView(robot, simulationPane);
                     break;
                 case "obstacle":
-                    Obstacle obstacle = new Obstacle(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
+                    Obstacle obstacle = new Obstacle(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), obstacleSize);
                     env.addObstacle(obstacle);
                     new ObstacleView(obstacle, simulationPane);
                     break;
                 case "autonomous_robot":
-                    AutonomousRobot autonomousRobot = new AutonomousRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
+                    AutonomousRobot autonomousRobot = new AutonomousRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), robotRadius);
                     env.addAutonomousRobot(autonomousRobot);
                     new AutonomousRobotView(autonomousRobot, simulationPane);
                     break;
