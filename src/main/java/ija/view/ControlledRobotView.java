@@ -25,7 +25,7 @@ public class ControlledRobotView {
         if (raceModeOn) {
             visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
         } else {
-            visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+            visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
         }
 
         visual.centerXProperty().bind(robot.X());

@@ -75,8 +75,9 @@ public class EditorController {
 
     @FXML
     public void initialize() {
-        player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+        player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
         obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+        bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
         player.setOnMouseClicked(this::handleElementClick);
         bot.setOnMouseClicked(this::handleElementClick);
         obstacle.setOnMouseClicked(this::handleElementClick);
@@ -251,7 +252,7 @@ public class EditorController {
             if (type.equals("player")) {
 
                 Circle newCircle = new Circle(x, y, robotSize);
-                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
 
@@ -266,7 +267,7 @@ public class EditorController {
             } else{
 
                 Circle newCircle = new Circle(x, y, robotSize);
-                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
 

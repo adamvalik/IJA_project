@@ -20,7 +20,7 @@ public class AutonomousRobotView {
     private void initializeVisualRepresentation(Pane parentPane) {
         visual = robot.getCircle();
 
-        visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+        visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
 
         visual.centerXProperty().bind(robot.X());
         visual.centerYProperty().bind(robot.Y());
