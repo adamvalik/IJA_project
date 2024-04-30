@@ -4,7 +4,9 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 
 
@@ -73,44 +75,24 @@ public class AutonomousRobot {
         return new Circle(x, y, radius);
     }
 
-    /**
-     * @param x X coordinates of the center of the robot
-     * @param y Y coordinates of the center of the robot
-     * @return
-     */
-    public Rectangle getDetectionBoundsAt(double x, double y) {
-        double width = detectionRadius;
-        double height = 2 * radius;
-        Rectangle detectionArea = new Rectangle(x, y - radius, width, height);
+    public Shape getDetectionBoundsAt(double x, double y) {
+        Circle robot = getCircle(x, y);
+        Polygon detectionArea = new Polygon();
+        detectionArea.getPoints().addAll(new Double[] {
+                x, y,
+                x+detectionRadius, y-radius+1,
+                x+detectionRadius, y+radius-1
+        });
 
         Rotate rotate = new Rotate();
         rotate.setAngle(angle.get());
         rotate.setPivotX(x);
         rotate.setPivotY(y);
 
-        detectionArea.setFill(Color.RED);
+        detectionArea.setFill(Color.GRAY);
 
         detectionArea.getTransforms().add(rotate);
 
-        return detectionArea;
+        return Shape.union(robot, detectionArea);
     }
-
-    public Rectangle getDetectionBounds() {
-        double width = detectionRadius;
-        double height = 2 * radius;
-        Rectangle detectionArea = new Rectangle(x.get(), y.get() - radius, width, height);
-
-        Rotate rotate = new Rotate();
-        rotate.setAngle(angle.get());
-        rotate.setPivotX(x.get());
-        rotate.setPivotY(y.get());
-
-        detectionArea.setFill(Color.RED);
-
-        detectionArea.getTransforms().add(rotate);
-
-        return detectionArea;
-    }
-
 }
-

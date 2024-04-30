@@ -286,6 +286,7 @@ public class GameController {
         double potentialX = autonomousRobot.X().get() + robotSpeed * Math.cos(Math.toRadians(autonomousRobot.angle().get()));
         double potentialY = autonomousRobot.Y().get() + robotSpeed * Math.sin(Math.toRadians(autonomousRobot.angle().get()));
 
+        //simulationPane.getChildren().add(autonomousRobot.getDetectionBoundsAt(potentialX, potentialY));
         if (!env.checkCollisionAt(autonomousRobot, potentialX, potentialY)) {
             autonomousRobot.X().set(potentialX);
             autonomousRobot.Y().set(potentialY);

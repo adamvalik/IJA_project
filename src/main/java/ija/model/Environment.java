@@ -2,8 +2,10 @@ package ija.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,23 +90,29 @@ public class Environment {
     }
 
     public boolean checkCollisionAt(AutonomousRobot robot, double x, double y) {
-        Circle c = robot.getCircle(x, y);
+        Shape detectionBounds = robot.getDetectionBoundsAt(x, y);
+        Shape intersect;
         for (Obstacle o : obstacles) {
-            if (Collision.checkCollision(c, o.getRectangle())) {
+            intersect = Shape.intersect(detectionBounds, o.getRectangle());
+            if (!intersect.getBoundsInLocal().isEmpty()) {
                 return true;
             }
         }
         for (ControlledRobot r : controlledRobots) {
-            if (Collision.checkCollision(c, r.getCircle())) {
+            intersect = Shape.intersect(detectionBounds, r.getCircle());
+            if (!intersect.getBoundsInLocal().isEmpty()) {
                 return true;
             }
         }
         for (AutonomousRobot r : autonomousRobots) {
-            if (r != robot && Collision.checkCollision(c, r.getCircle())) {
-                return true;
+            if (r != robot) {
+                intersect = Shape.intersect(detectionBounds, r.getCircle());
+                if (!intersect.getBoundsInLocal().isEmpty()) {
+                    return true;
+                }
             }
         }
-        return checkEnvironmentBounds(x, y, robot.getRadius());
+        Bounds bounds = detectionBounds.getBoundsInLocal();
+        return bounds.getMinX() < 0 || bounds.getMaxX() > width || bounds.getMinY() < 0 || bounds.getMaxY() > height;
     }
-
 }

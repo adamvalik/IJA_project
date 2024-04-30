@@ -71,7 +71,7 @@ public class MenuController {
 
         Random random = new Random();
         for (int i = 0; i < 5; i++) {
-            setRobotBackground(random.nextInt(742)+10, random.nextInt(500)+10, random.nextInt(360), random.nextInt(360));
+            setRobotBackground(random.nextInt(732)+20, random.nextInt(482)+20, random.nextInt(359), random.nextInt(359));
         }
 
         newGame.toFront();
