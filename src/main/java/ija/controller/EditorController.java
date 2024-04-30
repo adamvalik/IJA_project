@@ -453,6 +453,7 @@ public class EditorController {
             player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
             obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
         }
+        bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
     }
 
 }

@@ -42,6 +42,7 @@ public class GameController {
     private double obstacleSize;
     private boolean raceMode;
     private EditorController editor;
+    private AnimationTimer timer;
 
     public GameController() {
         this.env = new Environment(1180, 650);
@@ -50,7 +51,7 @@ public class GameController {
     @FXML
     public void initialize() {
         playPauseButton.setOnAction(event -> playPauseSimulation());
-        stopButton.setOnAction(event -> editor.stopGame());
+        stopButton.setOnAction(event -> stopSimulation());
         movingForward.setOnAction(event -> movingForwardPressed());
         rotatingLeft.setOnAction(event -> rotatingLeftPressed());
         rotatingRight.setOnAction(event -> rotatingRightPressed());
@@ -69,7 +70,7 @@ public class GameController {
         scene.setOnKeyPressed(this::handleKeyPress);
         scene.setOnKeyReleased(this::handleKeyRelease);
 
-        new AnimationTimer() {
+        this.timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if (simulationRunning) {
@@ -81,7 +82,8 @@ public class GameController {
                     }
                 }
             }
-        }.start();
+        };
+        timer.start();
     }
 
     public void loadEnvironment(List<String> CSVFile) {
@@ -301,6 +303,13 @@ public class GameController {
         }
         simulationRunning = !simulationRunning;
         playPauseButton.setText(simulationRunning ? "Pause" : "Play");
+    }
+
+    public void stopSimulation() {
+        simulationRunning = false;
+        timer.stop();
+        System.out.println("Simulation stopped");
+        editor.stopGame();
     }
 
     public void movingForwardPressed() {
