@@ -10,12 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.Pane;
 
 import javafx.scene.Node;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -305,6 +307,12 @@ public class EditorController {
             if (type.equals("player")) {
 
                 Circle newCircle = new Circle(x, y, robotSize);
+                Rotate rotate = new Rotate();
+                rotate.setAngle(Double.parseDouble(angleValue));
+                rotate.setPivotX(x);
+                rotate.setPivotY(y);
+                newCircle.getTransforms().add(rotate);
+
 
                 if(raceMode.equals("off")) {
                     newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
@@ -327,6 +335,14 @@ public class EditorController {
             } else{
 
                 Circle newCircle = new Circle(x, y, robotSize);
+
+                Rotate rotate = new Rotate();
+                rotate.setAngle(Double.parseDouble(angleValue));
+                rotate.setPivotX(x);
+                rotate.setPivotY(y);
+                newCircle.getTransforms().add(rotate);
+
+
                 newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);

@@ -65,10 +65,6 @@ public class Environment {
         obstacles.add(obstacle);
     }
 
-    private boolean checkEnvironmentBounds(double x, double y, double radius) {
-        return x - radius < 0 || x + radius > width || y - radius < 0 || y + radius > height;
-    }
-
     public boolean checkCollisionAt(ControlledRobot robot, double x, double y) {
         Circle c = robot.getCircle(x, y);
         for (Obstacle o : obstacles) {
@@ -86,7 +82,7 @@ public class Environment {
                 return true;
             }
         }
-        return checkEnvironmentBounds(x, y, robot.getRadius());
+        return c.getCenterX() - c.getRadius() < 0 || c.getCenterX() + c.getRadius() > width || c.getCenterY() - c.getRadius() < 0 || c.getCenterY() + c.getRadius() > height;
     }
 
     public boolean checkCollisionAt(AutonomousRobot robot, double x, double y) {
