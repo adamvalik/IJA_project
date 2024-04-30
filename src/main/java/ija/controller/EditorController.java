@@ -350,7 +350,7 @@ public class EditorController {
                 if(raceMode.equals("off")) {
                     newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
                 }else{
-                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
+                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.jpg"))));
                 }
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
@@ -399,7 +399,7 @@ public class EditorController {
             if(raceMode.equals("off")) {
                 newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
             } else{
-                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
+                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
             }
             newRectangle.setLayoutX(0);
             newRectangle.setLayoutY(0);
@@ -501,11 +501,12 @@ public class EditorController {
         if(raceMode.equals("off")) {
             player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
             obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+            bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
         }else{
-            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
-            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
+            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.jpg"))));
+            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
+            bot.setFill(Color.WHITE);
         }
-        bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
     }
 
     private void exportCSV(MouseEvent event){

@@ -107,7 +107,12 @@ public class GameController {
                 case "controlled_robot":
                     ControlledRobot robot = new ControlledRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), robotRadius);
                     env.addControlledRobot(robot);
-                    new ControlledRobotView(robot, simulationPane, raceMode);
+                    if (env.countControlledRobots() == 1 && raceMode) {
+                        new ControlledRobotView(robot, simulationPane, true, true);
+                    }
+                    else {
+                        new ControlledRobotView(robot, simulationPane, raceMode, false);
+                    }
                     break;
                 case "obstacle":
                     Obstacle obstacle = new Obstacle(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), obstacleSize);

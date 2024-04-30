@@ -12,10 +12,12 @@ public class ControlledRobotView {
     private Circle visual;
     private final ControlledRobot robot;
     private final boolean raceModeOn;
+    private final boolean ferrari;
 
-    public ControlledRobotView(ControlledRobot robot, Pane parentPane, boolean raceModeOn) {
+    public ControlledRobotView(ControlledRobot robot, Pane parentPane, boolean raceModeOn, boolean ferrari) {
         this.robot = robot;
         this.raceModeOn = raceModeOn;
+        this.ferrari = ferrari;
         initializeVisualRepresentation(parentPane);
     }
 
@@ -23,7 +25,11 @@ public class ControlledRobotView {
         visual = robot.getCircle();
 
         if (raceModeOn) {
-            visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
+            if (ferrari) {
+                visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.jpg"))));
+            } else {
+                visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/redbull.jpg"))));
+            }
         } else {
             visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
         }
