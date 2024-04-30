@@ -140,7 +140,7 @@ public class EditorController {
             gameStage.setTitle("Game Window");
             gameStage.setScene(gameScene);
 
-            gameController.initialize(gameScene, this);
+            gameController.initialize(gameScene, this, null);
             gameController.loadEnvironment(CSV);
 
             gameStage.setResizable(false);

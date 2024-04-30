@@ -17,6 +17,7 @@ public class App extends Application {
         Parent root = loader.load();
 
         MenuController menuController = loader.getController();
+        menuController.initialize(primaryStage);
         menuController.robots();
 
         Scene scene = new Scene(root);

@@ -42,6 +42,7 @@ public class GameController {
     private double obstacleSize;
     private boolean raceMode;
     private EditorController editor;
+    private MenuController menu;
     private AnimationTimer timer;
 
     public GameController() {
@@ -65,7 +66,8 @@ public class GameController {
         toggleRobots.setFocusTraversable(false);
     }
 
-    public void initialize(Scene scene, EditorController editor) {
+    public void initialize(Scene scene, EditorController editor, MenuController menu) {
+        this.menu = menu;
         this.editor = editor;
         scene.setOnKeyPressed(this::handleKeyPress);
         scene.setOnKeyReleased(this::handleKeyRelease);
@@ -310,7 +312,12 @@ public class GameController {
         simulationRunning = false;
         timer.stop();
         System.out.println("Simulation stopped");
-        editor.stopGame();
+        if (menu != null) {
+            menu.stopGame();
+        }
+        else if (editor != null) {
+            editor.stopGame();
+        }
     }
 
     public void movingForwardPressed() {

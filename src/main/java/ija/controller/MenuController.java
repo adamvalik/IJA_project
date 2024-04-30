@@ -13,9 +13,15 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MenuController {
@@ -33,16 +39,22 @@ public class MenuController {
     private Environment env;
 
     private Stage settingsStage;
+    private Stage primaryStage;
+    private Stage gameStage;
 
     @FXML
     public void initialize() {
         newGame.setOnMouseClicked(this::openSettings);
-        loadGame.setOnMouseClicked(this::openFileManager);
+        loadGame.setOnMouseClicked(this::importCSV);
         endGame.setOnMouseClicked(this::closeWindow);
 
         newGame.setFocusTraversable(false);
         loadGame.setFocusTraversable(false);
         endGame.setFocusTraversable(false);
+    }
+
+    public void initialize(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
 
     public void robots() {
@@ -111,8 +123,65 @@ public class MenuController {
         }
     }
 
-    private void openFileManager(MouseEvent event){
+    private void importCSV(MouseEvent event){
+        // File chooser setup
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open CSV File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
 
+        // Show open file dialog
+        File file = fileChooser.showOpenDialog(primaryStage);
+        if (file != null) {
+            // Read data from CSV
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                List<String> importedData = new ArrayList<>();
+                while ((line = reader.readLine()) != null) {
+                    importedData.add(line);
+                }
+                // Handle the imported data as needed
+                this.openGame(importedData);
+                System.out.println("CSV file imported successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("File open operation cancelled.");
+        }
+    }
+
+    private void openGame(List<String> CSV) {
+        try {
+            // Load the game view FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("game-view.fxml"));
+            Parent gameRoot = loader.load();
+
+            // Get the game controller and initiate the game setup
+            GameController gameController = loader.getController();
+
+            // Setup the new stage and scene
+            Scene gameScene = new Scene(gameRoot);
+            gameStage = new Stage();
+            gameStage.setTitle("Game Window");
+            gameStage.setScene(gameScene);
+
+            gameController.initialize(gameScene, null, this);
+            gameController.loadEnvironment(CSV);
+
+            gameStage.setResizable(false);
+
+
+            // Show the new window
+            gameStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopGame() {
+        if (gameStage != null) {
+            gameStage.close();
+        }
     }
 
     private void closeWindow(MouseEvent event) {
