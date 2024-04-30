@@ -149,11 +149,11 @@ public class EditorController {
 
         if (selectedEntity instanceof Circle) {
             type = ((Circle) selectedEntity).getId();
+
         } else if (selectedEntity instanceof Rectangle) {
             addToMap(x,y);
             return;
         }
-
 
         robotSettings.setStyle("-fx-background-color: white;");
 
@@ -206,29 +206,29 @@ public class EditorController {
             // Rotate label
             rotate.setPrefSize(37,34);
             rotate.setLayoutX(20);
-            rotate.setLayoutY(65);
+            rotate.setLayoutY(80);
             rotate.setText("Rotate");
 
             // Detection label
             detection.setPrefSize(120,34);
             detection.setLayoutX(20);
-            detection.setLayoutY(110);
+            detection.setLayoutY(140);
             detection.setText("Detection");
 
             // Rotate input
             rotateInput.setPrefSize(101,42);
             rotateInput.setLayoutX(80);
-            rotateInput.setLayoutY(65);
+            rotateInput.setLayoutY(80);
 
             // Detection input
             detectionInput.setPrefSize(101,42);
             detectionInput.setLayoutX(80);
-            detectionInput.setLayoutY(110);
+            detectionInput.setLayoutY(140);
 
             // Set button for autonomous settings
             setButton.setPrefSize(66,42);
             setButton.setLayoutX(80);
-            setButton.setLayoutY(155);
+            setButton.setLayoutY(200);
             setButton.setText("SET");
 
             robotSettings.setPrefSize(200, 250);
@@ -279,10 +279,11 @@ public class EditorController {
         // Get the x and y coordinates of the click relative to the Pane
         double x = event.getX();
         double y = event.getY();
-        displayRobotSettings(x, y);
 
         currentClickedPositionX = x;
         currentClickedPositionY = y;
+
+        displayRobotSettings(x, y);
 
     }
 
@@ -318,6 +319,7 @@ public class EditorController {
                 }
 
                 if(!wasSet) return;
+
                 map.getChildren().add(newCircle);
 
                 CSV.add("controlled_robot,"+ x + "," + y + "," + angleValue);
@@ -353,7 +355,6 @@ public class EditorController {
             newRectangle.setLayoutY(0);
 
             if(isRectangleColliding(newRectangle)){
-
                 return;
             }
 
@@ -367,6 +368,7 @@ public class EditorController {
     public boolean isCircleColliding(Circle newCircle) {
         for (Node entity : map.getChildren()) {
             if (entity instanceof Circle) {
+
                 if (Collision.checkCollision(newCircle, (Circle) entity)) {
                     return true;
                 }
@@ -381,13 +383,13 @@ public class EditorController {
     }
 
     public boolean isRectangleColliding(Rectangle newRectangle) {
+
+
         for (Node entity : map.getChildren()) {
             if (entity instanceof Circle) {
                 if (Collision.checkCollision((Circle) entity, newRectangle)) {
                     return true;
                 }
-            } else if (entity instanceof Rectangle) {
-                return false;
             }
 
         }
