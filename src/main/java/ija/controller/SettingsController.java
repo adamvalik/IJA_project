@@ -72,17 +72,17 @@ public class SettingsController {
             editorController.settings = csvHeader;
             editorController.robotSize = Double.parseDouble(robotSize.getText());
             editorController.obstacleSize = Double.parseDouble(obstacleSize.getText());
+            editorController.setMode(racingModeValue);
             // Setup the new stage and scene
             Scene editorScene = new Scene(editorRoot);
             Stage editorStage = new Stage();
             editorStage.setTitle("Game Editor");
             editorStage.setScene(editorScene);
 
-            editorController.initialize();
-
             // Show the new window
             editorStage.show();
         } catch (IOException e) {
+
             e.printStackTrace();
         }
     }

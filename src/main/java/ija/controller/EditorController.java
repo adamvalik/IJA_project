@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -52,6 +51,8 @@ public class EditorController {
     TextField rotateInput = new TextField();
     TextField detectionInput = new TextField();
 
+    Pane robotSettings = new Pane();
+
     Button setButton = new Button();
 
     private Object selectedEntity;
@@ -70,21 +71,29 @@ public class EditorController {
 
     public double robotSize;
     public double obstacleSize;
+
+    public String raceMode;
     private final double screenWidth = 1180;
     private final double screenHeight = 650;
 
+    private Double currentClickedPositionX;
+    private Double currentClickedPositionY;
+
     @FXML
     public void initialize() {
-        player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
-        obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+
         player.setOnMouseClicked(this::handleElementClick);
         bot.setOnMouseClicked(this::handleElementClick);
         obstacle.setOnMouseClicked(this::handleElementClick);
         map.setOnMouseClicked(this::handleMouseClick);
         clear.setOnMouseClicked(this::clearMap);
-        setButton.setOnMouseClicked(this::setValues);
         CSV = new ArrayList<>();
         start.setOnMouseClicked(this::handleStart);
+
+        setButton.setOnMouseClicked(event -> {
+            setValues(event);
+            closeSettings(event);
+        });
     }
 
     private void handleStart(MouseEvent event) {
@@ -125,34 +134,65 @@ public class EditorController {
         angleInput.setText("");
         rotateInput.setText("");
         detectionInput.setText("");
-        map.getChildren().removeAll(angle, rotate, detection, angleInput, rotateInput, detectionInput, setButton);
+        map.getChildren().removeAll(robotSettings);
+    }
 
+    private void displayRobotSettings(Double x, Double y) {
 
-        if(selectedEntity instanceof Circle) {
+        map.getChildren().removeAll(robotSettings);
+        robotSettings.getChildren().removeAll(angle, rotate, detection, angleInput, rotateInput, detectionInput, setButton);
+
+        if (selectedEntity instanceof Circle) {
             type = ((Circle) selectedEntity).getId();
-        } else if(selectedEntity instanceof Rectangle) {
+        } else if (selectedEntity instanceof Rectangle) {
+            addToMap(x,y);
             return;
         }
 
+
+        robotSettings.setStyle("-fx-background-color: white;");
+
+        // Positioning of dialog window according to clicked position on pane
+        if((x + 200 > screenWidth) && (y + 250 > screenHeight)){
+            robotSettings.setLayoutX(x - 200);
+            robotSettings.setLayoutY(y - 200);
+
+        } else if(x + 200 + robotSize/2 > screenWidth){
+            robotSettings.setLayoutX(x - 200);
+            robotSettings.setLayoutY(y);
+
+        }else if(y + 250 + robotSize/2 > screenHeight){
+            robotSettings.setLayoutX(x);
+            robotSettings.setLayoutY(y - 200);
+
+        } else {
+            robotSettings.setLayoutX(x);
+            robotSettings.setLayoutY(y);
+        }
+
+        // This attribute is common for controlled and autonomous robot
         // Angle label
         angle.setPrefSize(37,34);
-        angle.setLayoutX(339);
-        angle.setLayoutY(672);
+        angle.setLayoutX(20);
+        angle.setLayoutY(20);
         angle.setText("Angle");
 
         // Angle input
         angleInput.setPrefSize(101,42);
-        angleInput.setLayoutX(307);
-        angleInput.setLayoutY(705);
-
-        // Set button
-        setButton.setPrefSize(66,42);
-        setButton.setLayoutX(750);
-        setButton.setLayoutY(705);
-        setButton.setText("SET");
+        angleInput.setLayoutX(80);
+        angleInput.setLayoutY(20);
 
         if(type.equals("player")){
-            map.getChildren().addAll(angle, angleInput, setButton);
+
+            // Set button for controlled robot settings
+            setButton.setPrefSize(66,42);
+            setButton.setLayoutX(80);
+            setButton.setLayoutY(80);
+            setButton.setText("SET");
+
+            robotSettings.setPrefSize(200, 130);
+            map.getChildren().add(robotSettings);
+            robotSettings.getChildren().addAll(angle, angleInput, setButton);
             wasSet = false;
             return;
         }
@@ -160,29 +200,38 @@ public class EditorController {
         if(type.equals("bot")){
             // Rotate label
             rotate.setPrefSize(37,34);
-            rotate.setLayoutX(500);
-            rotate.setLayoutY(672);
+            rotate.setLayoutX(20);
+            rotate.setLayoutY(65);
             rotate.setText("Rotate");
 
             // Detection label
             detection.setPrefSize(120,34);
-            detection.setLayoutX(627);
-            detection.setLayoutY(672);
-            detection.setText("Obstacle detection");
+            detection.setLayoutX(20);
+            detection.setLayoutY(110);
+            detection.setText("Detection");
 
             // Rotate input
             rotateInput.setPrefSize(101,42);
-            rotateInput.setLayoutX(468);
-            rotateInput.setLayoutY(705);
+            rotateInput.setLayoutX(80);
+            rotateInput.setLayoutY(65);
 
             // Detection input
             detectionInput.setPrefSize(101,42);
-            detectionInput.setLayoutX(627);
-            detectionInput.setLayoutY(705);
+            detectionInput.setLayoutX(80);
+            detectionInput.setLayoutY(110);
+
+            // Set button for autonomous settings
+            setButton.setPrefSize(66,42);
+            setButton.setLayoutX(80);
+            setButton.setLayoutY(155);
+            setButton.setText("SET");
+
+            robotSettings.setPrefSize(200, 250);
+            map.getChildren().add(robotSettings);
+            robotSettings.getChildren().addAll(angle, rotate, detection, angleInput, rotateInput, detectionInput, setButton);
+            wasSet = false;
         }
 
-        map.getChildren().addAll(angle, rotate, detection, angleInput, rotateInput, detectionInput, setButton);
-        wasSet = false;
     }
 
     private void setValues(MouseEvent event){
@@ -210,7 +259,14 @@ public class EditorController {
                 angleValue = angleInput.getText();
             }
         }
+
         wasSet = true;
+        addToMap(currentClickedPositionX,currentClickedPositionY);
+
+    }
+
+    private void closeSettings(MouseEvent event){
+        map.getChildren().remove(robotSettings);
     }
 
 
@@ -218,30 +274,22 @@ public class EditorController {
         // Get the x and y coordinates of the click relative to the Pane
         double x = event.getX();
         double y = event.getY();
-        addToMap(x,y);
+        displayRobotSettings(x, y);
+
+        currentClickedPositionX = x;
+        currentClickedPositionY = y;
 
     }
 
-
-
-    // Optionally, you can provide a method to retrieve the clicked element
     public Object getSelectedEntity() {
         return selectedEntity;
     }
 
     public void addToMap(double x, double y) {
 
-
-
-
         Node newEntity = null;
 
-        System.out.println("X clicked: " + x);
-        System.out.println("Y clicked: " + y);
-
         if (selectedEntity instanceof Circle) {
-
-
 
             if(x+robotSize > screenWidth || x-robotSize < 0 || y+robotSize > screenHeight || y-robotSize < 0){
                 return;
@@ -251,7 +299,12 @@ public class EditorController {
             if (type.equals("player")) {
 
                 Circle newCircle = new Circle(x, y, robotSize);
-                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+
+                if(raceMode.equals("off")) {
+                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+                }else{
+                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
+                }
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
 
@@ -261,6 +314,7 @@ public class EditorController {
 
                 if(!wasSet) return;
                 map.getChildren().add(newCircle);
+
                 CSV.add("controlled_robot,"+ x + "," + y + "," + angleValue);
                 // Bot
             } else{
@@ -273,7 +327,6 @@ public class EditorController {
                 if(isCircleColliding(newCircle)){
                     return;
                 }
-
                 if(!wasSet) return;
                 map.getChildren().add(newCircle);
                 CSV.add("autonomous_robot,"+ x + "," + y + "," + angleValue + "," + rotateValue + "," + detectionValue);
@@ -283,11 +336,11 @@ public class EditorController {
 
             x -= obstacleSize/2;
             y -= obstacleSize/2;
-            if(x+obstacleSize > screenWidth || x-obstacleSize < 0 || y+obstacleSize > screenHeight || y-obstacleSize < 0){
+
+            // Obstacle is out of bounds
+            if(x+obstacleSize > screenWidth || x < 0 || y+obstacleSize > screenHeight || y < 0){
                 return;
             }
-            System.out.println("UpLeft X: " + x);
-            System.out.println("Upleft Y: " + y);
 
             Rectangle newRectangle = new Rectangle(x, y, obstacleSize, obstacleSize);
             newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
@@ -299,16 +352,11 @@ public class EditorController {
                 return;
             }
 
-
             map.getChildren().add(newRectangle);
 
             CSV.add("obstacle," + x + "," + y);
 
         }
-
-
-        // Add the new entity to the Pane
-
     }
 
     public boolean isCircleColliding(Circle newCircle) {
@@ -390,8 +438,16 @@ public class EditorController {
         return number >= 0 && number <= 359;
     }
 
+    public void setMode(String mode){
+        this.raceMode = mode;
 
-
-
+        if(raceMode.equals("off")) {
+            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+        }else{
+            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
+            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
+        }
+    }
 
 }
