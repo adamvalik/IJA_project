@@ -180,6 +180,11 @@ public class EditorController {
         if (selectedEntity instanceof Circle) {
             type = ((Circle) selectedEntity).getId();
 
+            Circle newCircle = new Circle(x, y, robotSize);
+            if(isCircleColliding(newCircle)){
+                return;
+            }
+
         } else if (selectedEntity instanceof Rectangle) {
             addToMap(x,y);
             return;
@@ -350,10 +355,6 @@ public class EditorController {
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
 
-                if(isCircleColliding(newCircle)){
-                    return;
-                }
-
                 if(!wasSet) return;
 
                 map.getChildren().add(newCircle);
@@ -394,7 +395,12 @@ public class EditorController {
             }
 
             Rectangle newRectangle = new Rectangle(x, y, obstacleSize, obstacleSize);
-            newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+
+            if(raceMode.equals("off")) {
+                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+            } else{
+                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
+            }
             newRectangle.setLayoutX(0);
             newRectangle.setLayoutY(0);
 
