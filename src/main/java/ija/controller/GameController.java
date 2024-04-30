@@ -11,6 +11,7 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
 
 public class GameController {
     @FXML
-    private Button playPauseButton;
+    private ToggleButton playPauseButton;
     @FXML
     private Pane simulationPane;
     @FXML

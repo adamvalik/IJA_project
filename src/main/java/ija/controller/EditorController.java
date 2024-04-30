@@ -113,6 +113,11 @@ public class EditorController {
             setValues(event);
             closeSettings(event);
         });
+
+        clear.setFocusTraversable(false);
+        start.setFocusTraversable(false);
+        export.setFocusTraversable(false);
+        back.setFocusTraversable(false);
     }
 
     public void initialize(String settings, Double robotSize, Double obstacleSize, SettingsController settingsController) {
@@ -492,7 +497,7 @@ public class EditorController {
             obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
         }else{
             player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
-            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
+            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
         }
         bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
     }
