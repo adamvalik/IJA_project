@@ -21,6 +21,7 @@
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
                 <Button text="Play" fx:id="playPauseButton"/>
+                <Button text="Stop" fx:id="stopButton"/>
                 <Button text="Left" fx:id="rotatingLeft"/>
                 <Button text="Forward" fx:id="movingForward"/>
                 <Button text="Right" fx:id="rotatingRight"/>

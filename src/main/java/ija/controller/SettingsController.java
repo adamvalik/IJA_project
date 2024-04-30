@@ -30,12 +30,16 @@ public class SettingsController {
     private String racingModeValue = "off";
 
     private String csvHeader;
+    private MenuController menu;
 
     @FXML
     public void initialize() {
         racingMode.setOnMouseClicked(this::setRacingMode);
         setter.setOnMouseClicked(this::setSettings);
+    }
 
+    public void initialize(MenuController menu) {
+        this.menu = menu;
     }
 
     private void setRacingMode(MouseEvent event) {
@@ -79,7 +83,10 @@ public class SettingsController {
             editorStage.setTitle("Game Editor");
             editorStage.setScene(editorScene);
 
-            // Show the new window
+
+            editorController.initialize();
+
+            menu.closeSettings();
             editorStage.show();
         } catch (IOException e) {
 

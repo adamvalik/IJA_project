@@ -66,6 +66,7 @@ public class EditorController {
     private String detectionValue;
 
     public String settings;
+    private Stage gameStage;
 
     String type = null;
 
@@ -110,11 +111,11 @@ public class EditorController {
 
             // Setup the new stage and scene
             Scene gameScene = new Scene(gameRoot);
-            Stage gameStage = new Stage();
+            gameStage = new Stage();
             gameStage.setTitle("Game Window");
             gameStage.setScene(gameScene);
 
-            gameController.initialize(gameScene);
+            gameController.initialize(gameScene, this);
             gameController.loadEnvironment(CSV);
 
             gameStage.setResizable(false);
@@ -127,7 +128,11 @@ public class EditorController {
         }
     }
 
-
+    public void stopGame() {
+        if (gameStage != null) {
+            gameStage.close();
+        }
+    }
 
     private void handleElementClick(MouseEvent event) {
         selectedEntity = event.getSource();
@@ -301,7 +306,7 @@ public class EditorController {
                 Circle newCircle = new Circle(x, y, robotSize);
 
                 if(raceMode.equals("off")) {
-                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
                 }else{
                     newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
                 }
@@ -320,7 +325,7 @@ public class EditorController {
             } else{
 
                 Circle newCircle = new Circle(x, y, robotSize);
-                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
 
@@ -442,11 +447,11 @@ public class EditorController {
         this.raceMode = mode;
 
         if(raceMode.equals("off")) {
-            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/robot.jpg"))));
+            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
             obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
         }else{
             player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/formula-1.png"))));
-            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
+            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
         }
     }
 

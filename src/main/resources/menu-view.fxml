@@ -6,12 +6,12 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="522.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.MenuController">
+<AnchorPane fx:id="menuPane" prefHeight="522.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.MenuController">
    <children>
       <Button fx:id="newGame" layoutX="284.0" layoutY="209.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="205.0" text="New Game" />
       <Button fx:id="loadGame" layoutX="284.0" layoutY="307.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="205.0" text="Load Game" />
       <Button fx:id="endGame" layoutX="284.0" layoutY="395.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="205.0" text="Quit Game" />
-      <Text layoutX="87.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ultimate Robot/Racing Game 3000">
+      <Text fx:id="text" layoutX="87.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ultimate Robot/Racing Game 3000">
          <font>
             <Font size="39.0" />
          </font>

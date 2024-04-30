@@ -23,6 +23,8 @@ public class GameController {
     @FXML
     private Pane simulationPane;
     @FXML
+    private Button stopButton;
+    @FXML
     private Button movingForward;
     @FXML
     private Button rotatingLeft;
@@ -39,6 +41,7 @@ public class GameController {
     private double robotRadius;
     private double obstacleSize;
     private boolean raceMode;
+    private EditorController editor;
 
     public GameController() {
         this.env = new Environment(1180, 650);
@@ -47,19 +50,22 @@ public class GameController {
     @FXML
     public void initialize() {
         playPauseButton.setOnAction(event -> playPauseSimulation());
+        stopButton.setOnAction(event -> editor.stopGame());
         movingForward.setOnAction(event -> movingForwardPressed());
         rotatingLeft.setOnAction(event -> rotatingLeftPressed());
         rotatingRight.setOnAction(event -> rotatingRightPressed());
         toggleRobots.setOnAction(event -> toggleRobotsPressed());
 
         playPauseButton.setFocusTraversable(false);
+        stopButton.setFocusTraversable(false);
         movingForward.setFocusTraversable(false);
         rotatingLeft.setFocusTraversable(false);
         rotatingRight.setFocusTraversable(false);
         toggleRobots.setFocusTraversable(false);
     }
 
-    public void initialize(Scene scene) {
+    public void initialize(Scene scene, EditorController editor) {
+        this.editor = editor;
         scene.setOnKeyPressed(this::handleKeyPress);
         scene.setOnKeyReleased(this::handleKeyRelease);
 
