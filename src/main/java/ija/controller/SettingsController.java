@@ -31,6 +31,7 @@ public class SettingsController {
 
     private String csvHeader;
     private MenuController menu;
+    private Stage editorStage;
 
     @FXML
     public void initialize() {
@@ -73,13 +74,11 @@ public class SettingsController {
 
             // Get the game controller and initiate the game setup
             EditorController editorController = loader.getController();
-            editorController.settings = csvHeader;
-            editorController.robotSize = Double.parseDouble(robotSize.getText());
-            editorController.obstacleSize = Double.parseDouble(obstacleSize.getText());
+            editorController.initialize(csvHeader, Double.parseDouble(robotSize.getText()), Double.parseDouble(obstacleSize.getText()), this);
             editorController.setMode(racingModeValue);
             // Setup the new stage and scene
             Scene editorScene = new Scene(editorRoot);
-            Stage editorStage = new Stage();
+            editorStage = new Stage();
             editorStage.setTitle("Game Editor");
             editorStage.setScene(editorScene);
 
@@ -89,9 +88,18 @@ public class SettingsController {
             menu.closeSettings();
             editorStage.show();
         } catch (IOException e) {
-
             e.printStackTrace();
         }
+    }
+
+    public void closeEditor() {
+        if (editorStage != null) {
+            editorStage.close();
+        }
+    }
+
+    public Stage getEditorStage() {
+        return editorStage;
     }
 
     private boolean checkInvalidParameters(){

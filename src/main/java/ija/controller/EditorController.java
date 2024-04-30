@@ -67,13 +67,13 @@ public class EditorController {
     private String rotateValue;
     private String detectionValue;
 
-    public String settings;
+    private String settings;
     private Stage gameStage;
 
     String type = null;
 
-    public double robotSize;
-    public double obstacleSize;
+    private double robotSize;
+    private double obstacleSize;
 
     public String raceMode;
     private final double screenWidth = 1180;
@@ -81,6 +81,8 @@ public class EditorController {
 
     private Double currentClickedPositionX;
     private Double currentClickedPositionY;
+
+    private SettingsController settingsController;
 
     @FXML
     public void initialize() {
@@ -97,6 +99,13 @@ public class EditorController {
             setValues(event);
             closeSettings(event);
         });
+    }
+
+    public void initialize(String settings, Double robotSize, Double obstacleSize, SettingsController settingsController) {
+        this.settings = settings;
+        this.robotSize = robotSize;
+        this.obstacleSize = obstacleSize;
+        this.settingsController = settingsController;
     }
 
     private void handleStart(MouseEvent event) {
