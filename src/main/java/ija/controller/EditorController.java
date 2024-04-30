@@ -18,11 +18,16 @@ import javafx.scene.layout.Pane;
 
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 public class EditorController {
 
@@ -45,6 +50,12 @@ public class EditorController {
     private Button clear;
 
     @FXML
+    private Button export;
+
+    @FXML
+    private Button back;
+
+    @FXML
     private TextField speedInput;
     Label angle = new Label();
     Label rotate = new Label();
@@ -57,9 +68,10 @@ public class EditorController {
 
     Button setButton = new Button();
 
+
     private Object selectedEntity;
 
-    public List<String> CSV = new ArrayList<>();
+    public List<String> CSV;
 
     private boolean wasSet = false;
 
@@ -94,6 +106,8 @@ public class EditorController {
         clear.setOnMouseClicked(this::clearMap);
         CSV = new ArrayList<>();
         start.setOnMouseClicked(this::handleStart);
+        export.setOnMouseClicked(this::exportCSV);
+        back.setOnMouseClicked(this::backToMenu);
 
         setButton.setOnMouseClicked(event -> {
             setValues(event);
@@ -481,6 +495,40 @@ public class EditorController {
             obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
         }
         bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
+    }
+
+    private void exportCSV(MouseEvent event){
+
+        // File chooser
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save CSV File");
+        if(!CSV.isEmpty()) {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+
+            // Show file save dialog
+            File file = fileChooser.showSaveDialog(settingsController.getEditorStage());
+            if (file != null) {
+                // Export data to CSV
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                    writer.write(settings);
+                    writer.newLine();
+                    for (String line : CSV) {
+                        writer.write(line);
+                        writer.newLine();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("CSV file exported successfully.");
+            } else {
+                System.out.println("File save operation cancelled.");
+            }
+        }
+    }
+
+    public void backToMenu(MouseEvent event) {
+        settingsController.closeEditor();
     }
 
 }

@@ -28,6 +28,8 @@
          </children>
       </GridPane>
       <Button fx:id="start" layoutX="1053.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="108.0" text="START" />
+       <Button fx:id="back" layoutX="900.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="108.0" text="BACK TO MENU" />
       <Button fx:id="clear" layoutX="327.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="108.0" text="CLEAR" />
+      <Button fx:id="export" layoutX="786.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="156.0" text="EXPORT MAP" />
    </children>
 </AnchorPane>
