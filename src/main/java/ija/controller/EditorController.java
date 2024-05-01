@@ -208,6 +208,8 @@ public class EditorController {
             Circle newCircle = new Circle(x, y, robotSize);
             if(isCircleColliding(newCircle)){
                 return;
+            }else if(x+robotSize > screenWidth || x-robotSize < 0 || y+robotSize > screenHeight || y-robotSize < 0){
+                return;
             }
 
         } else if (selectedEntity instanceof Rectangle) {
@@ -518,6 +520,7 @@ public class EditorController {
                 System.out.println("CSV file exported successfully.");
             } else {
                 System.out.println("File save operation cancelled.");
+
             }
         }else{
 
