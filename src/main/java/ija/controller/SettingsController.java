@@ -69,7 +69,7 @@ public class SettingsController {
     private void startEditor(){
         try {
             // Load the game view FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("app-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("editor-view.fxml"));
             Parent editorRoot = loader.load();
 
             // Get the game controller and initiate the game setup
@@ -81,8 +81,7 @@ public class SettingsController {
             editorStage = new Stage();
             editorStage.setTitle("Game Editor");
             editorStage.setScene(editorScene);
-
-
+            editorStage.setResizable(false);
             editorController.initialize();
 
             menu.closeSettings();
@@ -91,6 +90,7 @@ public class SettingsController {
             e.printStackTrace();
         }
     }
+
 
     public void closeEditor() {
         if (editorStage != null) {

@@ -3,6 +3,7 @@ package ija.controller;
 import ija.model.Collision;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -19,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
+
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -57,6 +61,15 @@ public class EditorController {
 
     @FXML
     private TextField speedInput;
+
+    @FXML
+    private AnchorPane window;
+
+    @FXML
+    private Button closeNoEntities;
+
+    @FXML
+    private Pane noEntities;
     Label angle = new Label();
     Label rotate = new Label();
     Label detection = new Label();
@@ -65,6 +78,7 @@ public class EditorController {
     TextField detectionInput = new TextField();
 
     Pane robotSettings = new Pane();
+
 
     Button setButton = new Button();
 
@@ -108,16 +122,22 @@ public class EditorController {
         start.setOnMouseClicked(this::handleStart);
         export.setOnMouseClicked(this::exportCSV);
         back.setOnMouseClicked(this::backToMenu);
+        noEntities.setVisible(false);
 
         setButton.setOnMouseClicked(event -> {
             setValues(event);
             closeSettings(event);
         });
 
+        closeNoEntities.setOnMouseClicked(event -> {
+            noEntities.setVisible(false);
+        });
+
         clear.setFocusTraversable(false);
         start.setFocusTraversable(false);
         export.setFocusTraversable(false);
         back.setFocusTraversable(false);
+
     }
 
     public void initialize(String settings, Double robotSize, Double obstacleSize, SettingsController settingsController) {
@@ -180,6 +200,11 @@ public class EditorController {
         if (selectedEntity instanceof Circle) {
             type = ((Circle) selectedEntity).getId();
 
+            if(type.equals("player")){
+                addToMap(x,y);
+                return;
+            }
+
             Circle newCircle = new Circle(x, y, robotSize);
             if(isCircleColliding(newCircle)){
                 return;
@@ -222,22 +247,6 @@ public class EditorController {
         angleInput.setLayoutX(80);
         angleInput.setLayoutY(20);
 
-        if(type.equals("player")){
-
-            // Set button for controlled robot settings
-            setButton.setPrefSize(66,42);
-            setButton.setLayoutX(80);
-            setButton.setLayoutY(80);
-            setButton.setText("SET");
-
-            robotSettings.setPrefSize(200, 130);
-            map.getChildren().add(robotSettings);
-            robotSettings.getChildren().addAll(angle, angleInput, setButton);
-            wasSet = false;
-            return;
-        }
-
-        if(type.equals("bot")){
             // Rotate label
             rotate.setPrefSize(37,34);
             rotate.setLayoutX(20);
@@ -270,7 +279,7 @@ public class EditorController {
             map.getChildren().add(robotSettings);
             robotSettings.getChildren().addAll(angle, rotate, detection, angleInput, rotateInput, detectionInput, setButton);
             wasSet = false;
-        }
+
 
     }
 
@@ -287,16 +296,6 @@ public class EditorController {
                 angleValue = angleInput.getText();
                 rotateValue = rotateInput.getText();
                 detectionValue = detectionInput.getText();
-            }
-        } else if(type.equals("player")){
-
-            if(checkInvalidParameters("player")){
-                System.out.println("NELZE PICO PLAYER");
-                wasSet = false;
-                return;
-
-            }else{
-                angleValue = angleInput.getText();
             }
         }
 
@@ -340,11 +339,6 @@ public class EditorController {
             if (type.equals("player")) {
 
                 Circle newCircle = new Circle(x, y, robotSize);
-                Rotate rotate = new Rotate();
-                rotate.setAngle(Double.parseDouble(angleValue));
-                rotate.setPivotX(x);
-                rotate.setPivotY(y);
-                newCircle.getTransforms().add(rotate);
 
 
                 if(raceMode.equals("off")) {
@@ -355,11 +349,9 @@ public class EditorController {
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
 
-                if(!wasSet) return;
-
                 map.getChildren().add(newCircle);
 
-                CSV.add("controlled_robot,"+ x + "," + y + "," + angleValue);
+                CSV.add("controlled_robot,"+ x + "," + y);
                 // Bot
             } else{
 
@@ -472,15 +464,6 @@ public class EditorController {
             } else{
                 return false;
             }
-
-            // Check only angle
-        } else if(type.equals("player")){
-            if(angleInput.getText().isEmpty() || !isNum(angleInput.getText()) || !isInRange(angleInput.getText())){
-                return true;
-
-            }else{
-                return false;
-            }
         }
         return false;
     }
@@ -536,11 +519,15 @@ public class EditorController {
             } else {
                 System.out.println("File save operation cancelled.");
             }
+        }else{
+
+            noEntities.setVisible(true);
         }
     }
 
     public void backToMenu(MouseEvent event) {
         settingsController.closeEditor();
     }
+
 
 }
