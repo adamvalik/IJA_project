@@ -37,12 +37,4 @@ public class ObstacleView {
         // Add the rectangle to the parent pane
         parentPane.getChildren().add(rectangle);
     }
-
-    public void updateView(double radius) {
-        DropShadow shadow = new DropShadow();
-        shadow.setRadius(radius);
-        shadow.setColor(Color.rgb(59, 224, 60));
-        shadow.setSpread(0.6);
-        rectangle.setEffect(shadow);
-    }
 }

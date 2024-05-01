@@ -41,7 +41,6 @@ public class GameController {
     private boolean simulationRunning = false;
     private int currentRobot = 0;
 
-    private List<ObstacleView> obstacleViews = new ArrayList<>();
 
     private final Environment env;
     private double robotSpeed;
@@ -51,7 +50,6 @@ public class GameController {
     private EditorController editor;
     private MenuController menu;
     private AnimationTimer timer;
-    private AnimationTimer shadowTimer;
 
     public GameController() {
         this.env = new Environment(1200, 650);
@@ -150,37 +148,6 @@ public class GameController {
             }
         };
         timer.start();
-
-        this.shadowTimer = new AnimationTimer() {
-            boolean increasing = true;
-            private long lastUpdate = 0;
-            private double radius = 20;
-
-            @Override
-            public void handle(long now) {
-                if (simulationRunning && !raceMode) {
-                    if (now - lastUpdate >= 10000000) {
-                        lastUpdate = now;
-                        if (increasing) {
-                            radius += 1;
-                            if (radius >= 40) {
-                                increasing = false;
-                            }
-                        } else {
-                            radius -= 1;
-                            if (radius <= 0) {
-                                increasing = true;
-                            }
-                        }
-                    }
-
-                    for (int i = 0; i < obstacleViews.size(); i++) {
-                        obstacleViews.get(i).updateView(radius);
-                    }
-                }
-            }
-        };
-        shadowTimer.start();
     }
 
     public void loadEnvironment(List<String> CSVFile) {
@@ -218,7 +185,6 @@ public class GameController {
                     Obstacle obstacle = new Obstacle(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), obstacleSize);
                     env.addObstacle(obstacle);
                     ObstacleView obst = new ObstacleView(obstacle, simulationPane, raceMode);
-                    obstacleViews.add(obst);
                     break;
                 case "autonomous_robot":
                     AutonomousRobot autonomousRobot = new AutonomousRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), robotRadius);
@@ -426,7 +392,6 @@ public class GameController {
     public void stopSimulation() {
         simulationRunning = false;
         timer.stop();
-        shadowTimer.stop();
         System.out.println("Simulation stopped");
         if (menu != null) {
             menu.stopGame();
