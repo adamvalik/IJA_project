@@ -334,7 +334,7 @@ public class GameController {
             // Perform a lookahead collision check before actually moving.
             if (!env.checkCollisionAt(controlledRobot, potentialX, potentialY)) {
                 // No collision predicted, so it's safe to move forward.
-                controlledRobot.moveForward(robotSpeed * (controlledRobot.isMovingForward() ? 1 : -1));
+                controlledRobot.moveForward(robotSpeed * (controlledRobot.isMovingForward() ? 1 : -0.4));
             } else {
                 System.out.println("Collision of controlled robot " + index);
                 // Collision predicted: stop movement and handle collision.

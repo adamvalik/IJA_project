@@ -78,11 +78,11 @@ public class ControlledRobot {
 
     //TODO: 3 degrees is a small enough angle to simulate a smooth rotation, test this value and adjust accordingly
     public void rotateRight() {
-        angle.set(angle.get() + 4 % 360);
+        angle.set(angle.get() + 5 % 360);
     }
 
     public void rotateLeft() {
-        angle.set(angle.get() - 4 % 360);
+        angle.set(angle.get() - 5 % 360);
     }
 
     public Circle getCircle() {
