@@ -12,15 +12,18 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
 
 import java.util.List;
 import java.util.Objects;
 
 public class GameController {
     @FXML
-    private ToggleButton playPauseButton;
+    private Button playPauseButton;
     @FXML
     private Pane simulationPane;
     @FXML
@@ -47,7 +50,7 @@ public class GameController {
     private AnimationTimer timer;
 
     public GameController() {
-        this.env = new Environment(1180, 650);
+        this.env = new Environment(1200, 650);
     }
 
     @FXML
@@ -65,6 +68,26 @@ public class GameController {
         rotatingLeft.setFocusTraversable(false);
         rotatingRight.setFocusTraversable(false);
         toggleRobots.setFocusTraversable(false);
+
+        ImageView playView = new ImageView(new Image(getClass().getResourceAsStream("/play.png")));
+        prepareButtonView(playView, playPauseButton, 60, 60);
+        ImageView stopView = new ImageView(new Image(getClass().getResourceAsStream("/stop.png")));
+        prepareButtonView(stopView, stopButton, 60, 60);
+        ImageView moveView = new ImageView(new Image(getClass().getResourceAsStream("/move.png")));
+        prepareButtonView(moveView, movingForward, 60, 60);
+        ImageView leftView = new ImageView(new Image(getClass().getResourceAsStream("/left.png")));
+        prepareButtonView(leftView, rotatingLeft, 60, 60);
+        ImageView rightView = new ImageView(new Image(getClass().getResourceAsStream("/right.png")));
+        prepareButtonView(rightView, rotatingRight, 60, 60);
+        ImageView toggleView = new ImageView(new Image(getClass().getResourceAsStream("/toggle.png")));
+        prepareButtonView(toggleView, toggleRobots, 60, 120);
+    }
+
+    private void prepareButtonView(ImageView buttonView, Button button, int height, int width) {
+        buttonView.setFitHeight(height);
+        buttonView.setFitWidth(width);
+        button.setGraphic(buttonView);
+        button.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
     }
 
     public void initialize(Scene scene, EditorController editor, MenuController menu) {
@@ -305,13 +328,18 @@ public class GameController {
     }
 
     public void playPauseSimulation() {
-        if (simulationRunning) {
-            System.out.println("Simulation paused");
-        } else {
-            System.out.println("Simulation resumed");
-        }
         simulationRunning = !simulationRunning;
-        playPauseButton.setText(simulationRunning ? "Pause" : "Play");
+        if (simulationRunning) {
+            System.out.println("Simulation resumed");
+            ImageView pauseView = new ImageView(new Image(getClass().getResourceAsStream("/pause.png")));
+            prepareButtonView(pauseView, playPauseButton, 60, 60);
+
+        } else {
+            System.out.println("Simulation paused");
+            ImageView playView = new ImageView(new Image(getClass().getResourceAsStream("/play.png")));
+            prepareButtonView(playView, playPauseButton, 60, 60);
+
+        }
     }
 
     public void stopSimulation() {

@@ -6,17 +6,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.GameController" style="-fx-background-color: #333533">
    <children>
-      <Pane fx:id="simulationPane" layoutX="10.0" layoutY="10.0" prefHeight="650.0" prefWidth="1180.0" style="-fx-background-color: #bfafa0;" />
-      <ToggleButton fx:id="playPauseButton" layoutX="82.0" layoutY="690.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="PLAY" />
-      <Button fx:id="toggleRobots" layoutX="1017.0" layoutY="690.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="107.0" text="CHANGE PLAYER" />
-      <Button fx:id="stopButton" layoutX="166.0" layoutY="690.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="STOP" />
+      <Pane fx:id="simulationPane" prefHeight="650.0" prefWidth="1200.0" style="-fx-background-color: #d6d6d6; -fx-effect: dropshadow(gaussian, black, 50, 0,0,0)" />
+      <Button fx:id="playPauseButton" layoutX="82.0" layoutY="690.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0"  />
+      <Button fx:id="toggleRobots" layoutX="1017.0" layoutY="690.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="120.0"  />
+      <Button fx:id="stopButton" layoutX="166.0" layoutY="690.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0"  />
       <HBox layoutX="490.0" layoutY="690.0" spacing="20.0">
          <children>
-            <Button fx:id="rotatingLeft" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="RL" />
-            <Button fx:id="movingForward" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="UP" />
-            <Button fx:id="rotatingRight" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="RR" />
+            <Button fx:id="rotatingLeft" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0"  />
+            <Button fx:id="movingForward" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0"  />
+            <Button fx:id="rotatingRight" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0"  />
          </children>
       </HBox>
    </children>
