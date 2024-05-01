@@ -8,36 +8,51 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.SettingsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="380.0" style="-fx-background-color: #d6d6d6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.SettingsController">
    <children>
-      <TextField fx:id="robotSpeed" layoutX="323.0" layoutY="56.0" prefHeight="43.0" prefWidth="80.0" text="5">
+      <TextField fx:id="robotSpeed" layoutX="213.0" layoutY="63.0" prefHeight="43.0" prefWidth="80.0" text="5">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <TextField fx:id="robotSize" layoutX="323.0" layoutY="120.0" prefHeight="43.0" prefWidth="80.0" text="60">
+      <TextField fx:id="robotSize" layoutX="213.0" layoutY="127.0" prefHeight="43.0" prefWidth="80.0" text="60">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <TextField fx:id="obstacleSize" layoutX="323.0" layoutY="191.0" prefHeight="43.0" prefWidth="80.0" text="60">
+      <TextField fx:id="obstacleSize" layoutX="213.0" layoutY="198.0" prefHeight="43.0" prefWidth="80.0" text="60">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <Button fx:id="setter" layoutX="238.0" layoutY="335.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="125.0" text="Edit game" />
-      <ToggleButton fx:id="racingMode" layoutX="323.0" layoutY="256.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="53.0" text="OFF">
+      <Button fx:id="setter" layoutX="108.0" layoutY="337.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="154.0" style="-fx-background-color: #FFD100; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-border-color: #202020; -fx-border-width: 3px; -fx-border-insets: -2px;" text="ENTER EDITOR">
          <font>
-            <Font name="System Bold" size="16.0" />
+            <Font name="Arial Black" size="15.0" />
+         </font></Button>
+      <ToggleButton fx:id="racingMode" layoutX="213.0" layoutY="263.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="53.0" text="OFF">
+         <font>
+            <Font name="Arial Black" size="15.0" />
          </font>
       </ToggleButton>
-      <Label layoutX="198.0" layoutY="73.0" text="Robot speed" />
-      <Label layoutX="198.0" layoutY="137.0" text="Robot size" />
-      <Label layoutX="197.0" layoutY="208.0" text="Obstacle size" />
-      <Label layoutX="197.0" layoutY="273.0" text="Racing mode" />
-      <Text layoutX="200.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="General settings">
+      <Label layoutX="87.0" layoutY="73.0" text="Robot speed">
          <font>
-            <Font size="28.0" />
+            <Font name="Arial Black" size="14.0" />
+         </font></Label>
+      <Label layoutX="87.0" layoutY="137.0" text="Robot size">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font></Label>
+      <Label layoutX="86.0" layoutY="208.0" text="Obstacle size">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font></Label>
+      <Label layoutX="85.0" layoutY="278.0" text="Racing mode">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font></Label>
+      <Text layoutX="68.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="General settings">
+         <font>
+            <Font name="Arial Black" size="27.0" />
          </font>
       </Text>
    </children>

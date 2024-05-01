@@ -90,6 +90,15 @@ public class MenuController {
         loadGame.toFront();
         endGame.toFront();
         text.toFront();
+
+        newGame.setOnMouseEntered(e -> {newGame.setStyle(newGame.getStyle() + "-fx-background-color: #FFEE32;");});
+        newGame.setOnMouseExited(e -> {newGame.setStyle(newGame.getStyle() + "-fx-background-color: #FFD100;");});
+
+        loadGame.setOnMouseEntered(e -> {loadGame.setStyle(loadGame.getStyle() + "-fx-background-color: #FFEE32;");});
+        loadGame.setOnMouseExited(e -> {loadGame.setStyle(loadGame.getStyle() + "-fx-background-color: #FFD100;");});
+
+        endGame.setOnMouseEntered(e -> {endGame.setStyle(endGame.getStyle() + "-fx-background-color: #FFEE32;");});
+        endGame.setOnMouseExited(e -> {endGame.setStyle(endGame.getStyle() + "-fx-background-color: #FFD100;");});
     }
 
     private void setRobotBackground(double x, double y, double angle, double turn) {
@@ -99,6 +108,7 @@ public class MenuController {
     }
 
     private void openSettings(MouseEvent event) {
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("settings-view.fxml"));
             Parent settingsRoot = loader.load();

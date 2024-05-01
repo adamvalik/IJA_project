@@ -70,6 +70,12 @@ public class EditorController {
 
     @FXML
     private Pane noEntities;
+
+    @FXML
+    private Button closeExportSuccess;
+
+    @FXML
+    private Pane exportSuccess;
     Label angle = new Label();
     Label rotate = new Label();
     Label detection = new Label();
@@ -102,7 +108,7 @@ public class EditorController {
     private double obstacleSize;
 
     public String raceMode;
-    private final double screenWidth = 1180;
+    private final double screenWidth = 1200;
     private final double screenHeight = 650;
 
     private Double currentClickedPositionX;
@@ -123,7 +129,9 @@ public class EditorController {
         export.setOnMouseClicked(this::exportCSV);
         back.setOnMouseClicked(this::backToMenu);
         noEntities.setVisible(false);
-
+        exportSuccess.setVisible(false);
+        noEntities.toFront();
+        exportSuccess.toFront();
         setButton.setOnMouseClicked(event -> {
             setValues(event);
             closeSettings(event);
@@ -131,6 +139,10 @@ public class EditorController {
 
         closeNoEntities.setOnMouseClicked(event -> {
             noEntities.setVisible(false);
+        });
+
+        closeExportSuccess.setOnMouseClicked(event -> {
+            exportSuccess.setVisible(false);
         });
 
         clear.setFocusTraversable(false);
@@ -286,7 +298,7 @@ public class EditorController {
     }
 
     private void setValues(MouseEvent event){
-        if(type.equals("bot")){
+        if(type != null && type.equals("bot")){
 
             if(checkInvalidParameters("bot")){
                 System.out.println("NELZE PICO BOT");
@@ -447,6 +459,10 @@ public class EditorController {
 
     private void clearMap(MouseEvent event){
         map.getChildren().clear();
+        map.getChildren().add(noEntities);
+        map.getChildren().add(exportSuccess);
+        noEntities.setVisible(false);
+        exportSuccess.setVisible(false);
         CSV.clear();
     }
 
@@ -499,9 +515,9 @@ public class EditorController {
         // File chooser
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save CSV File");
+
         if(!CSV.isEmpty()) {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-
             // Show file save dialog
             File file = fileChooser.showSaveDialog(settingsController.getEditorStage());
             if (file != null) {
@@ -518,12 +534,13 @@ public class EditorController {
                 }
 
                 System.out.println("CSV file exported successfully.");
+                exportSuccess.setVisible(true);
             } else {
                 System.out.println("File save operation cancelled.");
 
             }
         }else{
-
+            System.out.println("SEtting errror window");
             noEntities.setVisible(true);
         }
     }

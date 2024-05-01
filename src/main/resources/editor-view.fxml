@@ -11,18 +11,35 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="window" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.EditorController">
+<AnchorPane fx:id="window" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #333533;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.EditorController">
     <children>
-        <Pane fx:id="map" layoutX="10.0" layoutY="10.0" prefHeight="650.0" prefWidth="1180.0" style="-fx-background-color: #bfafa0;">
+        <Pane fx:id="map" layoutX="0.0" layoutY="0.0" prefHeight="650.0" prefWidth="1200.0" style="-fx-background-color: #d6d6d6; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 50, 0, 0, 0);">
          <children>
-            <Pane fx:id="noEntities" layoutX="418.0" layoutY="233.0" prefHeight="185.0" prefWidth="344.0" style="-fx-background-color: #FFF;">
+            <Pane fx:id="noEntities" layoutX="428.0" layoutY="257.0" prefHeight="185.0" prefWidth="344.0" style="-fx-background-color: #d6d6d6; -fx-border-color: #202020; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 0); -fx-background-radius: 20px; -fx-border-radius: 20px;">
                <children>
-                  <Text layoutX="65.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your map is empty!" wrappingWidth="214.521484375">
+                  <Text layoutX="83.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your map is empty!" wrappingWidth="178.521484375">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="Arial" size="20.0" />
                      </font>
                   </Text>
-                  <Button fx:id="closeNoEntities" layoutX="135.0" layoutY="124.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="75.0" text="Close" />
+                  <Button fx:id="closeNoEntities" layoutX="114.0" layoutY="115.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="128.0" style="-fx-background-color: #FFD100; -fx-border-color: #202020; -fx-border-width: 3px; -fx-background-radius: 20px; -fx-border-radius: 17px; -fx-border-insets: -1px;" text="CLOSE">
+                     <font>
+                        <Font name="Arial Black" size="22.0" />
+                     </font></Button>
+               </children>
+            </Pane>
+            <Pane fx:id="exportSuccess" layoutX="428.0" layoutY="257.0" prefHeight="185.0" prefWidth="344.0" style="-fx-background-color: #d6d6d6; -fx-border-color: #202020; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 0); -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Text layoutX="48.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Map exported successfully!">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="closeExportSuccess" layoutX="130.0" layoutY="113.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="84.0" style="-fx-background-color: #FFD100; -fx-background-radius: 20px; -fx-border-color: #202020; -fx-border-width: 3px; -fx-border-radius: 17px; -fx-border-insets: -1px;" text="OK">
+                     <font>
+                        <Font name="Arial Black" size="22.0" />
+                     </font>
+                  </Button>
                </children>
             </Pane>
          </children></Pane>
@@ -41,9 +58,18 @@
                 <Rectangle fx:id="obstacle" arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="75.0" stroke="BLACK" strokeType="INSIDE" width="75.0" GridPane.columnIndex="2" />
             </children>
         </GridPane>
-        <Button fx:id="start" layoutX="1053.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="108.0" text="START" />
-        <Button fx:id="back" layoutX="870.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="156.0" text="BACK TO MENU" />
-        <Button fx:id="clear" layoutX="327.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="108.0" text="CLEAR" />
-        <Button fx:id="export" layoutX="656.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="156.0" text="EXPORT MAP" />
+        <Button fx:id="start" layoutX="1025.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="150.0" style="-fx-background-color: #FFD100; -fx-background-radius: 20px; -fx-border-radius: 17px; -fx-border-width: 3px; -fx-border-color: #202020; -fx-padding: 0; -fx-background-insets: 1px;" text="START">
+         <font>
+            <Font name="Arial Black" size="20.0" />
+         </font></Button>
+        <Button fx:id="back" layoutX="800.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #FFD100; -fx-background-radius: 20px; -fx-border-radius: 17px; -fx-border-width: 3px; -fx-border-color: #202020; -fx-padding: 0; -fx-background-insets: 1px;" text="BACK TO MENU">
+         <font>
+            <Font name="Arial Black" size="20.0" />
+         </font></Button>
+        <Button fx:id="clear" layoutX="327.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="100.0" text="CLEAR" />
+        <Button fx:id="export" layoutX="575.0" layoutY="689.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #FFD100; -fx-background-radius: 20px; -fx-border-radius: 17px; -fx-border-width: 3px; -fx-border-color: #202020; -fx-padding: 0; -fx-background-insets: 1px;" text="EXPORT MAP">
+         <font>
+            <Font name="Arial Black" size="20.0" />
+         </font></Button>
     </children>
 </AnchorPane>
