@@ -21,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.Pane;
 
 import javafx.scene.Node;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 
@@ -115,6 +116,9 @@ public class EditorController {
     private Double currentClickedPositionX;
     private Double currentClickedPositionY;
 
+    Font fontArial = new Font("Arial Black", 18);
+    Font fontArialSmall = new Font("Arial", 12);
+
     private SettingsController settingsController;
 
     @FXML
@@ -133,6 +137,7 @@ public class EditorController {
         exportSuccess.setVisible(false);
         noEntities.toFront();
         exportSuccess.toFront();
+
 
         setButton.setOnMouseClicked(event -> {
             setValues(event);
@@ -178,6 +183,11 @@ public class EditorController {
 
         clear.setOnMouseEntered(e -> {GameController.prepareButtonView(trashHover, clear, 75, 100);});
         clear.setOnMouseExited(e -> {GameController.prepareButtonView(trash, clear, 75, 100);});
+
+        setButton.setOnMouseEntered(e -> {setButton.setStyle("-fx-background-color: #FFEE32; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
+            ;});
+        setButton.setOnMouseExited(e -> {setButton.setStyle("-fx-background-color: #FFD100; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
+            ;});
 
     }
 
@@ -258,7 +268,8 @@ public class EditorController {
             return;
         }
 
-        robotSettings.setStyle("-fx-background-color: white;");
+        robotSettings.setStyle("-fx-background-color: #d6d6d6; -fx-border-color: #202020; -fx-effect:  dropshadow(gaussian, #000, 20, 0, 5, 5); -fx-background-radius: 20px; -fx-border-radius: 20px;");
+
 
         // Positioning of dialog window according to clicked position on pane
         if((x + 200 > screenWidth) && (y + 250 > screenHeight)){
@@ -284,6 +295,7 @@ public class EditorController {
         angle.setLayoutX(20);
         angle.setLayoutY(20);
         angle.setText("Angle");
+        angle.setFont(fontArialSmall);
 
         // Angle input
         angleInput.setPrefSize(101,42);
@@ -295,12 +307,14 @@ public class EditorController {
             rotate.setLayoutX(20);
             rotate.setLayoutY(80);
             rotate.setText("Rotate");
+        rotate.setFont(fontArialSmall);
 
             // Detection label
             detection.setPrefSize(120,34);
             detection.setLayoutX(20);
             detection.setLayoutY(140);
             detection.setText("Detection");
+        detection.setFont(fontArialSmall);
 
             // Rotate input
             rotateInput.setPrefSize(101,42);
@@ -313,10 +327,12 @@ public class EditorController {
             detectionInput.setLayoutY(140);
 
             // Set button for autonomous settings
-            setButton.setPrefSize(66,42);
-            setButton.setLayoutX(80);
-            setButton.setLayoutY(200);
+            setButton.setPrefSize(100,42);
+            setButton.setLayoutX(50);
+            setButton.setLayoutY(190);
             setButton.setText("SET");
+            setButton.setStyle("-fx-background-color: #FFD100; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
+            setButton.setFont(fontArial);
 
             robotSettings.setPrefSize(200, 250);
             map.getChildren().add(robotSettings);
@@ -506,9 +522,6 @@ public class EditorController {
             } else if(!isNum(angleInput.getText()) || !isNum(rotateInput.getText()) || !isNum(detectionInput.getText()) ){
                 return true;
 
-            } else if(!isInRange(angleInput.getText())){
-                return true;
-
             } else{
                 return false;
             }
@@ -521,10 +534,7 @@ public class EditorController {
         return str.matches("\\d+(\\.\\d+)?");
     }
 
-    private boolean isInRange(String str) {
-        double number = Double.parseDouble(str);
-        return number >= 0 && number <= 359;
-    }
+
 
     public void setMode(String mode){
         this.raceMode = mode;
