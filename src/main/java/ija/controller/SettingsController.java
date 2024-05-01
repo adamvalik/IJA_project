@@ -37,6 +37,9 @@ public class SettingsController {
     public void initialize() {
         racingMode.setOnMouseClicked(this::setRacingMode);
         setter.setOnMouseClicked(this::setSettings);
+
+        setter.setOnMouseEntered(e -> {setter.setStyle(setter.getStyle() + "-fx-background-color: #FFEE32;");});
+        setter.setOnMouseExited(e -> {setter.setStyle(setter.getStyle() + "-fx-background-color: #FFD100;");});
     }
 
     public void initialize(MenuController menu) {

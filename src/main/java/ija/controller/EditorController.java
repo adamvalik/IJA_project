@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.AnchorPane;
@@ -132,6 +133,7 @@ public class EditorController {
         exportSuccess.setVisible(false);
         noEntities.toFront();
         exportSuccess.toFront();
+
         setButton.setOnMouseClicked(event -> {
             setValues(event);
             closeSettings(event);
@@ -149,6 +151,33 @@ public class EditorController {
         start.setFocusTraversable(false);
         export.setFocusTraversable(false);
         back.setFocusTraversable(false);
+
+        ImageView trash = new ImageView(new Image(getClass().getResourceAsStream("/clear.png")));
+        ImageView trashHover = new ImageView(new Image(getClass().getResourceAsStream("/clearhover.png")));
+        GameController.prepareButtonView(trash, clear, 75, 100);
+
+
+        // Hover effect for buttons
+        start.setOnMouseEntered(e -> {start.setStyle(start.getStyle() + "-fx-background-color: #FFEE32;");});
+        start.setOnMouseExited(e -> {start.setStyle(start.getStyle() + "-fx-background-color: #FFD100;");});
+
+        clear.setOnMouseEntered(e -> {clear.setStyle(clear.getStyle() + "-fx-background-color: #FFEE32;");});
+        clear.setOnMouseExited(e -> {clear.setStyle(clear.getStyle() + "-fx-background-color: #FFD100;");});
+
+        export.setOnMouseEntered(e -> {export.setStyle(export.getStyle() + "-fx-background-color: #FFEE32;");});
+        export.setOnMouseExited(e -> {export.setStyle(export.getStyle() + "-fx-background-color: #FFD100;");});
+
+        back.setOnMouseEntered(e -> {back.setStyle(back.getStyle() + "-fx-background-color: #FFEE32;");});
+        back.setOnMouseExited(e -> {back.setStyle(back.getStyle() + "-fx-background-color: #FFD100;");});
+
+        closeNoEntities.setOnMouseEntered(e -> {closeNoEntities.setStyle(closeNoEntities.getStyle() + "-fx-background-color: #FFEE32;");});
+        closeNoEntities.setOnMouseExited(e -> {closeNoEntities.setStyle(closeNoEntities.getStyle() + "-fx-background-color: #FFD100;");});
+
+        closeExportSuccess.setOnMouseEntered(e -> {closeExportSuccess.setStyle(closeExportSuccess.getStyle() + "-fx-background-color: #FFEE32;");});
+        closeExportSuccess.setOnMouseExited(e -> {closeExportSuccess.setStyle(closeExportSuccess.getStyle() + "-fx-background-color: #FFD100;");});
+
+        clear.setOnMouseEntered(e -> {GameController.prepareButtonView(trashHover, clear, 75, 100);});
+        clear.setOnMouseExited(e -> {GameController.prepareButtonView(trash, clear, 75, 100);});
 
     }
 
@@ -404,6 +433,7 @@ public class EditorController {
 
             if(raceMode.equals("off")) {
                 newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
+                newRectangle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0, 0, 0);");
             } else{
                 newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
             }
@@ -502,11 +532,14 @@ public class EditorController {
         if(raceMode.equals("off")) {
             player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
             obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
+            obstacle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0, 0, 0);");
             bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.png"))));
         }else{
             player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.png"))));
             obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
-            bot.setFill(Color.WHITE);
+
+            bot.setFill(Color.rgb(214,214,214));
+
         }
     }
 
@@ -535,13 +568,16 @@ public class EditorController {
 
                 System.out.println("CSV file exported successfully.");
                 exportSuccess.setVisible(true);
+                exportSuccess.toFront();
             } else {
                 System.out.println("File save operation cancelled.");
 
             }
         }else{
             System.out.println("SEtting errror window");
+
             noEntities.setVisible(true);
+
         }
     }
 
