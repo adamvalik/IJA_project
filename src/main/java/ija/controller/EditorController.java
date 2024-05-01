@@ -451,7 +451,7 @@ public class EditorController {
 
             if(raceMode.equals("off")) {
                 newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
-                newRectangle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0, 0, 0);");
+                newRectangle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0.6, 0, 0);");
             } else{
                 newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
             }
@@ -542,7 +542,7 @@ public class EditorController {
         if(raceMode.equals("off")) {
             player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
             obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
-            obstacle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0, 0, 0);");
+            obstacle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0.6, 0, 0);");
             bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.png"))));
         }else{
             player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.png"))));

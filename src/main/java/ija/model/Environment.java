@@ -65,6 +65,10 @@ public class Environment {
         obstacles.add(obstacle);
     }
 
+    public int countObstacles() {
+        return obstacles.size();
+    }
+
     public boolean checkCollisionAt(ControlledRobot robot, double x, double y) {
         Circle c = robot.getCircle(x, y);
         for (Obstacle o : obstacles) {

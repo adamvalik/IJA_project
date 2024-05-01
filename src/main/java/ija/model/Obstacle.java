@@ -1,5 +1,6 @@
 package ija.model;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.scene.shape.Rectangle;
 
 public class Obstacle {
