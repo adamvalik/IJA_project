@@ -382,7 +382,9 @@ public class EditorController {
             if (type.equals("player")) {
 
                 Circle newCircle = new Circle(x, y, robotSize);
-
+                if(isCircleColliding(newCircle)){
+                    return;
+                }
 
                 if(raceMode.equals("off")) {
                     newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
