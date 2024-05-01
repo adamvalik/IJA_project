@@ -356,9 +356,9 @@ public class EditorController {
 
 
                 if(raceMode.equals("off")) {
-                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
+                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
                 }else{
-                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.jpg"))));
+                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.png"))));
                 }
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
@@ -378,7 +378,7 @@ public class EditorController {
                 newCircle.getTransforms().add(rotate);
 
 
-                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
+                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.png"))));
                 newCircle.setLayoutX(0);
                 newCircle.setLayoutY(0);
 
@@ -403,9 +403,9 @@ public class EditorController {
             Rectangle newRectangle = new Rectangle(x, y, obstacleSize, obstacleSize);
 
             if(raceMode.equals("off")) {
-                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
             } else{
-                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
+                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
             }
             newRectangle.setLayoutX(0);
             newRectangle.setLayoutY(0);
@@ -500,12 +500,12 @@ public class EditorController {
         this.raceMode = mode;
 
         if(raceMode.equals("off")) {
-            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
-            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
-            bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.jpg"))));
+            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
+            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
+            bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.png"))));
         }else{
-            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.jpg"))));
-            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
+            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.png"))));
+            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
             bot.setFill(Color.WHITE);
         }
     }

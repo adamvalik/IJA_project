@@ -81,9 +81,31 @@ public class GameController {
         prepareButtonView(rightView, rotatingRight, 60, 60);
         ImageView toggleView = new ImageView(new Image(getClass().getResourceAsStream("/toggle.png")));
         prepareButtonView(toggleView, toggleRobots, 60, 120);
+
+        ImageView playHover = new ImageView(new Image(getClass().getResourceAsStream("/playhover.png")));
+        ImageView stopHover = new ImageView(new Image(getClass().getResourceAsStream("/stophover.png")));
+        ImageView moveHover = new ImageView(new Image(getClass().getResourceAsStream("/movehover.png")));
+        ImageView leftHover = new ImageView(new Image(getClass().getResourceAsStream("/lefthover.png")));
+        ImageView rightHover = new ImageView(new Image(getClass().getResourceAsStream("/righthover.png")));
+        ImageView toggleHover = new ImageView(new Image(getClass().getResourceAsStream("/togglehover.png")));
+
+        playPauseButton.setOnMouseEntered(event -> prepareButtonView(playHover, playPauseButton, 60, 60));
+        stopButton.setOnMouseEntered(event -> prepareButtonView(stopHover, stopButton, 60, 60));
+        movingForward.setOnMouseEntered(event -> prepareButtonView(moveHover, movingForward, 60, 60));
+        rotatingLeft.setOnMouseEntered(event -> prepareButtonView(leftHover, rotatingLeft, 60, 60));
+        rotatingRight.setOnMouseEntered(event -> prepareButtonView(rightHover, rotatingRight, 60, 60));
+        toggleRobots.setOnMouseEntered(event -> prepareButtonView(toggleHover, toggleRobots, 60, 120));
+
+        playPauseButton.setOnMouseExited(event -> prepareButtonView(playView, playPauseButton, 60, 60));
+        stopButton.setOnMouseExited(event -> prepareButtonView(stopView, stopButton, 60, 60));
+        movingForward.setOnMouseExited(event -> prepareButtonView(moveView, movingForward, 60, 60));
+        rotatingLeft.setOnMouseExited(event -> prepareButtonView(leftView, rotatingLeft, 60, 60));
+        rotatingRight.setOnMouseExited(event -> prepareButtonView(rightView, rotatingRight, 60, 60));
+        toggleRobots.setOnMouseExited(event -> prepareButtonView(toggleView, toggleRobots, 60, 120));
+
     }
 
-    private void prepareButtonView(ImageView buttonView, Button button, int height, int width) {
+    public static void prepareButtonView(ImageView buttonView, Button button, int height, int width) {
         buttonView.setFitHeight(height);
         buttonView.setFitWidth(width);
         button.setGraphic(buttonView);
