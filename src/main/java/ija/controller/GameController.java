@@ -105,7 +105,7 @@ public class GameController {
                     }
                     break;
                 case "controlled_robot":
-                    ControlledRobot robot = new ControlledRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), robotRadius);
+                    ControlledRobot robot = new ControlledRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), robotRadius);
                     env.addControlledRobot(robot);
                     if (env.countControlledRobots() == 1 && raceMode) {
                         new ControlledRobotView(robot, simulationPane, true, true);

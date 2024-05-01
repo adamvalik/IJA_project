@@ -14,17 +14,10 @@ public class ControlledRobot {
     private boolean rotatingRight = false;
     private boolean rotatingLeft = false;
 
-    public ControlledRobot(double x, double y, double angle) {
+    public ControlledRobot(double x, double y, double radius) {
         this.x.set(x);
         this.y.set(y);
-        this.angle.set(angle);
-        this.radius = 37.5;
-    }
-
-    public ControlledRobot(double x, double y, double angle, double radius) {
-        this.x.set(x);
-        this.y.set(y);
-        this.angle.set(angle);
+        this.angle.set(0);
         this.radius = radius;
     }
 
