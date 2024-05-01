@@ -22,9 +22,9 @@ public class ObstacleView {
         // Create a rectangle to visually represent the obstacle
         rectangle = obstacle.getRectangle();
         if (raceModeOn) {
-            rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.jpg"))));
+            rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
         } else {
-            rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.jpg"))));
+            rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
         }
 
         // Add the rectangle to the parent pane

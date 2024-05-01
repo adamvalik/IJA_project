@@ -87,7 +87,7 @@ public class GameController {
         buttonView.setFitHeight(height);
         buttonView.setFitWidth(width);
         button.setGraphic(buttonView);
-        button.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
+        button.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0; -fx-effect: dropshadow(gaussian, black, 10, 0,0,0)");
     }
 
     public void initialize(Scene scene, EditorController editor, MenuController menu) {
@@ -145,7 +145,7 @@ public class GameController {
                 case "autonomous_robot":
                     AutonomousRobot autonomousRobot = new AutonomousRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), robotRadius);
                     env.addAutonomousRobot(autonomousRobot);
-                    new AutonomousRobotView(autonomousRobot, simulationPane, raceMode);
+                    new AutonomousRobotView(autonomousRobot, simulationPane, raceMode, false);
                     break;
             }
         }

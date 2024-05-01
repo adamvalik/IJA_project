@@ -82,7 +82,7 @@ public class MenuController {
         }.start();
 
         Random random = new Random();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             setRobotBackground(random.nextInt(732)+20, random.nextInt(482)+20, random.nextInt(359), random.nextInt(359));
         }
 
@@ -104,7 +104,7 @@ public class MenuController {
     private void setRobotBackground(double x, double y, double angle, double turn) {
         AutonomousRobot robot = new AutonomousRobot(x, y, angle, turn, 0, 20);
         env.addAutonomousRobot(robot);
-        new AutonomousRobotView(robot, menuPane, false);
+        new AutonomousRobotView(robot, menuPane, false, true);
     }
 
     private void openSettings(MouseEvent event) {

@@ -26,12 +26,12 @@ public class ControlledRobotView {
 
         if (raceModeOn) {
             if (ferrari) {
-                visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.jpg"))));
+                visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.png"))));
             } else {
-                visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/redbull.jpg"))));
+                visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/redbull.png"))));
             }
         } else {
-            visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.jpg"))));
+            visual.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
         }
 
         visual.centerXProperty().bind(robot.X());
