@@ -64,7 +64,7 @@ public class AutonomousRobot {
     }
 
     public void rotate() {
-        angle.set(angle.get() + turningAngle % 360);
+        angle.set((angle.get() + turningAngle) % 360);
     }
 
     public Circle getCircle() {

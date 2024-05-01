@@ -472,14 +472,12 @@ public class EditorController {
 
     public boolean isRectangleColliding(Rectangle newRectangle) {
 
-
         for (Node entity : map.getChildren()) {
             if (entity instanceof Circle) {
                 if (Collision.checkCollision((Circle) entity, newRectangle)) {
                     return true;
                 }
             }
-
         }
         return false;
     }
