@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -24,7 +26,7 @@ public class SettingsController {
     private TextField robotSize;
 
     @FXML
-    private ToggleButton racingMode;
+    private Button mode;
     @FXML
     private Button setter;
     private String racingModeValue = "off";
@@ -35,11 +37,16 @@ public class SettingsController {
 
     @FXML
     public void initialize() {
-        racingMode.setOnMouseClicked(this::setRacingMode);
+        mode.setOnMouseClicked(this::setRacingMode);
         setter.setOnMouseClicked(this::setSettings);
+
 
         setter.setOnMouseEntered(e -> {setter.setStyle(setter.getStyle() + "-fx-background-color: #FFEE32;");});
         setter.setOnMouseExited(e -> {setter.setStyle(setter.getStyle() + "-fx-background-color: #FFD100;");});
+
+        ImageView robot = new ImageView(new Image(getClass().getResourceAsStream("/robotmode.png")));
+        GameController.prepareButtonView(robot, mode, 60, 60);
+        mode.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
     }
 
     public void initialize(MenuController menu) {
@@ -47,13 +54,26 @@ public class SettingsController {
     }
 
     private void setRacingMode(MouseEvent event) {
-        if (racingMode.isSelected()) {
+
+        if(racingModeValue.equals("on")){
+            racingModeValue = "off";
+        }else{
+            racingModeValue = "on";
+        }
+
+        if (racingModeValue.equals("on")) {
             // Toggle is ON
-            racingMode.setText("ON");
+            ImageView formula = new ImageView(new Image(getClass().getResourceAsStream("/ferrari.png")));
+            GameController.prepareButtonView(formula, mode, 60, 60);
+            mode.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
+
             racingModeValue = "on";
         } else {
             // Toggle is OFF
-            racingMode.setText("OFF");
+            ImageView robot = new ImageView(new Image(getClass().getResourceAsStream("/robotmode.png")));
+            GameController.prepareButtonView(robot, mode, 60, 60);
+            mode.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
+
             racingModeValue = "off";
         }
     }

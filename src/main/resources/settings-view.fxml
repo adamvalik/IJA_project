@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -29,11 +28,6 @@
          <font>
             <Font name="Arial Black" size="15.0" />
          </font></Button>
-      <ToggleButton fx:id="racingMode" layoutX="213.0" layoutY="263.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="53.0" text="OFF">
-         <font>
-            <Font name="Arial Black" size="15.0" />
-         </font>
-      </ToggleButton>
       <Label layoutX="87.0" layoutY="73.0" text="Robot speed">
          <font>
             <Font name="Arial Black" size="14.0" />
@@ -46,7 +40,7 @@
          <font>
             <Font name="Arial Black" size="14.0" />
          </font></Label>
-      <Label layoutX="85.0" layoutY="278.0" text="Racing mode">
+      <Label layoutX="114.0" layoutY="278.0" text="Mode">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font></Label>
@@ -55,5 +49,6 @@
             <Font name="Arial Black" size="27.0" />
          </font>
       </Text>
+      <Button fx:id="mode" layoutX="223.0" layoutY="259.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" />
    </children>
 </AnchorPane>
