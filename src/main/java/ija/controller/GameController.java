@@ -71,6 +71,7 @@ public class GameController {
 
         ImageView playView = new ImageView(new Image(getClass().getResourceAsStream("/play.png")));
         prepareButtonView(playView, playPauseButton, 60, 60);
+        ImageView pauseView = new ImageView(new Image(getClass().getResourceAsStream("/pause.png")));
         ImageView stopView = new ImageView(new Image(getClass().getResourceAsStream("/stop.png")));
         prepareButtonView(stopView, stopButton, 60, 60);
         ImageView moveView = new ImageView(new Image(getClass().getResourceAsStream("/move.png")));
@@ -83,26 +84,26 @@ public class GameController {
         prepareButtonView(toggleView, toggleRobots, 60, 120);
 
         ImageView playHover = new ImageView(new Image(getClass().getResourceAsStream("/playhover.png")));
+        ImageView pauseHover = new ImageView(new Image(getClass().getResourceAsStream("/pausehover.png")));
         ImageView stopHover = new ImageView(new Image(getClass().getResourceAsStream("/stophover.png")));
         ImageView moveHover = new ImageView(new Image(getClass().getResourceAsStream("/movehover.png")));
         ImageView leftHover = new ImageView(new Image(getClass().getResourceAsStream("/lefthover.png")));
         ImageView rightHover = new ImageView(new Image(getClass().getResourceAsStream("/righthover.png")));
         ImageView toggleHover = new ImageView(new Image(getClass().getResourceAsStream("/togglehover.png")));
 
-        playPauseButton.setOnMouseEntered(event -> prepareButtonView(playHover, playPauseButton, 60, 60));
+        playPauseButton.setOnMouseEntered(event -> playPauseEntered(playHover, pauseHover));
         stopButton.setOnMouseEntered(event -> prepareButtonView(stopHover, stopButton, 60, 60));
         movingForward.setOnMouseEntered(event -> prepareButtonView(moveHover, movingForward, 60, 60));
         rotatingLeft.setOnMouseEntered(event -> prepareButtonView(leftHover, rotatingLeft, 60, 60));
         rotatingRight.setOnMouseEntered(event -> prepareButtonView(rightHover, rotatingRight, 60, 60));
         toggleRobots.setOnMouseEntered(event -> prepareButtonView(toggleHover, toggleRobots, 60, 120));
 
-        playPauseButton.setOnMouseExited(event -> prepareButtonView(playView, playPauseButton, 60, 60));
+        playPauseButton.setOnMouseExited(event -> playPauseExited(playView, pauseView));
         stopButton.setOnMouseExited(event -> prepareButtonView(stopView, stopButton, 60, 60));
         movingForward.setOnMouseExited(event -> prepareButtonView(moveView, movingForward, 60, 60));
         rotatingLeft.setOnMouseExited(event -> prepareButtonView(leftView, rotatingLeft, 60, 60));
         rotatingRight.setOnMouseExited(event -> prepareButtonView(rightView, rotatingRight, 60, 60));
         toggleRobots.setOnMouseExited(event -> prepareButtonView(toggleView, toggleRobots, 60, 120));
-
     }
 
     public static void prepareButtonView(ImageView buttonView, Button button, int height, int width) {
@@ -110,6 +111,24 @@ public class GameController {
         buttonView.setFitWidth(width);
         button.setGraphic(buttonView);
         button.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0; -fx-effect: dropshadow(gaussian, black, 10, 0,0,0)");
+    }
+
+    private void playPauseEntered(ImageView playHover, ImageView pauseHover) {
+        if (simulationRunning) {
+            prepareButtonView(pauseHover, playPauseButton, 60, 60);
+        }
+        else {
+            prepareButtonView(playHover, playPauseButton, 60, 60);
+        }
+    }
+
+    private void playPauseExited(ImageView playView, ImageView pauseView) {
+        if (simulationRunning) {
+            prepareButtonView(pauseView, playPauseButton, 60, 60);
+        }
+        else {
+            prepareButtonView(playView, playPauseButton, 60, 60);
+        }
     }
 
     public void initialize(Scene scene, EditorController editor, MenuController menu) {
