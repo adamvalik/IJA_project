@@ -327,40 +327,45 @@ public class GameController {
     }
 
     public void movingForwardPressed() {
-        ControlledRobot robot = env.getControlledRobot(currentRobot);
-        robot.setMovingForward(!robot.isMovingForward());
-        if (robot.isMovingForward()) {
-            System.out.println("Controlled robot " + currentRobot + " moving forward");
-        }
-        else {
-            System.out.println("Controlled robot " + currentRobot + " stopped moving forward");
+        if (env.countControlledRobots() > 0) {
+            ControlledRobot robot = env.getControlledRobot(currentRobot);
+            robot.setMovingForward(!robot.isMovingForward());
+            if (robot.isMovingForward()) {
+                System.out.println("Controlled robot " + currentRobot + " moving forward");
+            } else {
+                System.out.println("Controlled robot " + currentRobot + " stopped moving forward");
+            }
         }
     }
 
     public void rotatingLeftPressed() {
-        ControlledRobot robot = env.getControlledRobot(currentRobot);
-        robot.setRotatingLeft(!robot.isRotatingLeft());
-        if (robot.isRotatingLeft()) {
-            System.out.println("Controlled robot " + currentRobot + " rotating left");
-        }
-        else {
-            System.out.println("Controlled robot " + currentRobot + " stopped rotating left");
+        if (env.countControlledRobots() > 0) {
+            ControlledRobot robot = env.getControlledRobot(currentRobot);
+            robot.setRotatingLeft(!robot.isRotatingLeft());
+            if (robot.isRotatingLeft()) {
+                System.out.println("Controlled robot " + currentRobot + " rotating left");
+            } else {
+                System.out.println("Controlled robot " + currentRobot + " stopped rotating left");
+            }
         }
     }
 
     public void rotatingRightPressed() {
-        ControlledRobot robot = env.getControlledRobot(currentRobot);
-        robot.setRotatingRight(!robot.isRotatingRight());
-        if (robot.isRotatingRight()) {
-            System.out.println("Controlled robot " + currentRobot + " rotating right");
-        }
-        else {
-            System.out.println("Controlled robot " + currentRobot + " stopped rotating right");
+        if (env.countControlledRobots() > 0) {
+            ControlledRobot robot = env.getControlledRobot(currentRobot);
+            robot.setRotatingRight(!robot.isRotatingRight());
+            if (robot.isRotatingRight()) {
+                System.out.println("Controlled robot " + currentRobot + " rotating right");
+            } else {
+                System.out.println("Controlled robot " + currentRobot + " stopped rotating right");
+            }
         }
     }
 
     public void toggleRobotsPressed() {
-        currentRobot = (currentRobot + 1) % env.countControlledRobots();
-        System.out.println("Current controlled robot: " + currentRobot);
+        if (env.countControlledRobots() > 1) {
+            currentRobot = (currentRobot + 1) % env.countControlledRobots();
+            System.out.println("Current controlled robot: " + currentRobot);
+        }
     }
 }
