@@ -25,6 +25,7 @@ public class ObstacleView {
             rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
         } else {
             rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
+            rectangle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0, 0, 0);");
         }
 
         // Add the rectangle to the parent pane
