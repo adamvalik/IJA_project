@@ -130,7 +130,6 @@ public class SettingsController {
 
         if(parametersCorrect()) {
             csvHeader = "settings," + robotSpeed.getText() + "," + robotSize.getText() + "," + obstacleSize.getText() + "," + racingModeValue;
-            System.out.println(csvHeader);
             startEditor();
 
         } else {
