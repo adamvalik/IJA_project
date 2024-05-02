@@ -1,3 +1,13 @@
+/**
+ * @package ija.controller
+ * @file StageSetter.java
+ * @class StageSetter
+ *
+ * Class for setting new stage.
+ *
+ * @author Dominik Horut
+ */
+
 package ija.controller;
 
 import javafx.scene.Scene;

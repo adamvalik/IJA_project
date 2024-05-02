@@ -1,3 +1,14 @@
+/**
+ * @package ija.controller
+ * @file MenuController.java
+ * @class MenuController
+ *
+ * Controller for the main menu window.
+ *
+ * @author Dominik Horut
+ * @author Adam Valík
+ */
+
 package ija.controller;
 
 import ija.model.AutonomousRobot;

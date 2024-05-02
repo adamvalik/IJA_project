@@ -1,3 +1,13 @@
+/**
+ * @package ija.controller
+ * @file SettingsController.java
+ * @class SettingsController
+ *
+ * Controller for settings window.
+ *
+ * @author Dominik Horut
+ */
+
 package ija.controller;
 
 import javafx.fxml.FXML;
