@@ -7,48 +7,55 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="380.0" style="-fx-background-color: #d6d6d6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.SettingsController">
-   <children>
-      <TextField fx:id="robotSpeed" layoutX="213.0" layoutY="63.0" prefHeight="43.0" prefWidth="80.0" text="5">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="robotSize" layoutX="213.0" layoutY="127.0" prefHeight="43.0" prefWidth="80.0" text="40">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="obstacleSize" layoutX="213.0" layoutY="198.0" prefHeight="43.0" prefWidth="80.0" text="100">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <Button fx:id="setter" layoutX="108.0" layoutY="337.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="154.0" style="-fx-background-color: #FFD100; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-border-color: #202020; -fx-border-width: 3px; -fx-border-insets: -2px;" text="ENTER EDITOR">
-         <font>
-            <Font name="Arial Black" size="15.0" />
-         </font></Button>
-      <Label layoutX="87.0" layoutY="73.0" text="Robot speed">
-         <font>
-            <Font name="Arial Black" size="14.0" />
-         </font></Label>
-      <Label layoutX="87.0" layoutY="137.0" text="Robot size">
-         <font>
-            <Font name="Arial Black" size="14.0" />
-         </font></Label>
-      <Label layoutX="86.0" layoutY="208.0" text="Obstacle size">
-         <font>
-            <Font name="Arial Black" size="14.0" />
-         </font></Label>
-      <Label layoutX="114.0" layoutY="278.0" text="Mode">
-         <font>
-            <Font name="Arial Black" size="14.0" />
-         </font></Label>
-      <Text layoutX="68.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="General settings">
-         <font>
-            <Font name="Arial Black" size="27.0" />
-         </font>
-      </Text>
-      <Button fx:id="mode" layoutX="223.0" layoutY="259.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" />
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0"
+            prefWidth="380.0" style="-fx-background-color: #d6d6d6;" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.controller.SettingsController">
+   <TextField fx:id="robotSpeed" layoutX="213.0" layoutY="63.0" prefHeight="43.0" prefWidth="80.0" text="5">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </TextField>
+   <TextField fx:id="robotSize" layoutX="213.0" layoutY="127.0" prefHeight="43.0" prefWidth="80.0" text="40">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </TextField>
+   <TextField fx:id="obstacleSize" layoutX="213.0" layoutY="198.0" prefHeight="43.0" prefWidth="80.0" text="100">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </TextField>
+   <Button fx:id="setter" layoutX="108.0" layoutY="337.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="154.0"
+           style="-fx-background-color: #FFD100; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-border-color: #202020; -fx-border-width: 3px; -fx-border-insets: -2px;"
+           text="ENTER EDITOR">
+      <font>
+         <Font name="Arial Black" size="15.0"/>
+      </font>
+   </Button>
+   <Label layoutX="87.0" layoutY="73.0" text="Robot speed">
+      <font>
+         <Font name="Arial Black" size="14.0"/>
+      </font>
+   </Label>
+   <Label layoutX="87.0" layoutY="137.0" text="Robot size">
+      <font>
+         <Font name="Arial Black" size="14.0"/>
+      </font>
+   </Label>
+   <Label layoutX="86.0" layoutY="208.0" text="Obstacle size">
+      <font>
+         <Font name="Arial Black" size="14.0"/>
+      </font>
+   </Label>
+   <Label layoutX="114.0" layoutY="278.0" text="Mode">
+      <font>
+         <Font name="Arial Black" size="14.0"/>
+      </font>
+   </Label>
+   <Text layoutX="68.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="General settings">
+      <font>
+         <Font name="Arial Black" size="27.0"/>
+      </font>
+   </Text>
+   <Button fx:id="mode" layoutX="223.0" layoutY="259.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0"/>
 </AnchorPane>
