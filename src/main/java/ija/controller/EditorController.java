@@ -124,70 +124,74 @@ public class EditorController {
     @FXML
     public void initialize() {
 
-        player.setOnMouseClicked(this::handleElementClick);
-        bot.setOnMouseClicked(this::handleElementClick);
-        obstacle.setOnMouseClicked(this::handleElementClick);
+        player.setOnMouseClicked(this::selectEntity);
+        bot.setOnMouseClicked(this::selectEntity);
+        obstacle.setOnMouseClicked(this::selectEntity);
         map.setOnMouseClicked(this::handleMouseClick);
         clear.setOnMouseClicked(this::clearMap);
-        CSV = new ArrayList<>();
         start.setOnMouseClicked(this::handleStart);
         export.setOnMouseClicked(this::exportCSV);
         back.setOnMouseClicked(this::backToMenu);
         noEntities.setVisible(false);
         exportSuccess.setVisible(false);
-        noEntities.toFront();
-        exportSuccess.toFront();
 
+        CSV = new ArrayList<>();
+
+        createRobotSettings();
 
         setButton.setOnMouseClicked(event -> {
             setValues(event);
             closeSettings(event);
         });
 
+        // Pop up windows settings
+        noEntities.toFront();
         closeNoEntities.setOnMouseClicked(event -> {
             noEntities.setVisible(false);
         });
 
+        exportSuccess.toFront();
         closeExportSuccess.setOnMouseClicked(event -> {
             exportSuccess.setVisible(false);
         });
 
+        // Disable focus on buttons
         clear.setFocusTraversable(false);
         start.setFocusTraversable(false);
         export.setFocusTraversable(false);
         back.setFocusTraversable(false);
+        closeNoEntities.setFocusTraversable(false);
+        closeExportSuccess.setFocusTraversable(false);
 
         ImageView trash = new ImageView(new Image(getClass().getResourceAsStream("/clear.png")));
         ImageView trashHover = new ImageView(new Image(getClass().getResourceAsStream("/clearhover.png")));
         GameController.prepareButtonView(trash, clear, 75, 100);
 
-
         // Hover effect for buttons
-        start.setOnMouseEntered(e -> {start.setStyle(start.getStyle() + "-fx-background-color: #FFEE32;");});
-        start.setOnMouseExited(e -> {start.setStyle(start.getStyle() + "-fx-background-color: #FFD100;");});
-
-        clear.setOnMouseEntered(e -> {clear.setStyle(clear.getStyle() + "-fx-background-color: #FFEE32;");});
-        clear.setOnMouseExited(e -> {clear.setStyle(clear.getStyle() + "-fx-background-color: #FFD100;");});
-
-        export.setOnMouseEntered(e -> {export.setStyle(export.getStyle() + "-fx-background-color: #FFEE32;");});
-        export.setOnMouseExited(e -> {export.setStyle(export.getStyle() + "-fx-background-color: #FFD100;");});
-
-        back.setOnMouseEntered(e -> {back.setStyle(back.getStyle() + "-fx-background-color: #FFEE32;");});
-        back.setOnMouseExited(e -> {back.setStyle(back.getStyle() + "-fx-background-color: #FFD100;");});
-
-        closeNoEntities.setOnMouseEntered(e -> {closeNoEntities.setStyle(closeNoEntities.getStyle() + "-fx-background-color: #FFEE32;");});
-        closeNoEntities.setOnMouseExited(e -> {closeNoEntities.setStyle(closeNoEntities.getStyle() + "-fx-background-color: #FFD100;");});
-
-        closeExportSuccess.setOnMouseEntered(e -> {closeExportSuccess.setStyle(closeExportSuccess.getStyle() + "-fx-background-color: #FFEE32;");});
-        closeExportSuccess.setOnMouseExited(e -> {closeExportSuccess.setStyle(closeExportSuccess.getStyle() + "-fx-background-color: #FFD100;");});
+        createHoverEffect(start);
+        createHoverEffect(clear);
+        createHoverEffect(export);
+        createHoverEffect(back);
+        createHoverEffect(closeNoEntities);
+        createHoverEffect(closeExportSuccess);
 
         clear.setOnMouseEntered(e -> {GameController.prepareButtonView(trashHover, clear, 75, 100);});
         clear.setOnMouseExited(e -> {GameController.prepareButtonView(trash, clear, 75, 100);});
 
-        setButton.setOnMouseEntered(e -> {setButton.setStyle("-fx-background-color: #FFEE32; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
-            ;});
-        setButton.setOnMouseExited(e -> {setButton.setStyle("-fx-background-color: #FFD100; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
-            ;});
+        setButton.setPrefSize(100,42);
+        setButton.setLayoutX(50);
+        setButton.setLayoutY(190);
+        setButton.setText("SET");
+        setButton.setFont(fontArial);
+
+        setButton.setStyle("-fx-background-color: #FFD100; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
+
+        setButton.setOnMouseEntered(e -> {
+            setButton.setStyle("-fx-background-color: #FFEE32; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
+        });
+        setButton.setOnMouseExited(e -> {
+            setButton.setStyle("-fx-background-color: #FFD100; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
+        });
 
     }
 
@@ -213,17 +217,12 @@ public class EditorController {
             // Setup the new stage and scene
             Scene gameScene = new Scene(gameRoot);
             gameStage = new Stage();
-            gameStage.setTitle("Game Window");
-            gameStage.setScene(gameScene);
+
+            StageSetter.initStage(gameStage, "Game", gameScene, false);
 
             gameController.initialize(gameScene, this, null);
             gameController.loadEnvironment(CSV);
 
-            gameStage.setResizable(false);
-
-
-            // Show the new window
-            gameStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -235,7 +234,7 @@ public class EditorController {
         }
     }
 
-    private void handleElementClick(MouseEvent event) {
+    private void selectEntity(MouseEvent event) {
         selectedEntity = event.getSource();
         angleInput.setText("");
         rotateInput.setText("");
@@ -290,49 +289,10 @@ public class EditorController {
         }
 
         // This attribute is common for controlled and autonomous robot
-        // Angle label
-        angle.setPrefSize(37,34);
-        angle.setLayoutX(20);
-        angle.setLayoutY(20);
-        angle.setText("Angle");
-        angle.setFont(fontArialSmall);
 
-        // Angle input
-        angleInput.setPrefSize(101,42);
-        angleInput.setLayoutX(80);
-        angleInput.setLayoutY(20);
-
-            // Rotate label
-            rotate.setPrefSize(37,34);
-            rotate.setLayoutX(20);
-            rotate.setLayoutY(80);
-            rotate.setText("Rotate");
-        rotate.setFont(fontArialSmall);
-
-            // Detection label
-            detection.setPrefSize(120,34);
-            detection.setLayoutX(20);
-            detection.setLayoutY(140);
-            detection.setText("Detection");
-        detection.setFont(fontArialSmall);
-
-            // Rotate input
-            rotateInput.setPrefSize(101,42);
-            rotateInput.setLayoutX(80);
-            rotateInput.setLayoutY(80);
-
-            // Detection input
-            detectionInput.setPrefSize(101,42);
-            detectionInput.setLayoutX(80);
-            detectionInput.setLayoutY(140);
 
             // Set button for autonomous settings
-            setButton.setPrefSize(100,42);
-            setButton.setLayoutX(50);
-            setButton.setLayoutY(190);
-            setButton.setText("SET");
-            setButton.setStyle("-fx-background-color: #FFD100; -fx-border-color: #202020; -fx-border-radius: 17px; -fx-background-radius: 20px; -fx-border-width: 3px; -fx-border-insets: -1px");
-            setButton.setFont(fontArial);
+
 
             robotSettings.setPrefSize(200, 250);
             map.getChildren().add(robotSettings);
@@ -345,9 +305,8 @@ public class EditorController {
     private void setValues(MouseEvent event){
         if(type != null && type.equals("bot")){
 
-            if(checkInvalidParameters("bot")){
-                System.out.println("NELZE PICO BOT");
-                System.out.println(angleInput.getText());
+            if(checkInvalidParameters()){
+                System.err.println("Invalid parameters for robot.");
                 wasSet = false;
                 return;
 
@@ -380,43 +339,36 @@ public class EditorController {
 
     }
 
-    public Object getSelectedEntity() {
-        return selectedEntity;
-    }
-
     public void addToMap(double x, double y) {
-
-        Node newEntity = null;
 
         if (selectedEntity instanceof Circle) {
 
             if(x+robotSize > screenWidth || x-robotSize < 0 || y+robotSize > screenHeight || y-robotSize < 0){
                 return;
             }
+
+            Circle newCircle = new Circle(x, y, robotSize);
+            if(isCircleColliding(newCircle)){
+                return;
+            }
             String type = ((Circle) selectedEntity).getId();
             // Player
             if (type.equals("player")) {
 
-                Circle newCircle = new Circle(x, y, robotSize);
-                if(isCircleColliding(newCircle)){
-                    return;
-                }
+
 
                 if(raceMode.equals("off")) {
                     newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
                 }else{
                     newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.png"))));
                 }
-                newCircle.setLayoutX(0);
-                newCircle.setLayoutY(0);
 
-                map.getChildren().add(newCircle);
 
                 CSV.add("controlled_robot,"+ x + "," + y);
                 // Bot
             } else{
 
-                Circle newCircle = new Circle(x, y, robotSize);
+
 
                 Rotate rotate = new Rotate();
                 rotate.setAngle(Double.parseDouble(angleValue));
@@ -426,16 +378,17 @@ public class EditorController {
 
 
                 newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.png"))));
-                newCircle.setLayoutX(0);
-                newCircle.setLayoutY(0);
 
-                if(isCircleColliding(newCircle)){
-                    return;
-                }
+
                 if(!wasSet) return;
-                map.getChildren().add(newCircle);
+
                 CSV.add("autonomous_robot,"+ x + "," + y + "," + angleValue + "," + rotateValue + "," + detectionValue);
             }
+
+            newCircle.setLayoutX(0);
+            newCircle.setLayoutY(0);
+
+            map.getChildren().add(newCircle);
 
         } else if (selectedEntity instanceof Rectangle) {
 
@@ -449,6 +402,10 @@ public class EditorController {
 
             Rectangle newRectangle = new Rectangle(x, y, obstacleSize, obstacleSize);
 
+            if(isRectangleColliding(newRectangle)){
+                return;
+            }
+
             if(raceMode.equals("off")) {
                 newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
                 newRectangle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0.6, 0, 0);");
@@ -458,9 +415,7 @@ public class EditorController {
             newRectangle.setLayoutX(0);
             newRectangle.setLayoutY(0);
 
-            if(isRectangleColliding(newRectangle)){
-                return;
-            }
+
 
             map.getChildren().add(newRectangle);
 
@@ -498,11 +453,6 @@ public class EditorController {
         return false;
     }
 
-    private double clamp(double value, double min, double max) {
-        return Math.max(min, Math.min(max, value));
-    }
-
-
     private void clearMap(MouseEvent event){
         map.getChildren().clear();
         map.getChildren().add(noEntities);
@@ -512,26 +462,25 @@ public class EditorController {
         CSV.clear();
     }
 
-    private boolean checkInvalidParameters(String type){
-        if(type.equals("bot")){
+    private boolean checkInvalidParameters(){
 
             // Check angle, rotation, detection
             if(angleInput.getText().isEmpty() || rotateInput.getText().isEmpty() || detectionInput.getText().isEmpty()){
                 return true;
 
-            } else if(!isNum(angleInput.getText()) || !isNum(rotateInput.getText()) || !isNum(detectionInput.getText()) ){
+            } else if(notNum(angleInput.getText()) || notNum(rotateInput.getText()) || notNum(detectionInput.getText()) ){
                 return true;
 
             } else{
                 return false;
             }
-        }
-        return false;
+
+
     }
 
-    private boolean isNum(String str) {
+    private boolean notNum(String str) {
 
-        return str.matches("\\d+(\\.\\d+)?");
+        return !str.matches("\\d+(\\.\\d+)?");
     }
 
 
@@ -561,7 +510,7 @@ public class EditorController {
 
         if(!CSV.isEmpty()) {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-            // Show file save dialog
+
             File file = fileChooser.showSaveDialog(settingsController.getEditorStage());
             if (file != null) {
                 // Export data to CSV
@@ -584,8 +533,6 @@ public class EditorController {
 
             }
         }else{
-            System.out.println("SEtting errror window");
-
             noEntities.setVisible(true);
 
         }
@@ -594,6 +541,38 @@ public class EditorController {
     public void backToMenu(MouseEvent event) {
         settingsController.closeEditor();
     }
+
+    private void createLabel(Label label, double sizeX, double sizeY, double posX, double posY, String labelName, Font font){
+        label.setPrefSize(sizeX, sizeY);
+        label.setLayoutX(posX);
+        label.setLayoutY(posY);
+        label.setText(labelName);
+        label.setFont(font);
+    }
+
+    private void createInputField(TextField inputField, double posX, double posY){
+        inputField.setPrefSize(100,42);
+        inputField.setLayoutX(posX);
+        inputField.setLayoutY(posY);
+    }
+
+    private void createRobotSettings(){
+
+        createLabel(angle, 37, 34, 20, 20, "Angle", fontArialSmall);
+        createLabel(rotate, 37, 34, 20, 80, "Rotate", fontArialSmall);
+        createLabel(detection, 120, 34, 20, 140, "Detection", fontArialSmall);
+
+        createInputField(angleInput, 80, 20);
+        createInputField(rotateInput, 80, 80);
+        createInputField(detectionInput, 80, 140);
+    }
+
+    private void createHoverEffect(Button button){
+        button.setOnMouseEntered(e -> {button.setStyle(button.getStyle() + "-fx-background-color: #FFEE32;");});
+        button.setOnMouseExited(e -> {button.setStyle(button.getStyle() + "-fx-background-color: #FFD100;");});
+    }
+
+
 
 
 }

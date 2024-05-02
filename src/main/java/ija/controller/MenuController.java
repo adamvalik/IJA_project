@@ -1,7 +1,6 @@
 package ija.controller;
 
 import ija.model.AutonomousRobot;
-import ija.model.Collision;
 import ija.model.Environment;
 import ija.view.AutonomousRobotView;
 import javafx.animation.AnimationTimer;
@@ -24,24 +23,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Controller for the main menu window.
+ */
 public class MenuController {
+
     @FXML
     private Button newGame;
     @FXML
     private Button loadGame;
     @FXML
     private Button endGame;
+
     @FXML
     private AnchorPane menuPane;
+
+    /**
+     * Logo of game in menu.
+     */
     @FXML
     private Text text;
-
     private Environment env;
 
+    // All stages user can get to from menu
     private Stage settingsStage;
     private Stage primaryStage;
     private Stage gameStage;
 
+    /**
+     * Initializes the menu controller by binding buttons to methods
+     */
     @FXML
     public void initialize() {
         newGame.setOnMouseClicked(this::openSettings);
@@ -53,6 +64,10 @@ public class MenuController {
         endGame.setFocusTraversable(false);
     }
 
+    /**
+     * Sets primary stage
+     * @param primaryStage Primary stage to be set.
+     */
     public void initialize(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -107,21 +122,25 @@ public class MenuController {
         new AutonomousRobotView(robot, menuPane, false, true);
     }
 
+    /**
+     * Opens settings window.
+     * @param event Mouse event which triggered opening of settings.
+     */
     private void openSettings(MouseEvent event) {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("settings-view.fxml"));
             Parent settingsRoot = loader.load();
 
+            // Prepare game controller
             SettingsController settingsController = loader.getController();
             settingsController.initialize(this);
 
+            // Set up the new stage and scene
             Scene settingsScene = new Scene(settingsRoot);
             settingsStage = new Stage();
-            settingsStage.setTitle("Settings");
-            settingsStage.setScene(settingsScene);
+            StageSetter.initStage(settingsStage, "Settings", settingsScene, false);
 
-            settingsStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -133,7 +152,12 @@ public class MenuController {
         }
     }
 
-    private void importCSV(MouseEvent event){
+    /**
+     * Imports CSV file with game data from users filesystem.
+     * @param event Mouse event which triggered import of CSV file.
+     */
+    private void importCSV(MouseEvent event) {
+
         // File chooser setup
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open CSV File");
@@ -142,47 +166,51 @@ public class MenuController {
         // Show open file dialog
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
+
             // Read data from CSV
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
                 List<String> importedData = new ArrayList<>();
+
+                // Reading the whole file into imported data list
                 while ((line = reader.readLine()) != null) {
                     importedData.add(line);
                 }
-                // Handle the imported data as needed
+
                 this.openGame(importedData);
                 System.out.println("CSV file imported successfully.");
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         } else {
             System.out.println("File open operation cancelled.");
         }
     }
 
+    /**
+     * Opens the game with imported game data given in CSV file.
+     * @param CSV File containing game data.
+     */
     private void openGame(List<String> CSV) {
         try {
-            // Load the game view FXML
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("game-view.fxml"));
             Parent gameRoot = loader.load();
 
-            // Get the game controller and initiate the game setup
+            // Prepare game controller
             GameController gameController = loader.getController();
 
-            // Setup the new stage and scene
+            // Set up the new stage and scene
             Scene gameScene = new Scene(gameRoot);
             gameStage = new Stage();
-            gameStage.setTitle("Game Window");
-            gameStage.setScene(gameScene);
 
+            StageSetter.initStage(gameStage, "Game Window", gameScene, false);
             gameController.initialize(gameScene, null, this);
+
+            // Loading game from CSV file
             gameController.loadEnvironment(CSV);
 
-            gameStage.setResizable(false);
-
-
-            // Show the new window
-            gameStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
