@@ -1,97 +1,112 @@
+/**
+ * @package ija.model
+ * @file ControlledRobot.java
+ * @class ControlledRobot
+ *
+ * The ControlledRobot class represents a robot that can be controlled by the user in a simulation, extends
+ * the Robot class. The robot can move forward, backward, rotate left and right.
+ *
+ * @author Adam Valik
+ */
+
 package ija.model;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.shape.Circle;
-
-public class ControlledRobot {
-    private final double radius;
-    private DoubleProperty angle = new SimpleDoubleProperty();
-    private DoubleProperty x = new SimpleDoubleProperty();
-    private DoubleProperty y = new SimpleDoubleProperty();
+/**
+ * Represents a robot that can be controlled by the user
+ */
+public class ControlledRobot extends Robot {
+    // flags for movement and rotation
     private boolean movingForward = false;
     private boolean movingBackward = false;
     private boolean rotatingRight = false;
     private boolean rotatingLeft = false;
+    private final int rotationSensitivity = 5;
 
+    /**
+     * @param x X coordinate of the robot
+     * @param y Y coordinate of the robot
+     * @param radius Radius of the robot
+     */
     public ControlledRobot(double x, double y, double radius) {
-        this.x.set(x);
-        this.y.set(y);
-        this.angle.set(0);
-        this.radius = radius;
+        super(x, y, 0, radius);
     }
 
-    public DoubleProperty X() {
-        return x;
-    }
-
-    public DoubleProperty Y() {
-        return y;
-    }
-
-    public DoubleProperty angle() {
-        return angle;
-    }
-
-    public double getRadius() {
-        return radius;
-    }
-
+    /**
+     * Check if the robot is moving forward
+     * @return True if it is, false otherwise
+     */
     public boolean isMovingForward() {
         return movingForward;
     }
 
+    /**
+     * Set the robot to move forward
+     * @param movingForward True if the robot should move forward, false otherwise
+     */
     public void setMovingForward(boolean movingForward) {
         this.movingForward = movingForward;
     }
 
+    /**
+     * Check if the robot is moving backward
+     * @return True if it is, false otherwise
+     */
     public boolean isMovingBackward() {
         return movingBackward;
     }
 
+    /**
+     * Set the robot to move backward
+     * @param movingBackward True if the robot should move backward, false otherwise
+     */
     public void setMovingBackward(boolean movingBackward) {
         this.movingBackward = movingBackward;
     }
 
+    /**
+     * Check if the robot is rotating right
+     * @return True if it is, false otherwise
+     */
     public boolean isRotatingRight() {
         return rotatingRight;
     }
 
+    /**
+     * Set the robot to rotate right
+     * @param rotatingRight True if the robot should rotate right, false otherwise
+     */
     public void setRotatingRight(boolean rotatingRight) {
         this.rotatingRight = rotatingRight;
     }
 
+    /**
+     * Check if the robot is rotating left
+     * @return True if it is, false otherwise
+     */
     public boolean isRotatingLeft() {
         return rotatingLeft;
     }
 
+    /**
+     * Set the robot to rotate left
+     * @param rotatingLeft True if the robot should rotate left, false otherwise
+     */
     public void setRotatingLeft(boolean rotatingLeft) {
         this.rotatingLeft = rotatingLeft;
     }
 
-    public void moveForward(double speed) {
-        double angleInRadians = Math.toRadians(angle.get());
-
-        x.set(x.get() + speed * Math.cos(angleInRadians));
-        y.set(y.get() + speed * Math.sin(angleInRadians));
-    }
-
-    //TODO: 3 degrees is a small enough angle to simulate a smooth rotation, test this value and adjust accordingly
+    /**
+     * Rotate the robot to the right
+     */
     public void rotateRight() {
-        angle.set(angle.get() + 5 % 360);
+        angle.set(angle.get() + rotationSensitivity % 360);
     }
 
+    /**
+     * Rotate the robot to the left
+     */
     public void rotateLeft() {
-        angle.set(angle.get() - 5 % 360);
+        angle.set(angle.get() - rotationSensitivity % 360);
     }
-
-    public Circle getCircle() {
-        return new Circle(x.get(), y.get(), radius);
-    }
-
-    public Circle getCircle(double x, double y) {
-        return new Circle(x, y, radius);
-    }
-
 }
 
