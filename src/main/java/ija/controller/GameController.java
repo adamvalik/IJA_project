@@ -1,9 +1,19 @@
+/**
+ * @package ija.controller
+ * @file GameController.java
+ * @class GameController
+ *
+ * Controller for the game window. Handles the game animation and logic.
+ *
+ * @author Adam Valík
+ */
 package ija.controller;
 
 import ija.model.AutonomousRobot;
 import ija.model.ControlledRobot;
 import ija.model.Environment;
 import ija.model.Obstacle;
+import ija.other.ImageSetter;
 import ija.view.AutonomousRobotView;
 import ija.view.ControlledRobotView;
 import ija.view.ObstacleView;
@@ -11,14 +21,10 @@ import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.ImagePattern;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,9 +44,10 @@ public class GameController {
     @FXML
     private Button toggleRobots;
 
+    // simulation state
     private boolean simulationRunning = false;
+    // current robot controlled by the player via gui controls
     private int currentRobot = 0;
-
 
     private final Environment env;
     private double robotSpeed;
@@ -51,10 +58,16 @@ public class GameController {
     private MenuController menu;
     private AnimationTimer timer;
 
+    /**
+     * Constructor for GameController
+     */
     public GameController() {
         this.env = new Environment(1200, 650);
     }
 
+    /**
+     * Initializes the game controller and button responses
+     */
     @FXML
     public void initialize() {
         playPauseButton.setOnAction(event -> playPauseSimulation());
@@ -71,24 +84,24 @@ public class GameController {
         rotatingRight.setFocusTraversable(false);
         toggleRobots.setFocusTraversable(false);
 
-        ImageView playView = new ImageView(new Image(getClass().getResourceAsStream("/play.png")));
+        ImageView pauseView = ImageSetter.setImageView("/pause.png");
+        ImageView playView = ImageSetter.setImageView("/play.png");
         prepareButtonView(playView, playPauseButton, 60, 60);
-        ImageView pauseView = new ImageView(new Image(getClass().getResourceAsStream("/pause.png")));
-        ImageView stopView = new ImageView(new Image(getClass().getResourceAsStream("/stop.png")));
+        ImageView stopView = ImageSetter.setImageView("/stop.png");
         prepareButtonView(stopView, stopButton, 60, 60);
-        ImageView moveView = new ImageView(new Image(getClass().getResourceAsStream("/move.png")));
+        ImageView moveView = ImageSetter.setImageView("/move.png");
         prepareButtonView(moveView, movingForward, 60, 60);
-        ImageView leftView = new ImageView(new Image(getClass().getResourceAsStream("/left.png")));
+        ImageView leftView = ImageSetter.setImageView("/left.png");
         prepareButtonView(leftView, rotatingLeft, 60, 60);
-        ImageView rightView = new ImageView(new Image(getClass().getResourceAsStream("/right.png")));
+        ImageView rightView = ImageSetter.setImageView("/right.png");
         prepareButtonView(rightView, rotatingRight, 60, 60);
 
-        ImageView playHover = new ImageView(new Image(getClass().getResourceAsStream("/playhover.png")));
-        ImageView pauseHover = new ImageView(new Image(getClass().getResourceAsStream("/pausehover.png")));
-        ImageView stopHover = new ImageView(new Image(getClass().getResourceAsStream("/stophover.png")));
-        ImageView moveHover = new ImageView(new Image(getClass().getResourceAsStream("/movehover.png")));
-        ImageView leftHover = new ImageView(new Image(getClass().getResourceAsStream("/lefthover.png")));
-        ImageView rightHover = new ImageView(new Image(getClass().getResourceAsStream("/righthover.png")));
+        ImageView playHover = ImageSetter.setImageView("/playhover.png");
+        ImageView pauseHover = ImageSetter.setImageView("/pausehover.png");
+        ImageView stopHover = ImageSetter.setImageView("/stophover.png");
+        ImageView moveHover = ImageSetter.setImageView("/movehover.png");
+        ImageView leftHover = ImageSetter.setImageView("/lefthover.png");
+        ImageView rightHover = ImageSetter.setImageView("/righthover.png");
 
         playPauseButton.setOnMouseEntered(event -> playPauseEntered(playHover, pauseHover));
         stopButton.setOnMouseEntered(event -> prepareButtonView(stopHover, stopButton, 60, 60));
@@ -103,6 +116,13 @@ public class GameController {
         rotatingRight.setOnMouseExited(event -> prepareButtonView(rightView, rotatingRight, 60, 60));
     }
 
+    /**
+     * Helper method for setting button view
+     * @param buttonView ImageView of the button
+     * @param button Button to be set
+     * @param height Height of the button
+     * @param width Width of the button
+     */
     public static void prepareButtonView(ImageView buttonView, Button button, int height, int width) {
         buttonView.setFitHeight(height);
         buttonView.setFitWidth(width);
@@ -110,6 +130,11 @@ public class GameController {
         button.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0; -fx-effect: dropshadow(gaussian, black, 10, 0,0,0)");
     }
 
+    /**
+     * Changing the view of the play/pause button when mouse enters
+     * @param playHover ImageView of the play button on hover
+     * @param pauseHover ImageView of the pause button on hover
+     */
     private void playPauseEntered(ImageView playHover, ImageView pauseHover) {
         if (simulationRunning) {
             prepareButtonView(pauseHover, playPauseButton, 60, 60);
@@ -119,6 +144,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Changing the view of the play/pause button when mouse exits
+     * @param playView ImageView of the play button
+     * @param pauseView ImageView of the pause button
+     */
     private void playPauseExited(ImageView playView, ImageView pauseView) {
         if (simulationRunning) {
             prepareButtonView(pauseView, playPauseButton, 60, 60);
@@ -128,13 +158,23 @@ public class GameController {
         }
     }
 
+    /**
+     * Initializes the game controller and keyboard response
+     * @param scene Scene to be initialized
+     * @param editor Editor controller reference
+     * @param menu Menu controller reference
+     */
     public void initialize(Scene scene, EditorController editor, MenuController menu) {
         this.menu = menu;
         this.editor = editor;
         scene.setOnKeyPressed(this::handleKeyPress);
         scene.setOnKeyReleased(this::handleKeyRelease);
 
+        // timer for smooth animation and periodic updates
         this.timer = new AnimationTimer() {
+            /**
+             * @param now Current time in nanoseconds
+             */
             @Override
             public void handle(long now) {
                 if (simulationRunning) {
@@ -150,6 +190,10 @@ public class GameController {
         timer.start();
     }
 
+    /**
+     * Loads the environment from a CSV file
+     * @param CSVFile List of strings representing the environment
+     */
     public void loadEnvironment(List<String> CSVFile) {
         for (String line : CSVFile) {
             String[] parts = line.split(",");
@@ -164,9 +208,9 @@ public class GameController {
                     }
                     else if (Objects.equals(parts[4], "off")) {
                         raceMode = false;
-                        ImageView toggleView = new ImageView(new Image(getClass().getResourceAsStream("/toggle.png")));
+                        ImageView toggleView = ImageSetter.setImageView("/toggle.png");
                         prepareButtonView(toggleView, toggleRobots, 60, 120);
-                        ImageView toggleHover = new ImageView(new Image(getClass().getResourceAsStream("/togglehover.png")));
+                        ImageView toggleHover = ImageSetter.setImageView("/togglehover.png");
                         toggleRobots.setOnMouseEntered(event -> prepareButtonView(toggleHover, toggleRobots, 60, 120));
                         toggleRobots.setOnMouseExited(event -> prepareButtonView(toggleView, toggleRobots, 60, 120));
                     }
@@ -184,17 +228,21 @@ public class GameController {
                 case "obstacle":
                     Obstacle obstacle = new Obstacle(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), obstacleSize);
                     env.addObstacle(obstacle);
-                    ObstacleView obst = new ObstacleView(obstacle, simulationPane, raceMode);
+                    new ObstacleView(obstacle, simulationPane, raceMode);
                     break;
                 case "autonomous_robot":
                     AutonomousRobot autonomousRobot = new AutonomousRobot(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), robotRadius);
                     env.addAutonomousRobot(autonomousRobot);
-                    new AutonomousRobotView(autonomousRobot, simulationPane, raceMode, false);
+                    new AutonomousRobotView(autonomousRobot, simulationPane, false);
                     break;
             }
         }
     }
 
+    /**
+     * Handles key press events
+     * @param event Key event to be handled
+     */
     public void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
@@ -273,6 +321,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Handles key release events
+     * @param event Key event to be handled
+     */
     public void handleKeyRelease(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
@@ -320,6 +372,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Updates the movement of a controlled robot, checking for collisions
+     * @param index Index of the controlled robot to update
+     */
     private void updateMovement(int index) {
         ControlledRobot controlledRobot = env.getControlledRobot(index);
 
@@ -333,24 +389,20 @@ public class GameController {
                 potentialY = controlledRobot.Y().get() - robotSpeed * Math.sin(Math.toRadians(controlledRobot.angle().get()));
             }
 
-            // Perform a lookahead collision check before actually moving.
+            // perform a lookahead collision check before actually moving
             if (!env.checkCollisionAt(controlledRobot, potentialX, potentialY)) {
-                // No collision predicted, so it's safe to move forward.
                 controlledRobot.moveForward(robotSpeed * (controlledRobot.isMovingForward() ? 1 : -0.4));
             } else {
                 System.out.println("Collision of controlled robot " + index);
-                // Collision predicted: stop movement and handle collision.
                 if (controlledRobot.isMovingForward()) {
                     controlledRobot.setMovingForward(false);
                 }
-
                 if (controlledRobot.isMovingBackward()) {
                     controlledRobot.setMovingBackward(false);
                 }
             }
         }
 
-        // Handle rotation only if not moving forward to avoid complex movement scenarios.
         if (controlledRobot.isRotatingRight()) {
             controlledRobot.rotateRight();
         } else if (controlledRobot.isRotatingLeft()) {
@@ -358,12 +410,17 @@ public class GameController {
         }
     }
 
+    /**
+     * Updates the movement of an autonomous robot, checking for collisions
+     * @param index Index of the autonomous robot to update
+     */
     public void updateAutonomousMovement(int index) {
         AutonomousRobot autonomousRobot = env.getAutonomousRobot(index);
 
         double potentialX = autonomousRobot.X().get() + robotSpeed * Math.cos(Math.toRadians(autonomousRobot.angle().get()));
         double potentialY = autonomousRobot.Y().get() + robotSpeed * Math.sin(Math.toRadians(autonomousRobot.angle().get()));
 
+        // perform a lookahead collision check before actually moving
         if (!env.checkCollisionAt(autonomousRobot, potentialX, potentialY)) {
             autonomousRobot.X().set(potentialX);
             autonomousRobot.Y().set(potentialY);
@@ -374,21 +431,27 @@ public class GameController {
         }
     }
 
+    /**
+     * Toggles the simulation between play and pause
+     */
     public void playPauseSimulation() {
         simulationRunning = !simulationRunning;
         if (simulationRunning) {
             System.out.println("Simulation resumed");
-            ImageView pauseView = new ImageView(new Image(getClass().getResourceAsStream("/pause.png")));
+            ImageView pauseView = ImageSetter.setImageView("/pause.png");
             prepareButtonView(pauseView, playPauseButton, 60, 60);
 
         } else {
             System.out.println("Simulation paused");
-            ImageView playView = new ImageView(new Image(getClass().getResourceAsStream("/play.png")));
+            ImageView playView = ImageSetter.setImageView("/play.png");
             prepareButtonView(playView, playPauseButton, 60, 60);
 
         }
     }
 
+    /**
+     * Stops the simulation
+     */
     public void stopSimulation() {
         simulationRunning = false;
         timer.stop();
@@ -401,6 +464,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Handles the moving forward control press
+     */
     public void movingForwardPressed() {
         if (env.countControlledRobots() > 0) {
             ControlledRobot robot = env.getControlledRobot(currentRobot);
@@ -413,6 +479,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Handles the rotating left control press
+     */
     public void rotatingLeftPressed() {
         if (env.countControlledRobots() > 0) {
             ControlledRobot robot = env.getControlledRobot(currentRobot);
@@ -425,6 +494,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Handles the rotating right control press
+     */
     public void rotatingRightPressed() {
         if (env.countControlledRobots() > 0) {
             ControlledRobot robot = env.getControlledRobot(currentRobot);
@@ -437,6 +509,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Toggles the controlled robot
+     */
     public void toggleRobotsPressed() {
         if (env.countControlledRobots() > 1) {
             currentRobot = (currentRobot + 1) % env.countControlledRobots();

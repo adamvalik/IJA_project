@@ -7,8 +7,7 @@
  *
  * @author Dominik Horut
  */
-
-package ija.controller;
+package ija.other;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;

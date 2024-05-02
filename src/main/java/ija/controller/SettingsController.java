@@ -7,16 +7,16 @@
  *
  * @author Dominik Horut
  */
-
 package ija.controller;
 
+import ija.other.ImageSetter;
+import ija.other.StageSetter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -80,7 +80,7 @@ public class SettingsController {
         setter.setOnMouseEntered(e -> {setter.setStyle(setter.getStyle() + "-fx-background-color: #FFEE32;");});
         setter.setOnMouseExited(e -> {setter.setStyle(setter.getStyle() + "-fx-background-color: #FFD100;");});
 
-        ImageView robot = new ImageView(new Image(getClass().getResourceAsStream("/robotmode.png")));
+        ImageView robot = ImageSetter.setImageView("/robotmode.png");
         GameController.prepareButtonView(robot, mode, 60, 60);
         mode.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
     }
@@ -106,7 +106,7 @@ public class SettingsController {
         // Racing mode is ON
         if (racingModeValue.equals("on")) {
 
-            ImageView formula = new ImageView(new Image(getClass().getResourceAsStream("/ferrari.png")));
+            ImageView formula = ImageSetter.setImageView("/ferrari.png");
             GameController.prepareButtonView(formula, mode, 60, 60);
             mode.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
 
@@ -114,7 +114,7 @@ public class SettingsController {
         // Racing mode is OFF
         } else {
 
-            ImageView robot = new ImageView(new Image(getClass().getResourceAsStream("/robotmode.png")));
+            ImageView robot = ImageSetter.setImageView("/robotmode.png");
             GameController.prepareButtonView(robot, mode, 60, 60);
             mode.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
 
@@ -161,7 +161,7 @@ public class SettingsController {
             menu.closeSettings();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error while opening editor window.");
         }
     }
 

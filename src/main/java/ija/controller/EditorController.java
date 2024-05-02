@@ -10,7 +10,9 @@
 
 package ija.controller;
 
-import ija.model.Collision;
+import ija.other.Collision;
+import ija.other.ImageSetter;
+import ija.other.StageSetter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
@@ -19,13 +21,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.Pane;
@@ -49,48 +48,32 @@ import java.io.FileWriter;
  * Controller for editor window. Allows user to create a map for the game.
  */
 public class EditorController {
-
     @FXML
     private Circle player;
-
     @FXML
     private Circle bot;
-
     @FXML
     private Rectangle obstacle;
-
     @FXML
     private Pane map;
-
     @FXML
     private Button start;
-
     @FXML
     private Button clear;
-
     @FXML
     private Button export;
-
     @FXML
     private Button back;
-
-    @FXML
-    private TextField speedInput;
-
-    @FXML
-    private AnchorPane window;
-
     @FXML
     private Button closeNoEntities;
+    @FXML
+    private Button closeExportSuccess;
 
     /**
      * Pop-up window to inform user about exporting empty map.
       */
     @FXML
     private Pane noEntities;
-
-    @FXML
-    private Button closeExportSuccess;
 
     /**
      * Pop-up window to inform user about successful export of map.
@@ -134,7 +117,7 @@ public class EditorController {
     private String settings;
     private Stage gameStage;
 
-    String type = null;
+    private String type = null;
 
     private double robotSize;
     private double obstacleSize;
@@ -145,12 +128,11 @@ public class EditorController {
     private final double screenWidth = 1200;
     private final double screenHeight = 650;
 
-
     private Double currentClickedPositionX;
     private Double currentClickedPositionY;
 
-    Font fontArial = new Font("Arial Black", 18);
-    Font fontArialSmall = new Font("Arial", 12);
+    private final Font fontArial = new Font("Arial Black", 18);
+    private final Font fontArialSmall = new Font("Arial", 12);
 
     private SettingsController settingsController;
 
@@ -159,7 +141,6 @@ public class EditorController {
      */
     @FXML
     public void initialize() {
-
         player.setOnMouseClicked(this::selectEntity);
         bot.setOnMouseClicked(this::selectEntity);
         obstacle.setOnMouseClicked(this::selectEntity);
@@ -199,8 +180,8 @@ public class EditorController {
         closeNoEntities.setFocusTraversable(false);
         closeExportSuccess.setFocusTraversable(false);
 
-        ImageView trash = new ImageView(new Image(getClass().getResourceAsStream("/clear.png")));
-        ImageView trashHover = new ImageView(new Image(getClass().getResourceAsStream("/clearhover.png")));
+        ImageView trash = ImageSetter.setImageView("/clear.png");
+        ImageView trashHover = ImageSetter.setImageView("/clearhover.png");
         GameController.prepareButtonView(trash, clear, 75, 100);
 
         // Hover effect for buttons
@@ -439,9 +420,9 @@ public class EditorController {
 
                 // Choosing style for player depending on mode
                 if(raceMode.equals("off")) {
-                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
+                    newCircle.setFill(ImageSetter.setImagePattern("/control.png"));
                 } else {
-                    newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.png"))));
+                    newCircle.setFill(ImageSetter.setImagePattern("/ferrari.png"));
                 }
 
                 CSV.add("controlled_robot,"+ x + "," + y);
@@ -455,7 +436,7 @@ public class EditorController {
                 newCircle.getTransforms().add(rotate);
 
                 // Setting style
-                newCircle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.png"))));
+                newCircle.setFill(ImageSetter.setImagePattern("/autonom.png"));
 
                 // Check that robot parameters were set
                 if(!wasSet) return;
@@ -487,10 +468,10 @@ public class EditorController {
 
             // Setting obstacle style depending on mode
             if(raceMode.equals("off")) {
-                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
+                newRectangle.setFill(ImageSetter.setImagePattern("/wall.png"));
                 newRectangle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0.6, 0, 0);");
             } else {
-                newRectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
+                newRectangle.setFill(ImageSetter.setImagePattern("/racetrack.png"));
             }
 
             // Adding obstacle to map
@@ -565,12 +546,7 @@ public class EditorController {
             return true;
 
         // Check that all parameters are numbers
-        } else if(notNum(angleInput.getText()) || notNum(rotateInput.getText()) || notNum(detectionInput.getText()) ) {
-            return true;
-
-        } else {
-            return false;
-        }
+        } else return notNum(angleInput.getText()) || notNum(rotateInput.getText()) || notNum(detectionInput.getText());
     }
 
     /**
@@ -589,15 +565,15 @@ public class EditorController {
 
         // Robot mode set
         if(raceMode.equals("off")) {
-            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/controll.png"))));
-            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
+            player.setFill(ImageSetter.setImagePattern("/control.png"));
+            obstacle.setFill(ImageSetter.setImagePattern("/wall.png"));
             obstacle.setStyle("-fx-effect: dropshadow(gaussian, #3BE03C, 20, 0.6, 0, 0);");
-            bot.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/autonom.png"))));
+            bot.setFill(ImageSetter.setImagePattern("/autonom.png"));
 
         // Racing mode set
         } else {
-            player.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/ferrari.png"))));
-            obstacle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
+            player.setFill(ImageSetter.setImagePattern("/ferrari.png"));
+            obstacle.setFill(ImageSetter.setImagePattern("/racetrack.png"));
             bot.setFill(Color.rgb(214,214,214));
         }
     }
@@ -630,7 +606,7 @@ public class EditorController {
                         writer.newLine();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println("Error while writing CSV file.");
                 }
 
                 System.out.println("CSV file exported successfully.");

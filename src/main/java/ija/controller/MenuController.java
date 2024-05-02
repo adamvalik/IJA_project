@@ -13,6 +13,7 @@ package ija.controller;
 
 import ija.model.AutonomousRobot;
 import ija.model.Environment;
+import ija.other.StageSetter;
 import ija.view.AutonomousRobotView;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -45,7 +46,6 @@ public class MenuController {
     private Button loadGame;
     @FXML
     private Button endGame;
-
     @FXML
     private AnchorPane menuPane;
 
@@ -54,6 +54,8 @@ public class MenuController {
      */
     @FXML
     private Text text;
+
+    // environment for robots when loading from file
     private Environment env;
 
     // All stages user can get to from menu
@@ -83,10 +85,17 @@ public class MenuController {
         this.primaryStage = primaryStage;
     }
 
+    /**
+     * Sets the robots in the background of the menu
+     */
     public void robots() {
         this.env = new Environment(1180, 650);
 
+        // timer for animating the robots
         new AnimationTimer() {
+            /**
+             * @param now Current time in nanoseconds
+             */
             @Override
             public void handle(long now) {
                 for (int i = 0; i < env.countAutonomousRobots(); i++) {
@@ -107,16 +116,21 @@ public class MenuController {
             }
         }.start();
 
+        // add autonomous robots to the environment and randomize their parameters
         Random random = new Random();
-        for (int i = 0; i < 10; i++) {
+        // number of robots in the background of the menu
+        int numOfRobots = 10;
+        for (int i = 0; i < numOfRobots; i++) {
             setRobotBackground(random.nextInt(732)+20, random.nextInt(482)+20, random.nextInt(359), random.nextInt(359));
         }
 
+        // set everything to the front so the robots are in the background
         newGame.toFront();
         loadGame.toFront();
         endGame.toFront();
         text.toFront();
 
+        // set the hover effect for the buttons
         newGame.setOnMouseEntered(e -> {newGame.setStyle(newGame.getStyle() + "-fx-background-color: #FFEE32;");});
         newGame.setOnMouseExited(e -> {newGame.setStyle(newGame.getStyle() + "-fx-background-color: #FFD100;");});
 
@@ -127,10 +141,20 @@ public class MenuController {
         endGame.setOnMouseExited(e -> {endGame.setStyle(endGame.getStyle() + "-fx-background-color: #FFD100;");});
     }
 
+
+    /**
+     * Adds the robot to the environment and sets the view of the robot in the background of the menu
+     * @param x X coordinate of the robot
+     * @param y Y coordinate of the robot
+     * @param angle Angle of the robot
+     * @param turn Turn of the robot
+     */
     private void setRobotBackground(double x, double y, double angle, double turn) {
         AutonomousRobot robot = new AutonomousRobot(x, y, angle, turn, 0, 20);
         env.addAutonomousRobot(robot);
-        new AutonomousRobotView(robot, menuPane, false, true);
+        // randomly set the view of the robot to be either formula or autonomous
+        Random rand = new Random();
+        new AutonomousRobotView(robot, menuPane, rand.nextBoolean());
     }
 
     /**
@@ -153,7 +177,7 @@ public class MenuController {
             StageSetter.initStage(settingsStage, "Settings", settingsScene, false);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error while opening settings window.");
         }
     }
 
@@ -192,7 +216,7 @@ public class MenuController {
                 System.out.println("CSV file imported successfully.");
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Error while reading CSV file.");
             }
 
         } else {
@@ -223,7 +247,7 @@ public class MenuController {
             gameController.loadEnvironment(CSV);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error while opening game window.");
         }
     }
 

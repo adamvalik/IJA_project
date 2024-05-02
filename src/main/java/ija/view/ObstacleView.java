@@ -1,40 +1,50 @@
+/**
+ * @package ija.view
+ * @file ObstacleView.java
+ * @class ObstacleView
+ *
+ * The class for visual representation of the obstacle robot.
+ *
+ * @author Adam Valík
+ */
+
 package ija.view;
 
 import ija.model.Obstacle;
+import ija.other.ImageSetter;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-import java.util.Random;
-
+/**
+ * The class for visual representation of the obstacle robot
+ */
 public class ObstacleView {
-    private Obstacle obstacle;
-    private Rectangle rectangle;
-    private final boolean raceModeOn;
 
+    /**
+     * Creates the visual representation of the obstacle
+     * @param obstacle The obstacle
+     * @param parentPane The pane where the obstacle will be displayed
+     * @param raceModeOn Whether the image should be set to racetrack or wall
+     */
     public ObstacleView(Obstacle obstacle, Pane parentPane, boolean raceModeOn) {
-        this.obstacle = obstacle;
-        this.raceModeOn = raceModeOn;
-        initializeView(parentPane);
-    }
+        Rectangle rectangle = obstacle.getRectangle();
 
-    private void initializeView(Pane parentPane) {
-        // Create a rectangle to visually represent the obstacle
-        rectangle = obstacle.getRectangle();
+        // set the correct image to the obstacle
         if (raceModeOn) {
-            rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/racetrack.png"))));
+            rectangle.setFill(ImageSetter.setImagePattern("/racetrack.png"));
         } else {
-            rectangle.setFill(new ImagePattern(new Image(getClass().getResourceAsStream("/wall.png"))));
+            rectangle.setFill(ImageSetter.setImagePattern("/wall.png"));
+            // add a shadow effect to the wall
             DropShadow shadow = new DropShadow();
             shadow.setRadius(20);
             shadow.setSpread(0.6);
-            shadow.setColor(Color.rgb(59, 224, 60));
+            shadow.setColor(Color.rgb(59, 224, 60)); // toxic green
             rectangle.setEffect(shadow);
         }
-        // Add the rectangle to the parent pane
+
+        // add the visual representation to the parent pane
         parentPane.getChildren().add(rectangle);
     }
 }
