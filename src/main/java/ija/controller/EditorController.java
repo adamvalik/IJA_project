@@ -82,16 +82,16 @@ public class EditorController {
     private Pane exportSuccess;
 
     // Robot settings window components.
-    Label angle = new Label();
-    Label rotate = new Label();
-    Label detection = new Label();
-    TextField angleInput = new TextField();
-    TextField rotateInput = new TextField();
-    TextField detectionInput = new TextField();
+    private final Label angle = new Label();
+    private final Label rotate = new Label();
+    private final Label detection = new Label();
+    private final TextField angleInput = new TextField();
+    private final TextField rotateInput = new TextField();
+    private final TextField detectionInput = new TextField();
 
-    Pane robotSettings = new Pane();
+    private final Pane robotSettings = new Pane();
 
-    Button setButton = new Button();
+    private final Button setButton = new Button();
 
     /**
      * Entity user wants to add to game map.
@@ -122,7 +122,7 @@ public class EditorController {
     private double robotSize;
     private double obstacleSize;
 
-    public String raceMode;
+    private String raceMode;
 
     // Editor window size
     private final double screenWidth = 1200;
@@ -135,6 +135,11 @@ public class EditorController {
     private final Font fontArialSmall = new Font("Arial", 12);
 
     private SettingsController settingsController;
+
+    /**
+     * Default constructor for EditorController.
+     */
+    public EditorController() {}
 
     /**
      * Initializes the editor window, binds buttons to functions and sets up their style.

@@ -25,6 +25,11 @@ import java.io.IOException;
  */
 public class App extends Application {
     /**
+     * Default constructor for App.
+     */
+    public App() {}
+
+    /**
      * Starts the application by loading the menu window
      * @param primaryStage Stage of the application
      */

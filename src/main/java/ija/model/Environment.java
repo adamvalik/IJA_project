@@ -33,6 +33,7 @@ public class Environment {
     private final List<Obstacle> obstacles = new ArrayList<>();
 
     /**
+     * Constructor for the Environment class
      * @param width Width of the environment
      * @param height Height of the environment
      */
@@ -43,6 +44,7 @@ public class Environment {
 
 
     /**
+     * Get the controlled robot at the given index
      * @param index Index of the controlled robot
      * @return Controlled robot at the given index
      */
@@ -51,6 +53,7 @@ public class Environment {
     }
 
     /**
+     * Get the number of controlled robots in the environment
      * @return Number of controlled robots
      */
     public int countControlledRobots() {
@@ -66,6 +69,7 @@ public class Environment {
     }
 
     /**
+     * Get the autonomous robot at the given index
      * @param index Index of the autonomous robot
      * @return Autonomous robot at the given index
      */
@@ -74,6 +78,7 @@ public class Environment {
     }
 
     /**
+     * Get the list of autonomous robots
      * @return List of autonomous robots
      */
     public ObservableList<AutonomousRobot> getAutonomousRobots() {
@@ -81,6 +86,7 @@ public class Environment {
     }
 
     /**
+     * Get the number of autonomous robots in the environment
      * @return Number of autonomous robots
      */
     public int countAutonomousRobots() {
@@ -96,6 +102,7 @@ public class Environment {
     }
 
     /**
+     * Add an obstacle to the environment
      * @param obstacle Obstacle to add
      */
     public void addObstacle(Obstacle obstacle) {

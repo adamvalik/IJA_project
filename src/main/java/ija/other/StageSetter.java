@@ -17,6 +17,11 @@ import javafx.stage.Stage;
  */
 public class StageSetter {
     /**
+     * Default constructor for StageSetter.
+     */
+    public StageSetter() {}
+
+    /**
      * Initializes the stage, sets all important parameters and displays the stage
      * @param stage Stage to be set.
      * @param windowTitle Window title to be displayed.

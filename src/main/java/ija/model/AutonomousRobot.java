@@ -25,6 +25,7 @@ public class AutonomousRobot extends Robot {
     private final double turningAngle; // angle by which the robot turns when colliding
 
     /**
+     * Constructor for the AutonomousRobot class
      * @param x X coordinate of the robot
      * @param y Y coordinate of the robot
      * @param angle Initial angle of the robot in degrees
@@ -46,6 +47,7 @@ public class AutonomousRobot extends Robot {
     }
 
     /**
+     * Get the detection area of the robot at the given coordinates
      * @param x Potential x coordinate of the robot
      * @param y Potential y coordinate of the robot
      * @return Circle union with the detection area represented by a triangle

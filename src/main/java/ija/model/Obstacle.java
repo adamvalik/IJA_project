@@ -21,6 +21,7 @@ public class Obstacle {
     private final double side; // side length of the square
 
     /**
+     * Constructor for the Obstacle class
      * @param x X coordinate of the obstacle
      * @param y Y coordinate of the obstacle
      * @param side Side length of the obstacle
@@ -32,6 +33,7 @@ public class Obstacle {
     }
 
     /**
+     * Getter for the X coordinate of the obstacle
      * @return X coordinate of the obstacle
      */
     public double getX() {
@@ -39,6 +41,7 @@ public class Obstacle {
     }
 
     /**
+     * Getter for the Y coordinate of the obstacle
      * @return Y coordinate of the obstacle
      */
     public double getY() {
@@ -46,6 +49,7 @@ public class Obstacle {
     }
 
     /**
+     * Get the rectangle representation of the obstacle
      * @return The representation of the obstacle as a square
      */
     public Rectangle getRectangle() {

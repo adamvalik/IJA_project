@@ -20,6 +20,10 @@ import java.util.Objects;
  * Class for setting the image to button or shape.
  */
 public class ImageSetter {
+    /**
+     * Default constructor for ImageSetter.
+     */
+    public ImageSetter() {}
 
     /**
      * Sets the image to the button

@@ -64,6 +64,11 @@ public class MenuController {
     private Stage gameStage;
 
     /**
+     * Default constructor for MenuController.
+     */
+    public MenuController() {}
+
+    /**
      * Initializes the menu controller by binding buttons to methods
      */
     @FXML
@@ -181,6 +186,9 @@ public class MenuController {
         }
     }
 
+    /**
+     * Closes settings window.
+     */
     public void closeSettings() {
         if (settingsStage != null) {
             settingsStage.close();
@@ -251,12 +259,19 @@ public class MenuController {
         }
     }
 
+    /**
+     * Closes the game window.
+     */
     public void stopGame() {
         if (gameStage != null) {
             gameStage.close();
         }
     }
 
+    /**
+     * Closes the menu window.
+     * @param event Mouse event which triggered closing of menu.
+     */
     private void closeWindow(MouseEvent event) {
         Scene scene = endGame.getScene();
         Stage stage = (Stage) scene.getWindow();

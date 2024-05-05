@@ -66,6 +66,10 @@ public class SettingsController {
     private MenuController menu;
     private Stage editorStage;
 
+    /**
+     * Default constructor for SettingsController.
+     */
+    public SettingsController() {}
 
     /**
      * Initializes the controller by binding all buttons in settings to appropriate methods
@@ -85,6 +89,10 @@ public class SettingsController {
         mode.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0;");
     }
 
+    /**
+     * Initializes the controller by giving a reference to the menu controller to be able to close settings window.
+     * @param menu Menu controller to be initialized.
+     */
     public void initialize(MenuController menu) {
         this.menu = menu;
     }

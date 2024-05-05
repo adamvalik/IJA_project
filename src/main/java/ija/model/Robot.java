@@ -18,14 +18,25 @@ import javafx.scene.shape.Circle;
  * The common super class for all robots in the simulation.
  */
 abstract public class Robot {
+    /**
+     * Radius of the robot
+     */
     protected double radius;
-    // [x,y] represents the center of the robot
+    /**
+     * X coordinate of the center of the robot
+     */
     protected final DoubleProperty x = new SimpleDoubleProperty();
+    /**
+     * Y coordinate of the center of the robot
+     */
     protected final DoubleProperty y = new SimpleDoubleProperty();
-    // angle in degrees
+    /**
+     * Angle of the robot in degrees
+     */
     protected final DoubleProperty angle = new SimpleDoubleProperty();
 
     /**
+     * Common constructor for the Robot class
      * @param x X coordinate of the robot
      * @param y Y coordinate of the robot
      * @param angle Initial angle of the robot in degrees
@@ -39,6 +50,7 @@ abstract public class Robot {
     }
 
     /**
+     * Getter for the X coordinate of the robot
      * @return X coordinate of the robot
      */
     public DoubleProperty X() {
@@ -46,6 +58,7 @@ abstract public class Robot {
     }
 
     /**
+     * Getter for the Y coordinate of the robot
      * @return Y coordinate of the robot
      */
     public DoubleProperty Y() {
@@ -53,6 +66,7 @@ abstract public class Robot {
     }
 
     /**
+     * Getter for the angle of the robot
      * @return Angle of the robot in degrees
      */
     public DoubleProperty angle() {
@@ -60,6 +74,7 @@ abstract public class Robot {
     }
 
     /**
+     * Getter for the radius of the robot
      * @return Radius of the robot
      */
     public double getRadius() {

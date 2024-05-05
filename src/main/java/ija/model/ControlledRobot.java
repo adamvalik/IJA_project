@@ -23,6 +23,7 @@ public class ControlledRobot extends Robot {
     private final int rotationSensitivity = 5;
 
     /**
+     * Constructor for the ControlledRobot class
      * @param x X coordinate of the robot
      * @param y Y coordinate of the robot
      * @param radius Radius of the robot

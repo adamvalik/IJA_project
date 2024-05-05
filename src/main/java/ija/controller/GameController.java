@@ -28,6 +28,9 @@ import javafx.scene.layout.Pane;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller for the game window
+ */
 public class GameController {
     @FXML
     private Button playPauseButton;

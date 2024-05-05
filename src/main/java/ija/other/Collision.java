@@ -17,6 +17,10 @@ import javafx.scene.shape.Rectangle;
  * Collision of two shapes.
  */
 public class Collision {
+    /**
+     * Default constructor for Collision.
+     */
+    public Collision() {}
 
     /**
      * Calculates the collision of two circles.
