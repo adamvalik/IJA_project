@@ -36,7 +36,8 @@ challenge a friend to race.
 The project uses Java SE 17 along with JavaFX 17. To build the project, you also need to have Maven installed.
 
 Run: mvn package
-to build the project. This will also generate the documentation. The resulting JAR file will be in the target directory.
+to build the project. This will also generate the documentation, which can be found in target/site/apidocs/index.html.
+The resulting JAR file will be in the target directory.
 
 Run: mvn javafx:run
 to run the project.

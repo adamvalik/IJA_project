@@ -24,7 +24,7 @@ Run:
 ```bash
 mvn package
 ```
-to build the project. This will also generate the documentation. The resulting JAR file will be in the ``target`` directory.
+to build the project. This will also generate the documentation, which can be found in ``target/site/apidocs/index.html`` The resulting JAR file will be in the ``target`` directory.
 Run:
 ```bash
 mvn javafx:run
