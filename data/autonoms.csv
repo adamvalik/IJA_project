@@ -1,0 +1,13 @@
+settings,5,40,100,off
+obstacle,181.0,93.0
+obstacle,368.0,245.0
+obstacle,192.0,440.0
+obstacle,854.0,48.0
+obstacle,997.0,442.0
+obstacle,688.0,393.0
+autonomous_robot,472.0,536.0,30,56,20
+autonomous_robot,593.0,134.0,30,56,20
+autonomous_robot,994.0,275.0,30,56,20
+autonomous_robot,898.0,550.0,30,56,20
+autonomous_robot,83.0,344.0,30,56,20
+autonomous_robot,46.0,558.0,30,56,20
