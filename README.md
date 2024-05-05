@@ -1,4 +1,5 @@
-# Ultimate Robot/Racing Game 
+<h1><img height="40" src="icon.png" alt="robot icon">&nbsp;&nbsp;Ultimate Robot/Racing Game</h1> 
+
 Task: 2D mobile robot simulator for Java Course (IJA) at FIT BUT  
 Authors: Adam Valík (xvalik05), Dominik Horut (xhorut01)
 
