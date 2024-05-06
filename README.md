@@ -37,4 +37,4 @@ java --module-path lib/javafx --add-modules javafx.controls,javafx.fxml -jar tar
 ```
 
 ## Screenshots
-<img src="editor.jpg" alt="editor" width="400">&nbsp;&nbsp;<img src="game.jpg" alt="game" width="400">&nbsp;&nbsp;<img src="racemode.jpg" alt="game" width="400">
+<img src="menu.jpg" alt="menu window" width="400">&nbsp;&nbsp;<img src="editor.jpg" alt="editor window" width="400">&nbsp;&nbsp;<img src="game.jpg" alt="game window" width="400">&nbsp;&nbsp;<img src="racemode.jpg" alt="race mode" width="400">
