@@ -35,3 +35,6 @@ If you are running the macOS Sonoma, you may encounter problems with the ``javaf
 ```bash
 java --module-path lib/javafx --add-modules javafx.controls,javafx.fxml -jar target/IJA_project-1.0.jar
 ```
+
+## Screenshots
+<img src="editor.jpg" alt="editor" width="400">&nbsp;&nbsp;<img src="game.jpg" alt="game" width="400">&nbsp;&nbsp;<img src="racemode.jpg" alt="game" width="400">
